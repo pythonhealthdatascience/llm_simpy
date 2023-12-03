@@ -1,0 +1,14 @@
+format: jb-book
+root: notebooks/front_page
+parts:
+- caption: Critical care model
+  chapters:
+  - file: notebooks/early_testing/perplexity/iteration_0
+  - file: notebooks/early_testing/perplexity/iteration_1
+  - file: notebooks/early_testing/perplexity/iteration_2
+  - file: notebooks/early_testing/perplexity/iteration_3
+  - file: notebooks/early_testing/perplexity/iteration_4
+  - file: notebooks/early_testing/perplexity/iteration_5
+  - file: notebooks/early_testing/perplexity/iteration_6
+  - file: notebooks/early_testing/perplexity/iteration_7
+
