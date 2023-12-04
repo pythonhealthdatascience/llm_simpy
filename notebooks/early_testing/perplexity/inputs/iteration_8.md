@@ -1,10 +1,8 @@
 modify the code as follows: 
 
-Add in a new performance measure that is calculated at the end of the simulation run called "bed occupancy". This is calculated by multiplying the bed utilization by the number of critical care beds.
+Create a new generator function in the CCUModel class called "warmup_complete". It should be scheduled by simpy to run only once at the end of the warm up period.  The logic of the function should set the patient count to zero. 
 
+At the end of the simulation run add the patient coun to the pandas dataframe.
 Add the result to the pandas dataframe.
-
-add a new parameter to Experiment called "trace". The default value of "trace" is False.  If "trace" is True the model will print out simulated events such as admissions, discharges, or cancellations.   The model will always print out the performance at the end of the simulated run.
-
 
 Show all of the model code: this includes all patient generator functions in the CCUModel class and all code in the Experiment class.
