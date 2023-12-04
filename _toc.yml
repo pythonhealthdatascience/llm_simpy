@@ -11,4 +11,5 @@ parts:
   - file: notebooks/early_testing/perplexity/iteration_5
   - file: notebooks/early_testing/perplexity/iteration_6
   - file: notebooks/early_testing/perplexity/iteration_7
+  - file: notebooks/early_testing/perplexity/iteration_8
 
