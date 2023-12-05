@@ -1,0 +1,2 @@
+  
+  The dataframe and the number of replications should be passed to another function called "results_summary" that calculates the mean, and standard deviation of each performance measure. The summary function returns as a pandas dataframe containing the results.

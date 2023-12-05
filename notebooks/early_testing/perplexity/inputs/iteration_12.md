@@ -2,7 +2,8 @@ create a function called "multiple_replications". This should be standalone and 
 
 1. create a new instance of the model
 2. reset the performance measures held in Experiment to their original values
-3. run the model
-4. store the returned results of the replication for later use
+3. run the model and store the results returned in a 
+4. store the returned results of the replication for later use.
+5. create a new column in the results that represent the replication number.  This should be the index of the results table.
 
-After all multiple replications have been completed return the stored results and summarise these in a pandas dataframe.
+After all multiple replications have been completed concatenate all results into a single dataframe. The first column of the dataframe should be an integer representing the replication number. The function returns the results.
