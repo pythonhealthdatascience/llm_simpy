@@ -13,3 +13,7 @@ parts:
   - file: notebooks/early_testing/perplexity/iteration_7
   - file: notebooks/early_testing/perplexity/iteration_8
   - file: notebooks/early_testing/perplexity/iteration_9
+  - file: notebooks/early_testing/perplexity/iteration_10
+  - file: notebooks/early_testing/perplexity/iteration_11
+  - file: notebooks/early_testing/perplexity/iteration_12
+  - file: notebooks/early_testing/perplexity/iteration_13
