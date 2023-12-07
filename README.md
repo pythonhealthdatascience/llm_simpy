@@ -13,5 +13,26 @@
 
 * Navonil Mustafee [![ORCID: Harper](https://img.shields.io/badge/ORCID-0000--0001--5274--5037-brightgreen)](https://orcid.org/0000-0002-2204-8924)
 
+## Creating the virtual environment
 
+The project uses `conda` to manage dependencies. Navigate your terminal to the directory containing the code
 
+```
+conda env create -f binder/environment.yml
+```
+
+This will create a conda virtual environment called `gen_simpy`. To activate:
+
+```
+conda activate gen_simpy
+```
+
+## Building the Juypter Book
+
+One in the `gen_simpy` environment navigate to the top level directory of the code repository in your terminal and issue the following command:
+
+```
+jb buid .
+```
+
+This will build the HTML book locally on your machine.  The terminal will display a URL link that you can use to point your browser at the HTML.
