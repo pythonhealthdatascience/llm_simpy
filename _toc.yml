@@ -1,6 +1,9 @@
 format: jb-book
 root: notebooks/front_page
 parts:
+- caption: Methods
+  chapters:
+  - file: notebooks/01_methods
 - caption: Critical care model
   chapters:
   - file: notebooks/early_testing/perplexity/iteration_00
