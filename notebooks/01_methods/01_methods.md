@@ -2,7 +2,7 @@
 
 
 
-```{figure} ../images/iterative_model_recreation.png
+```{figure} ../../images/iterative_model_recreation.png
 ---
 height: 500px
 name: methods_fig

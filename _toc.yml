@@ -1,10 +1,14 @@
 format: jb-book
 root: notebooks/front_page
 parts:
+- caption: Aims
+  chapters:
+  - file: notebooks/00_aims/01_primary
+  - file: notebooks/00_aims/02_secondary
 - caption: Methods
   chapters:
-  - file: notebooks/01_methods
-  - file: notebooks/02_case_studies
+  - file: notebooks/01_methods/01_methods
+  - file: notebooks/01_methods/02_case_studies
 - caption: Critical care model
   chapters:
   - file: notebooks/early_testing/perplexity/iteration_00
