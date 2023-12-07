@@ -4,6 +4,7 @@ parts:
 - caption: Methods
   chapters:
   - file: notebooks/01_methods
+  - file: notebooks/02_case_studies
 - caption: Critical care model
   chapters:
   - file: notebooks/early_testing/perplexity/iteration_00
