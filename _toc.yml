@@ -3,16 +3,16 @@ root: notebooks/front_page
 parts:
 - caption: Critical care model
   chapters:
-  - file: notebooks/early_testing/perplexity/iteration_0
-  - file: notebooks/early_testing/perplexity/iteration_1
-  - file: notebooks/early_testing/perplexity/iteration_2
-  - file: notebooks/early_testing/perplexity/iteration_3
-  - file: notebooks/early_testing/perplexity/iteration_4
-  - file: notebooks/early_testing/perplexity/iteration_5
-  - file: notebooks/early_testing/perplexity/iteration_6
-  - file: notebooks/early_testing/perplexity/iteration_7
-  - file: notebooks/early_testing/perplexity/iteration_8
-  - file: notebooks/early_testing/perplexity/iteration_9
+  - file: notebooks/early_testing/perplexity/iteration_00
+  - file: notebooks/early_testing/perplexity/iteration_01
+  - file: notebooks/early_testing/perplexity/iteration_02
+  - file: notebooks/early_testing/perplexity/iteration_03
+  - file: notebooks/early_testing/perplexity/iteration_04
+  - file: notebooks/early_testing/perplexity/iteration_05
+  - file: notebooks/early_testing/perplexity/iteration_06
+  - file: notebooks/early_testing/perplexity/iteration_07
+  - file: notebooks/early_testing/perplexity/iteration_08
+  - file: notebooks/early_testing/perplexity/iteration_09
   - file: notebooks/early_testing/perplexity/iteration_10
   - file: notebooks/early_testing/perplexity/iteration_11
   - file: notebooks/early_testing/perplexity/iteration_12
