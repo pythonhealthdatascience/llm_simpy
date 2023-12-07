@@ -32,7 +32,7 @@ conda activate gen_simpy
 One in the `gen_simpy` environment navigate to the top level directory of the code repository in your terminal and issue the following command:
 
 ```
-jb buid .
+jb build .
 ```
 
 This will build the HTML book locally on your machine.  The terminal will display a URL link that you can use to point your browser at the HTML.
