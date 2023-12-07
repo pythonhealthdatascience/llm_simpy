@@ -1,0 +1,27 @@
+format: jb-book
+root: notebooks/front_page
+parts:
+- caption: Aims
+  chapters:
+  - file: notebooks/00_aims/01_primary
+  - file: notebooks/00_aims/02_secondary
+- caption: Methods
+  chapters:
+  - file: notebooks/01_methods/01_methods
+  - file: notebooks/01_methods/02_case_studies
+- caption: Critical care model
+  chapters:
+  - file: notebooks/early_testing/perplexity/iteration_00
+  - file: notebooks/early_testing/perplexity/iteration_01
+  - file: notebooks/early_testing/perplexity/iteration_02
+  - file: notebooks/early_testing/perplexity/iteration_03
+  - file: notebooks/early_testing/perplexity/iteration_04
+  - file: notebooks/early_testing/perplexity/iteration_05
+  - file: notebooks/early_testing/perplexity/iteration_06
+  - file: notebooks/early_testing/perplexity/iteration_07
+  - file: notebooks/early_testing/perplexity/iteration_08
+  - file: notebooks/early_testing/perplexity/iteration_09
+  - file: notebooks/early_testing/perplexity/iteration_10
+  - file: notebooks/early_testing/perplexity/iteration_11
+  - file: notebooks/early_testing/perplexity/iteration_12
+  - file: notebooks/early_testing/perplexity/iteration_13
