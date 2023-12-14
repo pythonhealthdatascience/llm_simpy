@@ -1,11 +1,10 @@
-create two classes for the Exponential and Normal distributions
+Add a parameter to Experiment called "random_number_set" with default value 0. 
 
-The constructor of each class should accept the distribution parameters, and an random seed (default=None).  The constructor should create an instance of a numpy random Generator using the random seed.  The class should provide a function called "sample" that 
+Add a method to Experiment called "setup_streams".  The method should accept an integer parameter called "random_number_set".  "setup_streams" implements the following logic:
 
+1. creates a numpy random number Generator object using "random_number_set" as a seed. The generator is used to sample a list of 12 random integer seeds sampled from a uniform distribution with lower bound 0 and an upper bound equal to the systems maximum 64bit integer size.
+2. Loops through "seeds" and for each creates a class level instances of numpy random Generator objects passing in each seed as a parameter.
 
-Update the CCUModel class and add five instances of numpy random Generator objects. These will be used by the patient generator functions to sample the next inter-arrival time.  As these objects are created they are passed their own random seed. These are stored in the Experiment class with the default value "none".
+Add a call the "setup_streams" method in the  __init__ method.
 
-
-
-The objects should be given appropriate names and the generator and treatment functions should be updated to sample from the correct distributions.
-
+Show the full Experiment class. This should include all methods.
