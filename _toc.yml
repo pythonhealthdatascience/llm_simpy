@@ -29,3 +29,7 @@ parts:
   - file: notebooks/early_testing/perplexity/iteration_15
   - file: notebooks/early_testing/perplexity/iteration_16
   - file: notebooks/early_testing/perplexity/iteration_17
+  - file: notebooks/early_testing/perplexity/iteration_18
+  - file: notebooks/early_testing/perplexity/iteration_19
+  - file: notebooks/early_testing/perplexity/iteration_20
+  - file: notebooks/early_testing/perplexity/iteration_21
