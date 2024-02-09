@@ -8,7 +8,7 @@ Please code the full model specified. Do not return a simplified version. Show a
 
 All time units in the model are in hours.
 
-Each patient in the model has a unique identifier.  The first patient to arrive has an identifier of 0. For each subsequent patient increment the identifer by 1.
+Each patient in the model has a unique identifier.  The first patient to arrive has an identifier of 0. For each subsequent patient increment the identifier by 1.
 
 Patients to arrive at the CCU from five different sources: Accident and Emergency, the Wards, Emergency surgery, other hospitals, or the X-Ray department. Each source had a different inter-arrival time distribution.    After patients arrive they immediately leave the model.
 

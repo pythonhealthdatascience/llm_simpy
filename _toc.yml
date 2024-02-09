@@ -11,25 +11,25 @@ parts:
   - file: notebooks/01_methods/02_case_studies
 - caption: Critical care model
   chapters:
-  - file: notebooks/early_testing/perplexity/iteration_00
-  - file: notebooks/early_testing/perplexity/iteration_01
-  - file: notebooks/early_testing/perplexity/iteration_02
-  - file: notebooks/early_testing/perplexity/iteration_03
-  - file: notebooks/early_testing/perplexity/iteration_04
-  - file: notebooks/early_testing/perplexity/iteration_05
-  - file: notebooks/early_testing/perplexity/iteration_06
-  - file: notebooks/early_testing/perplexity/iteration_07
-  - file: notebooks/early_testing/perplexity/iteration_08
-  - file: notebooks/early_testing/perplexity/iteration_09
-  - file: notebooks/early_testing/perplexity/iteration_10
-  - file: notebooks/early_testing/perplexity/iteration_11
-  - file: notebooks/early_testing/perplexity/iteration_12
-  - file: notebooks/early_testing/perplexity/iteration_13
-  - file: notebooks/early_testing/perplexity/iteration_14
-  - file: notebooks/early_testing/perplexity/iteration_15
-  - file: notebooks/early_testing/perplexity/iteration_16
-  - file: notebooks/early_testing/perplexity/iteration_17
-  - file: notebooks/early_testing/perplexity/iteration_18
-  - file: notebooks/early_testing/perplexity/iteration_19
-  - file: notebooks/early_testing/perplexity/iteration_20
-  - file: notebooks/early_testing/perplexity/iteration_21
+  - file: notebooks/02_CCU/perplexity/iteration_00
+  - file: notebooks/02_CCU/perplexity/iteration_01
+  - file: notebooks/02_CCU/perplexity/iteration_02
+  - file: notebooks/02_CCU/perplexity/iteration_03
+  - file: notebooks/02_CCU/perplexity/iteration_04
+  - file: notebooks/02_CCU/perplexity/iteration_05
+  - file: notebooks/02_CCU/perplexity/iteration_06
+  - file: notebooks/02_CCU/perplexity/iteration_07
+  - file: notebooks/02_CCU/perplexity/iteration_08
+  - file: notebooks/02_CCU/perplexity/iteration_09
+  - file: notebooks/02_CCU/perplexity/iteration_10
+  - file: notebooks/02_CCU/perplexity/iteration_11
+  - file: notebooks/02_CCU/perplexity/iteration_12
+  - file: notebooks/02_CCU/perplexity/iteration_13
+  - file: notebooks/02_CCU/perplexity/iteration_14
+  - file: notebooks/02_CCU/perplexity/iteration_15
+  - file: notebooks/02_CCU/perplexity/iteration_16
+  - file: notebooks/02_CCU/perplexity/iteration_17
+  - file: notebooks/02_CCU/perplexity/iteration_18
+  - file: notebooks/02_CCU/perplexity/iteration_19
+  - file: notebooks/02_CCU/perplexity/iteration_20
+  - file: notebooks/02_CCU/perplexity/iteration_21
