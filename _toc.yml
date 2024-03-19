@@ -49,3 +49,5 @@ parts:
   - file: notebooks/03_stroke/01_perplexity/12_iteration
   - file: notebooks/03_stroke/01_perplexity/13_iteration
   - file: notebooks/03_stroke/01_perplexity/14_iteration
+  - file: notebooks/03_stroke/01_perplexity/15_iteration
+  - file: notebooks/03_stroke/01_perplexity/16_iteration
