@@ -1,7 +1,7 @@
-Create a new simpy generator function called `audit_rehab_occupancy` that accepts parameters `rehab_audit_interval`, an instance of the `RehabilitationUnit` called `rehab_unit`, and an instance `Experiment` called experiment. The function repeatedly records the occupancy of `rehab_unit` after `rehab_audit_interval` time units.  The occupancy is appended `rehab_occupancy` in the experiment class.  Do not append env.now
+Create a new simpy generator function called `audit_rehab_occupancy` that accepts parameters `env`, `rehab_audit_interval`, an instance of the `RehabilitationUnit` called `rehab_unit`, and an instance `Experiment` called experiment. The function repeatedly records the occupancy of `rehab_unit` after `rehab_audit_interval` time units.  The occupancy is appended `rehab_occupancy` in the experiment class. Do not append env.now
 
 
-Modify the `Experiment` class below.  Add a new python list member variable to `__init__` called `rehab_occupancy`
+Modify the `Experiment` class below.  Add a new python list member variable to `__init__` called `rehab_occupancy` underneath `asu_occupancy`. 
 
 ```python
 class Experiment:
@@ -40,6 +40,7 @@ class Experiment:
         self.trace = trace
         self.asu_occupancy = []  # List to store ASU occupancy data
         
+        
         # New parameters for RehabilitationUnit treatment distributions and probabilities
         self.rehab_stroke_iat = rehab_stroke_iat
         self.rehab_neuro_iat = rehab_neuro_iat
@@ -64,4 +65,4 @@ class Experiment:
 ```
 
 
-Display only the `audit_rehab_occupancy` function and modified `Experiment` class
+Display only the `audit_rehab_occupancy` function and modified `Experiment` class. Show all code in `Experiment.__init__`
