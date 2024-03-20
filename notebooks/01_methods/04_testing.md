@@ -4,12 +4,20 @@ Following each iteration of model generation a two step testing procedure was em
 
 #### Step 1: visual inspection of the code.
 
-Our initial approach was to use the Jupyter Lab IDE to visually inspect the generated model and check for obvious logical bugs, unused code or package imports, outdated Python libraries, fabricated functionality (e.g. functions that do not exist) etc.  However, during the initial model creation phase we found that visual inspection became too difficult when a modification of existing code took place. In iteration 11 of case 2, we enhanced the code inspection process by including the use of a Python library called `nbdime` that provided a highlighted difference between two versions of the same notebook. This enhancement meant that we did not miss any modification that unexpectedly removed code or modified existing code from prior iterations. Our process was therefore updated to include:
+Our initial approach was to use the Jupyter Lab IDE to visually inspect the generated model and check for obvious logical bugs, unused code or package imports, outdated Python libraries, fabricated functionality (e.g. functions that do not exist) etc.  However, during the initial model creation phase we found that visual inspection became too difficult when a modification of existing code took place. In iteration 11 of case 2, we enhanced the code inspection process by including the use of a Python library called `nbdime` that provided a highlighted difference between two versions of the same notebook. An example of a difference is illustrated in Figure 3. On the left hand side of Figure 3 we see the version of the code in the prior iteration. Modified lines are highlighted in red.  One the right hand side of Figure 3 we have the current iterations version of the model. Modified lines are highlighted in green. the function `audit_rehab_occupancy` is an entirely new function added to the code base.  This enhancement meant that we did not miss any modification that unexpectedly removed code or modified existing code from prior iterations. Our process was therefore updated to include:
 
 1. Copy the prior iteration of the notebook;
 2. Replace any existing functions, classes or scripts with new versions generated in the iteration;
 3. Add in cells to hold new functions, classes, or scripts;
 4. Generate highlighted difference between the new notebook and the prior iteration.
+
+```{figure} ../../images/diff_example.png
+---
+name: diff_fig
+---
+Example of differencing two iterations of the generated model
+```
+
 
 #### Step 2: classical verification of the simulation model. 
 
