@@ -1,6 +1,6 @@
 # Case study selection
 
-A threat to the external validity of our study is selecting a DES study where the exact or very similar model is available within the training data.  The risk being that the LLM simply outputs the training data when prompted. As we are using Python one way to reduce this risk is to select a DES study where the model has been reported to be developed in a commercial simulation package interface such as Simul8, Arena, or Excel.  These models are contained within a bespoke format and even if available are unlikely to be translatable directly to Python. 
+A threat to the external validity of our study is selecting a DES study where the exact or very similar model is available within the training data.  The risk being that the LLM simply outputs the training data when prompted. As we are using Python one way to reduce this risk is to select a DES study where the model has been reported to be developed in a commercial simulation package interface such as Simul8, Arena, or Excel.  These models are contained within a bespoke format that a LLM will not  and even if available are unlikely to be translatable directly to Python. 
 
 ## Case 1: Critical Care Unit Model
 

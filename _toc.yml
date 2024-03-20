@@ -9,6 +9,7 @@ parts:
   chapters:
   - file: notebooks/01_methods/01_methods
   - file: notebooks/01_methods/02_case_studies
+  - file: notebooks/01_methods/03_process
 - caption: Critical care model
   chapters:
   - file: notebooks/02_CCU/perplexity/iteration_00
