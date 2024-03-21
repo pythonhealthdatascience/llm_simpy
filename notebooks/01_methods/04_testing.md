@@ -18,7 +18,6 @@ name: diff_fig
 Example of differencing two iterations of the generated model
 ```
 
-
 #### Step 2: classical verification of the simulation model. 
 
 We designed and conducted a series of experiments with the model.  These included
