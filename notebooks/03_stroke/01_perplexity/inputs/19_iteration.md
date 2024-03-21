@@ -1,8 +1,12 @@
-modify `AcuteStrokeUnit` to accept and store instance of `RehabilitationUnit` as a member variable called `rehab_unit`
+modify the `AcuteStrokeUnit` constructor to accept and store instance of `RehabilitationUnit` as a member variable called `rehab_unit`
 
-modify all acute_treatment functions in `AcuteStrokeUnit` to accept `post_asu_destination` as a parameter.  Update the corresponding patient generator functions.  Rename `patient_type` in stroke_acute_treatment to `post_asu_destination`
+modify all methods in `AcuteStrokeUnit` postfixed with "acute_treatment" to accept `post_asu_destination` as a parameter. 
+Update all patient generator methods that call "acute_treatment" functions.   
+Rename `patient_type` in s`troke_acute_treatment` to `post_asu_destination`
 
-show all of the `AcuteStrokeUnit` code including all treatment and generator functions.
+
+
+show all of the `AcuteStrokeUnit` code including all treatment and generator functions.  
 
 ```python
 class AcuteStrokeUnit:
