@@ -20,7 +20,6 @@ Repeat for `prob_delay_rehab`,
 Return the result lists as numpy arrays
 
 
-
 create a function called `combine_occup_results(rep_results)` where `rep_results` is a python list where each item is a dictionary.  The function logic is as follows:
 
 Loop through `rep_results`:
@@ -34,11 +33,12 @@ Return the result lists as numpy arrays
 
 
 
-create a function called `mean_prob_delay(run_results) where run_results is a python list where each item is a dictionary.
-
-Loop through run_results, select `prob_delay_asu`, each time stacking onto a new row to a numpy 2D array
-Take the average of the columns in the numpy array. 
-Repeat for `prob_delay_rehab`
-Return the averages.
+create a function called `mean_results(rep_results)` where `rep_results` is a numpy array. The function should return the mean of the columns in rep_results.
 
 
+create a function called `summary_table(mean_pdelay, min_beds, max_beds, bed_type)`. 
+1. Slice `mean_pdelay` between `min_beds` and `max_beds`.
+2. Creates a pandas dataframe. The first column is the slice of `mean_pdelay` (2dp) the second column is 1 / the slice of `mean_pdelay` (to 2dp).  Round the 2nd column down to nearest integer.
+3. The column names are "p(delay)" and "1 in every n patients delayed".
+4. The index should start at min_beds and end at max_beds.  Its name is "No. " + `bed_type` + " beds"
+5.  Return the dataframe
