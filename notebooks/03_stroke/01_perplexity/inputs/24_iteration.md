@@ -2,20 +2,19 @@ Modify the `Experiment`  init method as follows:
 
 1. Add a new parameter called `random_number_set` with default value 0.
 2. Add a new member variable called `random_number_set` and set to the parameter of the same name
-3. Add a new member variable called `streams`: an empty list
+3. Add a call to a new method called `setup_streams(random_number_set`)
 
-1. Add a new method to `Experiment` called `setup_streams(random_number_set)` that accepts a parameter called `random_number_set`. It does not return any values
-2. The constructor method must call `setup_streams` 
-
+Add a new method to `Experiment` called `setup_streams(random_number_set)` that accepts a parameter called `random_number_set`. It does not return any values.
 `setup_streams` logic is as follows:
 
-1. create a numpy random default_rng generator object using `random_number_set` as a seed.
-2. Using the generator object create a list of 25 random integer seeds sampled from a uniform distribution with lower bound 0 and an upper bound equal to the systems maximum 64bit integer size.
-3. Loop through “seeds” and for each appends a new numpy random default_rng object to the `self.streams` passing in each seed as a parameter.  
+1. create a member variable `streams` as an empty python list
+2. create a numpy random default_rng generator object using `random_number_set` as a seed.
+3. Using the generator object create a list of 25 random integer seeds sampled from a uniform distribution with lower bound 0 and an upper bound equal to the systems maximum 64bit integer size.
+4. Loop through “seeds” and for each append a new numpy random default_rng object to `self.streams` passing in each seed as a parameter.  
 
 Use correct indentation for all methods.
 
-Show the full Experiment class. This should include all methods.
+Show the full Experiment class code and summarise code changes.
 
 ```python
 class Experiment:
