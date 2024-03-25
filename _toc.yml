@@ -11,56 +11,63 @@ parts:
   - file: notebooks/01_methods/02_case_studies
   - file: notebooks/01_methods/03_process
   - file: notebooks/01_methods/04_testing
-- caption: Critical care model
+parts: 
+- caption: Critical Care Model
   chapters:
-  - file: notebooks/02_CCU/perplexity/iteration_00
-  - file: notebooks/02_CCU/perplexity/iteration_01
-  - file: notebooks/02_CCU/perplexity/iteration_02
-  - file: notebooks/02_CCU/perplexity/iteration_03
-  - file: notebooks/02_CCU/perplexity/iteration_04
-  - file: notebooks/02_CCU/perplexity/iteration_05
-  - file: notebooks/02_CCU/perplexity/iteration_06
-  - file: notebooks/02_CCU/perplexity/iteration_07
-  - file: notebooks/02_CCU/perplexity/iteration_08
-  - file: notebooks/02_CCU/perplexity/iteration_09
-  - file: notebooks/02_CCU/perplexity/iteration_10
-  - file: notebooks/02_CCU/perplexity/iteration_11
-  - file: notebooks/02_CCU/perplexity/iteration_12
-  - file: notebooks/02_CCU/perplexity/iteration_13
-  - file: notebooks/02_CCU/perplexity/iteration_14
-  - file: notebooks/02_CCU/perplexity/iteration_15
-  - file: notebooks/02_CCU/perplexity/iteration_16
-  - file: notebooks/02_CCU/perplexity/iteration_17
-  - file: notebooks/02_CCU/perplexity/iteration_18
-  - file: notebooks/02_CCU/perplexity/iteration_19
-  - file: notebooks/02_CCU/perplexity/iteration_20
-  - file: notebooks/02_CCU/perplexity/iteration_21
+  - file: notebooks/02_CCU/01_ccu_model
+  - file: notebooks/02_CCU/02_ccu_prompts
+    sections:
+    - file: notebooks/02_CCU/perplexity/iteration_00
+    - file: notebooks/02_CCU/perplexity/iteration_01
+    - file: notebooks/02_CCU/perplexity/iteration_02
+    - file: notebooks/02_CCU/perplexity/iteration_03
+    - file: notebooks/02_CCU/perplexity/iteration_04
+    - file: notebooks/02_CCU/perplexity/iteration_05
+    - file: notebooks/02_CCU/perplexity/iteration_06
+    - file: notebooks/02_CCU/perplexity/iteration_07
+    - file: notebooks/02_CCU/perplexity/iteration_08
+    - file: notebooks/02_CCU/perplexity/iteration_09
+    - file: notebooks/02_CCU/perplexity/iteration_10
+    - file: notebooks/02_CCU/perplexity/iteration_11
+    - file: notebooks/02_CCU/perplexity/iteration_12
+    - file: notebooks/02_CCU/perplexity/iteration_13
+    - file: notebooks/02_CCU/perplexity/iteration_14
+    - file: notebooks/02_CCU/perplexity/iteration_15
+    - file: notebooks/02_CCU/perplexity/iteration_16
+    - file: notebooks/02_CCU/perplexity/iteration_17
+    - file: notebooks/02_CCU/perplexity/iteration_18
+    - file: notebooks/02_CCU/perplexity/iteration_19
+    - file: notebooks/02_CCU/perplexity/iteration_20
+    - file: notebooks/02_CCU/perplexity/iteration_21
 - caption: Stroke + Rehab model
   chapters:
-  - file: notebooks/03_stroke/01_perplexity/01_iteration
-  - file: notebooks/03_stroke/01_perplexity/02_iteration
-  - file: notebooks/03_stroke/01_perplexity/03_iteration
-  - file: notebooks/03_stroke/01_perplexity/04_iteration
-  - file: notebooks/03_stroke/01_perplexity/05_iteration
-  - file: notebooks/03_stroke/01_perplexity/06_iteration
-  - file: notebooks/03_stroke/01_perplexity/07_iteration
-  - file: notebooks/03_stroke/01_perplexity/08_iteration
-  - file: notebooks/03_stroke/01_perplexity/09_iteration
-  - file: notebooks/03_stroke/01_perplexity/10_iteration
-  - file: notebooks/03_stroke/01_perplexity/11_iteration
-  - file: notebooks/03_stroke/01_perplexity/12_iteration
-  - file: notebooks/03_stroke/01_perplexity/13_iteration
-  - file: notebooks/03_stroke/01_perplexity/14_iteration
-  - file: notebooks/03_stroke/01_perplexity/15_iteration
-  - file: notebooks/03_stroke/01_perplexity/16_iteration
-  - file: notebooks/03_stroke/01_perplexity/17_iteration
-  - file: notebooks/03_stroke/01_perplexity/18_iteration
-  - file: notebooks/03_stroke/01_perplexity/19_iteration
-  - file: notebooks/03_stroke/01_perplexity/20_iteration
-  - file: notebooks/03_stroke/01_perplexity/21_iteration
-  - file: notebooks/03_stroke/01_perplexity/22_iteration
-  - file: notebooks/03_stroke/01_perplexity/23_iteration
-  - file: notebooks/03_stroke/01_perplexity/24_iteration
-  - file: notebooks/03_stroke/01_perplexity/25_iteration
-  - file: notebooks/03_stroke/01_perplexity/26_iteration
-  - file: notebooks/03_stroke/01_perplexity/27_iteration
+  - file: notebooks/03_stroke/01_asu_rehab_model
+  - file: notebooks/03_stroke/02_asu_rehab_prompts
+    sections:
+    - file: notebooks/03_stroke/01_perplexity/01_iteration
+    - file: notebooks/03_stroke/01_perplexity/02_iteration
+    - file: notebooks/03_stroke/01_perplexity/03_iteration
+    - file: notebooks/03_stroke/01_perplexity/04_iteration
+    - file: notebooks/03_stroke/01_perplexity/05_iteration
+    - file: notebooks/03_stroke/01_perplexity/06_iteration
+    - file: notebooks/03_stroke/01_perplexity/07_iteration
+    - file: notebooks/03_stroke/01_perplexity/08_iteration
+    - file: notebooks/03_stroke/01_perplexity/09_iteration
+    - file: notebooks/03_stroke/01_perplexity/10_iteration
+    - file: notebooks/03_stroke/01_perplexity/11_iteration
+    - file: notebooks/03_stroke/01_perplexity/12_iteration
+    - file: notebooks/03_stroke/01_perplexity/13_iteration
+    - file: notebooks/03_stroke/01_perplexity/14_iteration
+    - file: notebooks/03_stroke/01_perplexity/15_iteration
+    - file: notebooks/03_stroke/01_perplexity/16_iteration
+    - file: notebooks/03_stroke/01_perplexity/17_iteration
+    - file: notebooks/03_stroke/01_perplexity/18_iteration
+    - file: notebooks/03_stroke/01_perplexity/19_iteration
+    - file: notebooks/03_stroke/01_perplexity/20_iteration
+    - file: notebooks/03_stroke/01_perplexity/21_iteration
+    - file: notebooks/03_stroke/01_perplexity/22_iteration
+    - file: notebooks/03_stroke/01_perplexity/23_iteration
+    - file: notebooks/03_stroke/01_perplexity/24_iteration
+    - file: notebooks/03_stroke/01_perplexity/25_iteration
+    - file: notebooks/03_stroke/01_perplexity/26_iteration
+    - file: notebooks/03_stroke/01_perplexity/27_iteration

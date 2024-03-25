@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 The publication of discrete-event simulation (DES) studies in healthcare has grown significantly, with over 100 studies published annually in academic journals. These studies employ DES to analyse critical aspects of healthcare delivery that impact patients internationally: spanning areas such as stroke, cancer, and dementia care. However, literature reviews have shown that 90% of these studies fail to provide access to the underlying computer simulation models used to generate their reported findings. This lack of transparency is particularly evident in older journal articles, where it is very rare to find computer model. In summary, the number of DES computer models that are accessible is a small fraction of the total number of DES models that have been developed and used in healthcare research studies. The majority of studies use commercial software, but Free and Open Source Software (FOSS) and simulation packages, such as Python's simpy, have emerged as valuable tools in promoting open publication of computer models.
 
