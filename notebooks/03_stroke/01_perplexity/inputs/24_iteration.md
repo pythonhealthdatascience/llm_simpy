@@ -1,8 +1,7 @@
 Modify the `Experiment`  init method as follows:
 
 1. Add a new parameter called `random_number_set` with default value 0.
-2. Add a new member variable called `random_number_set` and set to the parameter of the same name
-3. Add a call to a new method called `setup_streams(random_number_set`)
+2. Add a call to a new method called `setup_streams(random_number_set)`
 
 Add a new method to `Experiment` called `setup_streams(random_number_set)` that accepts a parameter called `random_number_set`. It does not return any values.
 `setup_streams` logic is as follows:
