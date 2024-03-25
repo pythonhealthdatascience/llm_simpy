@@ -1,6 +1,17 @@
-"""
-A python/simpy recreation of Monks et al. A modelling tool 
-for capacity planning in acute and community stroke services
+"""A SimPy-based simulation model for analyzing patient flow in stroke care units.
+
+This module simulates the patient flow through an Acute Stroke Unit (ASU) and a connected
+Rehabilitation Unit to assist in capacity planning for acute and community stroke services.
+It models patient arrivals, treatment durations, and transitions between units using
+statistical distributions to provide insights into occupancy levels and potential delays.
+
+Authors: LLM implemented by Perplexity.AI
+Auto-formatted with `black` for PEP8 compliance.
+
+Based on:
+---------
+Monks et al. A modelling tool for capacity planning in acute 
+and community stroke services
 https://link.springer.com/article/10.1186/s12913-016-1789-4
 
 All functions and classes included in this module have been 
@@ -11,6 +22,18 @@ Auto-formatting:
 ----------------
 After generation was complete We used `black` to autoformat the code
 to PEP8 standards
+
+Docstrings:
+-----------
+After auto-formatting the file was uploaded to Perplexity.AI and the 
+following query was issued: 
+
+'Write PEP257 compliant docstrings for all functions, classes and methods.  
+Provide a brief description of the purpose of the code, document parameters, 
+and return values'
+
+All returned docstrings have been incorporated. This includes the initial
+part of the module level docstring above.
 """
 
 import simpy
@@ -21,6 +44,17 @@ import matplotlib.pyplot as plt
 
 # External function to convert Lognormal moments to Normal moments
 def normal_moments_from_lognormal(mean, std_dev):
+    """Convert lognormal distribution moments to normal distribution moments.
+
+    Parameters:
+    - mean (float): The mean of the lognormal distribution.
+    - std_dev (float): The standard deviation of the lognormal distribution.
+
+    Returns:
+    - tuple: A tuple containing the mean (mu) and standard deviation (sigma) of the
+             corresponding normal distribution.
+    """
+
     phi = np.sqrt(std_dev**2 + mean**2)
     mu = np.log(mean**2 / np.sqrt(std_dev**2 + mean**2))
     sigma = np.sqrt(np.log(phi**2 / mean**2))
@@ -28,6 +62,20 @@ def normal_moments_from_lognormal(mean, std_dev):
 
 
 class Experiment:
+    """A class to set up and run the simulation experiment for stroke patient flow.
+
+    This class initializes the simulation parameters, including patient arrival rates,
+    treatment durations, and post-treatment destinations. It also sets up the simulation
+    environment and runs the simulation to collect occupancy data for analysis.
+
+    Attributes:
+    - Various parameters for initializing the simulation (see __init__ method).
+
+    Methods:
+    - reset_kpi: Clears the occupancy data lists.
+    - setup_streams: Initializes random number streams for the simulation.
+    """
+
     def __init__(
         self,
         stroke_mean=1.2,
@@ -114,12 +162,16 @@ class Experiment:
         self.setup_streams(random_number_set)
 
     def reset_kpi(self):
-        """Reset the occupancy lists to empty."""
+        """Reset the key performance indicators (occupancy lists) to empty."""
         self.asu_occupancy.clear()
         self.rehab_occupancy.clear()
 
     def setup_streams(self, random_number_set):
-        """Setup random number streams based on the provided seed."""
+        """Setup random number streams based on the provided seed.
+
+        Parameters:
+        - random_number_set (int): The seed for generating random number streams.
+        """
         # Create an empty list to store random number generator objects
         self.streams = []
 
@@ -140,7 +192,29 @@ class Experiment:
 
 
 class AcuteStrokeUnit:
+    """A class representing the Acute Stroke Unit in the simulation.
+
+    This class models the arrival and acute treatment of stroke patients, tracking occupancy
+    and simulating the duration of stay based on treatment type.
+
+    Attributes:
+    - env (simpy.Environment): The simulation environment.
+    - experiment (Experiment): The experiment configuration.
+    - rehab_unit (RehabilitationUnit): The connected Rehabilitation Unit.
+
+    Methods:
+    - stroke_acute_treatment, tia_acute_treatment, etc.: Simulate the treatment process.
+    - stroke_patient_generator, tia_patient_generator, etc.: Generate patients over time.
+    """
+
     def __init__(self, env, experiment, rehab_unit):
+        """Initialize the Acute Stroke Unit with the simulation environment and parameters.
+
+        Parameters:
+        - env (simpy.Environment): The simulation environment.
+        - experiment (Experiment): The experiment configuration.
+        - rehab_unit (RehabilitationUnit): The connected Rehabilitation Unit.
+        """
         self.env = env
         self.experiment = experiment
         self.rehab_unit = rehab_unit
@@ -148,6 +222,13 @@ class AcuteStrokeUnit:
         self.occupancy = 0
 
     def stroke_acute_treatment(self, post_asu_destination):
+        """Simulate the acute treatment process for a stroke patient.
+
+        Parameters:
+        - post_asu_destination (str): The destination of the patient after ASU treatment.
+
+        The method simulates the treatment duration and updates occupancy accordingly.
+        """
         if post_asu_destination == "Rehab":
             mu, sigma = normal_moments_from_lognormal(
                 self.experiment.rehab_mean, self.experiment.rehab_std_dev
@@ -292,6 +373,14 @@ class AcuteStrokeUnit:
 
 
 class RehabilitationUnit:
+    """A class representing the Rehabilitation Unit in the simulation.
+
+    This class models the rehabilitation treatment of patients, tracking occupancy and
+    simulating the duration of stay based on post-rehabilitation destinations.
+
+    Attributes and methods are similar in purpose to those of the AcuteStrokeUnit class.
+    """
+
     def __init__(self, env, experiment):
         self.env = env
         self.experiment = experiment
@@ -427,6 +516,15 @@ class RehabilitationUnit:
 
 
 def audit_acute_occupancy(env, first_interval, audit_interval, asu, experiment):
+    """Record the occupancy of the Acute Stroke Unit at regular intervals.
+
+    Parameters:
+    - env (simpy.Environment): The simulation environment.
+    - first_interval (int): The initial delay before starting the audit.
+    - audit_interval (int): The interval between occupancy recordings.
+    - asu (AcuteStrokeUnit): The Acute Stroke Unit being audited.
+    - experiment (Experiment): The experiment configuration.
+    """
     yield env.timeout(first_interval)
     while True:
         experiment.asu_occupancy.append(asu.occupancy)
@@ -434,6 +532,7 @@ def audit_acute_occupancy(env, first_interval, audit_interval, asu, experiment):
 
 
 def audit_rehab_occupancy(env, first_interval, audit_interval, rehab_unit, experiment):
+    """Record the occupancy of the Rehabilitation Unit at regular intervals."""
     yield env.timeout(first_interval)
     while True:
         experiment.rehab_occupancy.append(rehab_unit.occupancy)
@@ -450,6 +549,17 @@ def calculate_occupancy_frequencies(data):
 def occupancy_plot(
     relative_frequency, unique_values, x_label="No. people in ASU", fig_size=(12, 5)
 ):
+    """Generate a plot of the occupancy relative frequency distribution.
+
+    Parameters:
+    - relative_frequency (numpy.ndarray): The relative frequencies of occupancy levels.
+    - unique_values (numpy.ndarray): The unique occupancy levels observed.
+    - x_label (str): The label for the x-axis.
+    - fig_size (tuple): The size of the figure.
+
+    Returns:
+    - matplotlib.figure.Figure, matplotlib.axes.Axes: The figure and axes of the plot.
+    """
     fig, ax = plt.subplots(figsize=fig_size)
     ax.bar(unique_values, relative_frequency, align="center", alpha=0.7)
     ax.set_xticks(np.arange(0, 31, 1))
@@ -481,6 +591,15 @@ def prob_delay_plot(
 
 
 def single_run(experiment):
+    """Run a single simulation with the provided experiment configuration.
+
+    Parameters:
+    - experiment (Experiment): The experiment configuration.
+
+    Returns:
+    - dict: A dictionary containing the occupancy frequencies and
+    probability of delay for both the Acute Stroke Unit and the Rehabilitation Unit.
+    """
     experiment.reset_kpi()
 
     env = simpy.Environment()
@@ -538,6 +657,18 @@ def single_run(experiment):
 
 
 def multiple_replications(experiment_instance, num_replications=5):
+    """Run multiple simulations with the provided experiment configuration
+    and number of replications.
+
+    Parameters:
+    - experiment (Experiment): The experiment configuration.
+    - num_replications (int): The number of simulations to run.
+
+    Returns:
+    - list: A list of dictionaries, each containing the occupancy
+    frequencies and probability of delay for both the Acute Stroke Unit
+    and the Rehabilitation Unit from a single simulation run.
+    """
     rep_results = []
     for replication_number in range(num_replications):
         experiment_instance.setup_streams(replication_number)
@@ -547,6 +678,13 @@ def multiple_replications(experiment_instance, num_replications=5):
 
 
 def combine_pdelay_results(rep_results):
+    """Combine the probability of delay results from multiple simulation runs.
+
+    Parameters:
+    - results (list): A list of dictionaries, each containing the occupancy
+    frequencies and probability of delay for both the Acute Stroke Unit and
+    the Rehabilitation Unit from a single simulation run.
+    """
     result_list_asu = []
     result_list_rehab = []
 
@@ -581,6 +719,13 @@ def combine_pdelay_results(rep_results):
 
 
 def combine_occup_results(rep_results):
+    """Combine the occupancy frequency results from multiple simulation runs.
+
+    Parameters:
+    - results (list): A list of dictionaries, each containing the occupancy
+    frequencies and probability of delay for both the Acute Stroke Unit
+    and the Rehabilitation Unit from a single simulation run.
+    """
     result_list_asu = []
     result_list_rehab = []
 
@@ -611,7 +756,16 @@ def mean_results(rep_results):
 
 
 def summary_table(mean_pdelay, min_beds, max_beds, bed_type):
-    sliced_mean_pdelay = mean_pdelay[min_beds:max_beds + 1]
+    """Generate a summary table of the occupancy frequencies
+    and probability of delay results.
+
+    Parameters:
+    - results (dict): The combined occupancy frequency and
+    probability of delay results for both the Acute Stroke Unit
+    and the Rehabilitation Unit.
+
+    """
+    sliced_mean_pdelay = mean_pdelay[min_beds : max_beds + 1]
     inv_mean_pdelay = 1 / sliced_mean_pdelay
     inv_mean_pdelay_rounded = np.floor(inv_mean_pdelay).astype(int)
 
