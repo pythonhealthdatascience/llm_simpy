@@ -60,3 +60,7 @@ parts:
   - file: notebooks/03_stroke/01_perplexity/21_iteration
   - file: notebooks/03_stroke/01_perplexity/22_iteration
   - file: notebooks/03_stroke/01_perplexity/23_iteration
+  - file: notebooks/03_stroke/01_perplexity/24_iteration
+  - file: notebooks/03_stroke/01_perplexity/25_iteration
+  - file: notebooks/03_stroke/01_perplexity/26_iteration
+  - file: notebooks/03_stroke/01_perplexity/27_iteration
