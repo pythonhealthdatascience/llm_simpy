@@ -1,6 +1,6 @@
-modify the `RehabilitationUnit` class
+modify the patient_generator functions in  `RehabilitationUnit` class. Do not modify the rehab_treatment functions.
 
-code that uses numpy.random should be replaced. Call a unique stream in the `Experiment` list `streams`. Select the stream using a hard coded integer. Start from 14 and increment by 1 each time to allocate a unique number to each stream.  E.g. `stroke_patient_generator` uses 1 stream: 0.  Do not add new parameters to any methods.
+code that uses `numpy.random` should be replaced. Call a unique stream in the `Experiment` list `streams`. Select the stream using a hard coded integer. Start from 14 and increment by 1 each time to allocate a unique number to each stream.  E.g. `stroke_patient_generator` uses 1 stream: 14.  Do not add new parameters to any methods.
 
 Show the full RehabilitationUnit including all patient generator and treatment functions.
 

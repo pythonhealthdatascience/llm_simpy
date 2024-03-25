@@ -1,4 +1,4 @@
-modify the acute_treatment functions in `AcuteStrokeUnit` class
+modify the acute_treatment functions in `AcuteStrokeUnit` class. Do not modify the acute_treatment functions.
 
 code that uses `numpy.random`, must be replaced with a call to a unique stream in the `Experiment` list `streams`. Select the stream using a hard coded integer. Start from zero and increment by 1 each time to allocate a unique number to each stream.  E.g. in `stroke_acute_treatment` the first instance of `length_of_stay = np.random.lognormal(mean=mu, sigma=sigma)` becomes `length_of_stay = self.experiment.streams[0](mean=mu, sigma=sigma)`; the second instance uses index 1 and the third uses index 2.  Do not add new parameters to any methods. Do not modify the patient_generator functions at all.
 
