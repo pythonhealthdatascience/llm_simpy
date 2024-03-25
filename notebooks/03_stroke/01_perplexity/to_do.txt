@@ -1,14 +1,5 @@
 To do
 
-1. multiple replications
-    a. add reset_kpi method to Experiment that clears the occupancy lists
-    b. convert scripts to single_run method
-    c. multiple replication function
-    d. summarise the results: convert to numpy array where each column is a rep and each row is number of patients in unit.  Average across columns. 
-
-
-2. Common random numbers
-
-Add in numpy.random.Generator functions to the Experiment class
+1. streamlit user interface.
 
 
