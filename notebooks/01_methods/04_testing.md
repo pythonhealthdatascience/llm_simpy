@@ -42,10 +42,11 @@ After the completion of a model we stored all generated code in a dedicated pyth
 The final step in testing was conducted by the second modeller. The modeller was provided with
 
 1. The journal articles describing the two simulation models.
-2. The python module(s) containing all model code for the two case studies.
-3. The set of automated and manual tests.
-4. Jupyter notebooks that contained a (human created) python script for running the models/user interfaces and detailed usage instructions.
-5. All prompts (in sequence) used to generate code and all Jupyter notebooks containing the iterations of the model/testing.
+2. The python environment containing all software used to run the models
+3. The python module(s) containing all model code for the two case studies.
+4. The set of automated and manual tests.
+5. Jupyter notebooks that contained a (human created) python script for running the models/user interfaces and detailed usage instructions.
+6. All prompts (in sequence) used to generate code and all Jupyter notebooks containing the iterations of the model/testing.
    
 The second modeller reviewed all of this information and attempted to run the models and tests. We used this phase to identify:
 
