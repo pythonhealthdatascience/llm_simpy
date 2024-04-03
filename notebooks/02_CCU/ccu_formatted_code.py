@@ -227,10 +227,6 @@ class CCUModel:
     def warmup_complete(self):
         yield self.env.timeout(self.experiment.warm_up_period)
         self.patient_count = 0
-        self.experiment.total_treatment_time = 0
-        self.experiment.cancelled_elective_count = 0
-        self.experiment.mean_waiting_time_unplanned = 0
-        self.experiment.total_unplanned_admissions = 0
         if self.experiment.trace:
             print("Warm-up complete")
 
