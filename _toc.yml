@@ -14,6 +14,8 @@ parts:
     - caption: Critical Care Model
       chapters:
       - file: notebooks/02_CCU/01_ccu_model
+      - file: notebooks/02_CCU/02_auto_testing
+      - file: notebooks/02_CCU/03_manual_testing
       - file: notebooks/02_CCU/02_ccu_prompts
         sections:
         - file: notebooks/02_CCU/01_perplexity/00_iteration
@@ -38,7 +40,6 @@ parts:
         - file: notebooks/02_CCU/01_perplexity/19_iteration
         - file: notebooks/02_CCU/01_perplexity/20_iteration
         - file: notebooks/02_CCU/01_perplexity/21_iteration
-        - file: notebooks/02_CCU/01_perplexity/22_iteration
     - caption: Stroke + Rehab model
       chapters:
       - file: notebooks/03_stroke/01_asu_rehab_model
