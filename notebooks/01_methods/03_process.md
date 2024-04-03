@@ -1,6 +1,4 @@
-# Procedure
-
-## Overview
+# Procedure overview
 
 Our experimental procedure followed three phases: an *initial recreation phase*, a *replication phase*, a *comparison phase*. All phases used and added to a *prompt database*. Figure 2 illustrates the genreal sequence of activities followed in the experiment.  
 
