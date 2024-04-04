@@ -54,30 +54,35 @@ if __name__ == '__main__':
 ```
 
 
-## Code organisation, standards, and best practice
+## Recreation plan and best practice code organisation
 
-To optimise organisation and usability of the `simpy` simulation model we adopted the approach of {cite:p}`monks2023improving`. 
+The number of modelling iterations needed to recreate the models was not known in advance. Instead we read the articles reporting the model designs and constructed a general plan that ordered and batched iterations into 11 aims of model recreation. {numref}`table-model-building` details the ordered aims of the model recreation process along with a description and examples of changes to the model that could be expected.  Our aims took us from modelling of arrivals of patients and patient classes (e.g. types of stroke, or unplanned emergencies versus elective patients) through to user interface allowing for basic experimentation.  We believe this mirrors how recreation of a DES model would take place regardless of it an LLM was used. 
 
-1. A model logic is separated from parameters using an `Experiment` class.
-2. 
+To optimise organisation and usability of the `simpy` simulation model we adopted the approach of {cite:p}`monks2023improving` in aims 3, 8 and 11.  The result is that model logic is separated from parameters using an `Experiment` class (used to setup "what-if" experiments).  The `Experiment` class is used in combination with a multiple replications wrapper function to generate results.  This simple organisation enables quick integration with Python web app frameworks such as `streamlit` to make models usable by a wider group of people.
+
+We note that case study 1 was implemented in VBA and, given the limitations of the technology and the model reporting it is unclear if common random number streams were implemented (i.e. each random statistical distribution used for sampling has its own unique controllable pseudo random number stream).  We aimed to manage all random sampling through the `numpy` package. We followed an approach where the replication number was used to select a random number set. The random number set was used as a random seed to generate a vector of size n (where n is the number of streams needed) that contained n random seeds for each stream.  Seeds were selected with uniform probability between 0 and the maximum 64 bit integer (9223372036854775807).
+
 
 ## General approach to model building
 
+
+```{table} Ordered aims of the model recreation process
+:name: table-model-building
 | **Aim** | **Description**                               | **Example additions to model**                                                                                |
 |---------|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------|
 | 1       | Arrival processes and logic                   | Single and multiple classes of patients                                                                       |
 | 2       | Initial queuing logic and activities (delays) | Reneging, patient class dependent length of stay in a ward                                                    |
-| 3       | Separation of parameters from model logic     | A configurable Experiment class to hold all model parameters                                                  |
+| 3       | Separation of parameters from model logic     | A configurable Experiment class to hold all model parameters. See {cite}`monks2023improving`                  |
 | 4       | Simulated trace control                       | Functionality to hide and display simulated events                                                            |
 | 4       | Patient routing                               | Sampling to determine post ward destinations and activities                                                   |
 | 5       | Additional queuing and activities             | Additional treatment in a different hospital/ward                                                             |
 | 6       | Results collection                            | Audit and calculate ward occupancy, bed utilisation, waiting times etc.                                       |
 | 7       | Warm-up period                                | Split the model run length into warm-up and results collection, reset all KPIs, introduce auditing processes. |
-| 8       | Multiple replications                         | Multiple unique runs of the model                                                                             |
+| 8       | Multiple replications                         | Multiple unique runs of the model. See {cite}`monks2023improving`                                             |
 | 9       | Output analysis procedures                    | Charts and summary tables                                                                                     |
 | 10      | Common random numbers                         | Allocate unique random number stream to each distribution                                                     |
-| 11      | User interface                                | A web browser based interface for the model.                                                                  |
-
+| 11      | User interface                                | A web browser based interface for the model. See {cite}`monks2023improving`                                   |
+```
 
 
 ## References
