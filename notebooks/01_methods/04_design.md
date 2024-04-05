@@ -58,11 +58,6 @@ if __name__ == '__main__':
 
 The number of modelling iterations needed to recreate the models was not known in advance. Instead we read the articles reporting the model designs and constructed a general plan that ordered and batched iterations into 11 aims of model recreation. {numref}`table-model-building` details the ordered aims of the model recreation process along with a description and examples of changes to the model that could be expected.  Our aims took us from modelling of arrivals of patients and patient classes (e.g. types of stroke, or unplanned emergencies versus elective patients) through to user interface allowing for basic experimentation.  We believe this mirrors how recreation of a DES model would take place regardless of it an LLM was used. 
 
-To optimise organisation and usability of the `simpy` simulation model we adopted the approach of {cite:p}`monks2023improving` in aims 3, 8 and 11.  The result is that model logic is separated from parameters using an `Experiment` class (used to setup "what-if" experiments).  The `Experiment` class is used in combination with a multiple replications wrapper function to generate results.  This simple organisation enables quick integration with Python web app frameworks such as `streamlit` to make models usable by a wider group of people.
-
-We note that case study 1 was implemented in VBA and, given the limitations of the technology and the model reporting it is unclear if common random number streams were implemented (i.e. each random statistical distribution used for sampling has its own unique controllable pseudo random number stream).  We aimed to manage all random sampling through the `numpy` package. We followed an approach where the replication number was used to select a random number set. The random number set was used as a random seed to generate a vector of size n (where n is the number of streams needed) that contained n random seeds for each stream.  Seeds were selected with uniform probability between 0 and the maximum 64 bit integer (9223372036854775807).
-
-
 ## General approach to model building
 
 
@@ -83,6 +78,11 @@ We note that case study 1 was implemented in VBA and, given the limitations of t
 | 10      | Common random numbers                         | Allocate unique random number stream to each distribution                                                     |
 | 11      | User interface                                | A web browser based interface for the model. See {cite}`monks2023improving`                                   |
 ```
+To optimise organisation and usability of the `simpy` simulation model we adopted the approach of {cite:p}`monks2023improving` in aims 3, 8 and 11.  The result is that model logic is separated from parameters using an `Experiment` class (used to setup "what-if" experiments).  The `Experiment` class is used in combination with a multiple replications wrapper function to generate results.  This simple organisation enables quick integration with Python web app frameworks such as `streamlit` to make models usable by a wider group of people.
+
+To enable both repeatable replications and variance reduction between experiments, we chose to implement common random number (CRN) streams in our models; i.e. each random statistical distribution used for sampling has its own unique controllable pseudo random number stream {cite:p}`Davies2007`.  This is inline with case study 2 that used Simul8 that implements CRN. However, we note that case study 1 was implemented in VBA and it is unclear if CRN streams were implemented by the authors. We aimed to manage all random sampling through the `numpy.random` module and the PCG-64 pseudo-random number generator. For the pilot we followed a simple approach where the replication number was used to spawn $n$ independent random number streams.
+
+Python code should follow coding standards such as PEP8 and PEP257.  For the pilot we chose to relax these standards to reduce the number of lines the LLMs had to generate (in terms of line wrapping and documentation). After all iterations were completed we used the tool `black` to autoformat the code to meet PEP8 standards.
 
 
 ## References
