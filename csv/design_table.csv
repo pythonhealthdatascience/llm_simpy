@@ -1,0 +1,13 @@
+Aim,Description,Example additions to model
+1,Arrival processes and logic,Single and multiple classes of patients
+2,Initial queuing logic and activities (delays),"Reneging, patient class dependent length of stay in a ward"
+3,Separation of parameters from model logic,A configurable Experiment class to hold all model parameters. See Monks and Harper (2023)
+4,Simulated trace control,Functionality to hide and display simulated events 
+4,Patient routing ,Sampling to determine post ward destinations and activities
+5,Additional queuing and activities,Additional treatment in a different hospital/ward
+6,Results collection,"Audit and calculate ward occupancy, bed utilisation, waiting times etc."
+7,Warm-up period,"Split the model run length into warm-up and results collection, reset all KPIs, introduce auditing processes."
+8,Multiple replications,Multiple unique runs of the model. See Monks and Harper (2023)
+9,Output analysis procedures,Charts and summary tables
+10,Common random numbers,Allocate unique random number stream to each distribution
+11,User interface,A web browser based interface for the model.

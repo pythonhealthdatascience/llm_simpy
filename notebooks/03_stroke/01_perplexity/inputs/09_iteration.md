@@ -1,0 +1,6 @@
+create a function in python called `calculate_occupancy_frequencies` that accepts a python list of integer values. The function should use numpy to calculate the relative and cumulative frequencies of the numbers. The function should return a tuple containing the relative frequency, cumulative frequency, and the unique values.  
+
+The relative frequency, unique values, a string called "x_label" (default value = "No. people in ASU"), and figure size (default = (12, 5)) should be passed to a function called `occupancy_plot` that creates a matplotlib bar chart of the relative frequency.  the x axis values are taken from the unique values parameter. The x axis ticks should run from 0 to 30 and all values should be displayed.  the x axis is label is set to the value of "x_label" The function `occupancy_plot` returns the matplotlib figure and axis objects to the calling code.  
+
+The output should display the full script for creating a default `Experiment` and running the simulation model. Modify the script as follows: After the simulation model experiment is complete the code should call `calculate_occupancy_frequencies` and pass the "asu_occupancy" list as a parameter.  The code should then use `occupancy_plot` and show the returned plot.
+

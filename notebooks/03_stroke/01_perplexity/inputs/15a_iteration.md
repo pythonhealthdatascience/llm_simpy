@@ -1,0 +1,1 @@
+Display only the `RehabilitationUnit` class code

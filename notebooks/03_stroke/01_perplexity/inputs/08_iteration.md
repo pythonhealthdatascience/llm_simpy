@@ -1,0 +1,3 @@
+Create a new simpy generator function called `audit_acute_occupancy` that accepts parameters `acute_audit_interval`, an instance of the `AcuteStrokeUnit` called `asu`, and an instance `Experiment` called `experiment`.   The function repeatedly records the occupancy of `asu` after `acute_audit_interval` time units.  The occupancy is appended to a member variable `experiment` python list called `asu_occupancy` 
+
+Output the `audit_acute_occupancy` function, modified `Experiment` class, and script to run the model and `audit_acute_occupancy`.  `acute_audit_interval` should be set to 1 day.

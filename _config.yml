@@ -30,3 +30,17 @@ launch_buttons:
   #colab_url: "https://colab.research.google.com"
   notebook_interface: "jupyterlab"
   thebe: true
+
+# citations
+# In _config.yml
+bibtex_bibfiles:
+   - _bibliography/references.bib
+   
+# latex:
+#   latex_engine                : "xelatex"
+#   latex_documents:
+#     targetname: book.tex
+
+sphinx:
+  config:
+    bibtex_reference_style: author_year
