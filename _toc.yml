@@ -78,3 +78,6 @@ parts:
         - file: notebooks/03_stroke/01_perplexity/25_iteration
         - file: notebooks/03_stroke/01_perplexity/26_iteration
         - file: notebooks/03_stroke/01_perplexity/27_iteration
+    - caption: Discussion
+      chapters:
+      - file: notebooks/04_discussion/01_license
