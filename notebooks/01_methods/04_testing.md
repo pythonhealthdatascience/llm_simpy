@@ -4,7 +4,7 @@ Following each iteration of model generation a four step testing procedure was e
 
 ## Step 1: visual inspection of the code.
 
-Our initial approach was to use the Jupyter Lab IDE to visually inspect the generated model and check for obvious logical bugs, unused code or package imports, outdated Python libraries, fabricated functionality (e.g. functions that do not exist) etc.  However, during the initial model creation phase we found that visual inspection became too difficult when a modification of existing code took place. In iteration 11 of case 2, we enhanced the code inspection process by including the use of a Python library called [`nbdime`](https://nbdime.readthedocs.io/en/latest/) that provided a highlighted difference between two versions of the same notebook. An example of a difference is illustrated in Figure 3. On the left hand side of Figure 3 we see the version of the code in the prior iteration. Modified lines are highlighted in red.  One the right hand side of Figure 3 we have the current iterations version of the model. Modified lines are highlighted in green. the function `audit_rehab_occupancy` is an entirely new function added to the code base.  This enhancement meant that we did not miss any modification that unexpectedly removed code or modified existing code from prior iterations. Our process was therefore updated to include:
+Our initial approach was to use the Jupyter Lab IDE to visually inspect the generated model and check for obvious logical bugs, unused code or package imports, outdated Python libraries, fabricated functionality (e.g. functions that do not exist) etc.  However, during the initial model creation phase we found that visual inspection became too difficult when a modification of existing code took place. In iteration 11 of case 2, we enhanced the code inspection process by including the use of a Python library called [`nbdime`](https://nbdime.readthedocs.io/en/latest/) that provided a highlighted difference between two versions of the same notebook. An example of a difference is illustrated in Figure 3. On the left hand side of Figure 3 we see the version of the code in the prior iteration. Modified lines are highlighted in red.  On the right hand side of Figure 3 we have the current iteration's version of the model. Modified lines are highlighted in green. the function `audit_rehab_occupancy` is an entirely new function added to the code base.  This enhancement meant that we did not miss any modification that unexpectedly removed code or modified existing code from prior iterations. Our process was therefore updated to include:
 
 1. Copy the prior iteration of the notebook;
 2. Replace any existing functions, classes or scripts with new versions generated in the iteration;
@@ -30,22 +30,22 @@ We designed and conducted a series of experiments with the model.  These include
 6. Visual inspection of charts or plots produced.
 7. Inspection of summary statistics of performance measures.
 
-In each iteration of the model we reran prior model testing and if required added new tests.
+In each iteration of the model we re-ran prior model testing and if required added new tests.
 
 
 ## Step 3: Creation of automated and manual tests
 
-After the completion of a model we stored all generated code in a dedicated python module. We then refactored tests created in step 2 into two sets of tests that were easy to run and included with the full models.  These were split into automated and manual tests.  The automated tests worked with the python package `pytest`. These tests have simple quantitative pass/fail criteria. The `pytest` software automatically detects and runs all automated tests and reports successes and failures to a user.  The manual tests involve visual inspect (e.g. inspecting the simulated trace, and charts).  
+After the completion of a model we stored all generated code in a dedicated Python module. We then refactored tests created in step 2 into two sets of tests that were easy to run and included with the full models.  These were split into automated and manual tests.  The automated tests worked with the python package `pytest`. These tests have simple quantitative pass/fail criteria. The `pytest` software automatically detects and runs all automated tests and reports successes and failures to a user.  The manual tests involve visual inspect (e.g. inspecting the simulated trace, and charts).  
 
 ## Step 4: Testing by a second modeller
 
 The final step in testing was conducted by the second modeller. The modeller was provided with
 
 1. The journal articles describing the two simulation models.
-2. The python environment containing all software used to run the models
-3. The python module(s) containing all model code for the two case studies.
+2. The Python environment containing all software used to run the models.
+3. The Python module(s) containing all model code for the two case studies.
 4. The set of automated and manual tests.
-5. Jupyter notebooks that contained a (human created) python script for running the models/user interfaces and detailed usage instructions.
+5. Jupyter notebooks that contained a (human created) Python script for running the models/user interfaces and detailed usage instructions.
 6. All prompts (in sequence) used to generate code and all Jupyter notebooks containing the iterations of the model/testing.
    
 The second modeller reviewed all of this information and attempted to run the models and tests. We used this phase to identify:
@@ -53,7 +53,7 @@ The second modeller reviewed all of this information and attempted to run the mo
 * Missed errors in the model recreation (either by LLM or user).
 * Typos/mistakes/copy paste errors in iteration notebooks.
 * Additional formal testing that should be conducted.
-* Improvements that were needed in model documentation.
+* Improvements that were needed in model documentatPon.
 
 The outcome of these step would then be fixed/implemented before proceeding to phase 2 in our experimental procedure.
 
