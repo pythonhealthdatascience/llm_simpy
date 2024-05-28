@@ -29,7 +29,7 @@ conda activate gen_simpy
 
 ## Building the Juypter Book
 
-Once in the `gen_simpy` environment, navigate to the top level directory of the code repository in your terminal and issue the following command:
+One in the `gen_simpy` environment navigate to the top level directory of the code repository in your terminal and issue the following command:
 
 ```
 jb build .
