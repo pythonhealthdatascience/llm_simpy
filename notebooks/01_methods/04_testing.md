@@ -53,7 +53,7 @@ The second modeller reviewed all of this information and attempted to run the mo
 * Missed errors in the model recreation (either by LLM or user).
 * Typos/mistakes/copy paste errors in iteration notebooks.
 * Additional formal testing that should be conducted.
-* Improvements that were needed in model documentatPon.
+* Improvements that were needed in model documentation.
 
 The outcome of these step would then be fixed/implemented before proceeding to phase 2 in our experimental procedure.
 
