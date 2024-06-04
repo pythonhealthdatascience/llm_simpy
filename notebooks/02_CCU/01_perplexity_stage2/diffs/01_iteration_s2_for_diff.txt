@@ -1,0 +1,117 @@
+## replaced /cells/27/id:
+-  0fc89358-c710-4a7c-afc3-0edd6a6dd280
++  52bac40f-a6da-4e18-a7ff-b4c9ea0ac383
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 01_iteration_s2.ipynb diffs/01_iteration_s2_for_diff.ipynb 
+nbdiff 01_iteration_s2.ipynb diffs/01_iteration_s2_for_diff.ipynb
+--- 01_iteration_s2.ipynb  2024-05-30 16:49:43.523839
++++ diffs/01_iteration_s2_for_diff.ipynb  2024-06-04 19:08:39.369648
+## modified /cells/21/source:
+@@ -7,6 +7,7 @@ class CCU:
+         self.env = env
+         self.run_length = run_length
+         self.patient_id_counter = 0
++        self.cancelled_operations = 0
+ 
+         # Set up random number generators for each patient type
+         self.rng_accident_emergency = np.random.default_rng(seed=42)
+@@ -14,6 +15,7 @@ class CCU:
+         self.rng_emergency_surgery = np.random.default_rng(seed=44)
+         self.rng_other_hospitals = np.random.default_rng(seed=45)
+         self.rng_xray_department = np.random.default_rng(seed=46)
++        self.rng_elective_surgery = np.random.default_rng(seed=47)
+ 
+         # Set up critical care bed resource
+         self.critical_care_beds = simpy.Resource(env, capacity=24)
+@@ -41,6 +43,7 @@ class CCU:
+         while True:
+             patient_id = self.patient_id_counter
+             self.patient_id_counter += 1
++            print(f"Patient {patient_id} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.rng_accident_emergency.exponential(22.72))
+             self.env.process(self.unplanned_admissions_process(patient_id, "Accident and Emergency"))
+ 
+@@ -48,6 +51,7 @@ class CCU:
+         while True:
+             patient_id = self.patient_id_counter
+             self.patient_id_counter += 1
++            print(f"Patient {patient_id} arrived from the Wards at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.rng_wards.exponential(26.0))
+             self.env.process(self.unplanned_admissions_process(patient_id, "Wards"))
+ 
+@@ -55,6 +59,7 @@ class CCU:
+         while True:
+             patient_id = self.patient_id_counter
+             self.patient_id_counter += 1
++            print(f"Patient {patient_id} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.rng_emergency_surgery.exponential(37.0))
+             self.env.process(self.unplanned_admissions_process(patient_id, "Emergency Surgery"))
+ 
+@@ -62,6 +67,7 @@ class CCU:
+         while True:
+             patient_id = self.patient_id_counter
+             self.patient_id_counter += 1
++            print(f"Patient {patient_id} arrived from Other Hospitals at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.rng_other_hospitals.exponential(47.2))
+             self.env.process(self.unplanned_admissions_process(patient_id, "Other Hospitals"))
+ 
+@@ -69,9 +75,18 @@ class CCU:
+         while True:
+             patient_id = self.patient_id_counter
+             self.patient_id_counter += 1
++            print(f"Patient {patient_id} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.rng_xray_department.exponential(575.0))
+             self.env.process(self.unplanned_admissions_process(patient_id, "X-Ray Department"))
+ 
++    def elective_surgery_arrivals(self):
++        while True:
++            patient_id = self.patient_id_counter
++            self.patient_id_counter += 1
++            print(f"Elective Patient {patient_id} arrived at {self.env.now:.2f} hours")
++            yield self.env.timeout(self.rng_elective_surgery.normal(17.91, 3.16))
++            self.env.process(self.elective_admissions_process(patient_id))
++
+     def unplanned_admissions_process(self, patient_id, source):
+         print(f"Patient {patient_id} from {source} requests a critical care bed at {self.env.now:.2f} hours")
+         with self.critical_care_beds.request() as req:
+@@ -102,6 +117,23 @@ class CCU:
+             yield self.env.timeout(5)
+             print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+ 
++    def elective_admissions_process(self, patient_id):
++        print(f"Elective Patient {patient_id} requests a critical care bed at {self.env.now:.2f} hours")
++        if self.critical_care_beds.count == self.critical_care_beds.capacity:
++            print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds")
++            self.cancelled_operations += 1
++        else:
++            with self.critical_care_beds.request() as req:
++                yield req
++                print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
++                length_of_stay = self.rng_elective_surgery.exponential(57.34)
++                yield self.env.timeout(length_of_stay)
++                print(f"Elective Patient {patient_id} discharged from a critical care bed at {self.env.now:.2f} hours")
++
++                # Intensive cleaning
++                yield self.env.timeout(5)
++                print(f"Intensive cleaning completed for Elective Patient {patient_id} at {self.env.now:.2f} hours")
++
+     def run(self):
+         # Start patient arrival processes
+         accident_emergency_process = self.env.process(self.accident_emergency_arrivals())
+@@ -109,11 +141,13 @@ class CCU:
+         emergency_surgery_process = self.env.process(self.emergency_surgery_arrivals())
+         other_hospitals_process = self.env.process(self.other_hospitals_arrivals())
+         xray_department_process = self.env.process(self.xray_department_arrivals())
++        elective_surgery_process = self.env.process(self.elective_surgery_arrivals())
+ 
+         self.env.run(until=self.run_length)
+ 
++        print(f"Total cancelled elective operations: {self.cancelled_operations}")
++
+ # Run the simulation
+ env = simpy.Environment()
+ ccu = CCU(env)
+ ccu.run()
+-
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
