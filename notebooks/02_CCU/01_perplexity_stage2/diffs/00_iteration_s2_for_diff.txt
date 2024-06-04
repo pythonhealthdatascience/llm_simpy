@@ -1,0 +1,116 @@
+ import simpy
+ import numpy as np
++from scipy.stats import lognorm
+ 
+ class CCU:
+     def __init__(self, env, run_length=12 * 30 * 24):
+@@ -14,40 +15,92 @@ class CCU:
+         self.rng_other_hospitals = np.random.default_rng(seed=45)
+         self.rng_xray_department = np.random.default_rng(seed=46)
+ 
++        # Set up critical care bed resource
++        self.critical_care_beds = simpy.Resource(env, capacity=24)
++
++        # Lognormal parameters
++        self.accident_emergency_lognormal_mu = 128.79
++        self.accident_emergency_lognormal_sigma = 267.51
++        self.wards_lognormal_mu = 177.89
++        self.wards_lognormal_sigma = 276.54
++        self.emergency_surgery_lognormal_mu = 140.15
++        self.emergency_surgery_lognormal_sigma = 218.02
++        self.other_hospitals_lognormal_mu = 212.86
++        self.other_hospitals_lognormal_sigma = 457.67
++        self.xray_department_lognormal_mu = 87.53
++        self.xray_department_lognormal_sigma = 108.67
++
++    def lognormal_to_normal(self, mu, sigma):
++        """Convert lognormal parameters to underlying normal distribution"""
++        zeta = np.log(mu**2 / np.sqrt(sigma**2 + mu**2))
++        sigma_norm = np.sqrt(np.log(sigma**2 / mu**2 + 1))
++        mu_norm = zeta
++        return mu_norm, sigma_norm
++
+     def accident_emergency_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_accident_emergency.exponential(22.72))
+             patient_id = self.patient_id_counter
+-            print(f"Patient {patient_id} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
++            yield self.env.timeout(self.rng_accident_emergency.exponential(22.72))
++            self.env.process(self.unplanned_admissions_process(patient_id, "Accident and Emergency"))
+ 
+     def wards_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_wards.exponential(26.0))
+             patient_id = self.patient_id_counter
+-            print(f"Patient {patient_id} arrived from the Wards at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
++            yield self.env.timeout(self.rng_wards.exponential(26.0))
++            self.env.process(self.unplanned_admissions_process(patient_id, "Wards"))
+ 
+     def emergency_surgery_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_emergency_surgery.exponential(37.0))
+             patient_id = self.patient_id_counter
+-            print(f"Patient {patient_id} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
++            yield self.env.timeout(self.rng_emergency_surgery.exponential(37.0))
++            self.env.process(self.unplanned_admissions_process(patient_id, "Emergency Surgery"))
+ 
+     def other_hospitals_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_other_hospitals.exponential(47.2))
+             patient_id = self.patient_id_counter
+-            print(f"Patient {patient_id} arrived from Other Hospitals at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
++            yield self.env.timeout(self.rng_other_hospitals.exponential(47.2))
++            self.env.process(self.unplanned_admissions_process(patient_id, "Other Hospitals"))
+ 
+     def xray_department_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_xray_department.exponential(575.0))
+             patient_id = self.patient_id_counter
+-            print(f"Patient {patient_id} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
++            yield self.env.timeout(self.rng_xray_department.exponential(575.0))
++            self.env.process(self.unplanned_admissions_process(patient_id, "X-Ray Department"))
++
++    def unplanned_admissions_process(self, patient_id, source):
++        print(f"Patient {patient_id} from {source} requests a critical care bed at {self.env.now:.2f} hours")
++        with self.critical_care_beds.request() as req:
++            yield req
++            print(f"Patient {patient_id} from {source} admitted to a critical care bed at {self.env.now:.2f} hours")
++
++            # Determine length of stay based on source
++            if source == "Accident and Emergency":
++                mu, sigma = self.lognormal_to_normal(self.accident_emergency_lognormal_mu, self.accident_emergency_lognormal_sigma)
++                length_of_stay = self.rng_accident_emergency.lognormal(mu, sigma)
++            elif source == "Wards":
++                mu, sigma = self.lognormal_to_normal(self.wards_lognormal_mu, self.wards_lognormal_sigma)
++                length_of_stay = self.rng_wards.lognormal(mu, sigma)
++            elif source == "Emergency Surgery":
++                mu, sigma = self.lognormal_to_normal(self.emergency_surgery_lognormal_mu, self.emergency_surgery_lognormal_sigma)
++                length_of_stay = self.rng_emergency_surgery.lognormal(mu, sigma)
++            elif source == "Other Hospitals":
++                mu, sigma = self.lognormal_to_normal(self.other_hospitals_lognormal_mu, self.other_hospitals_lognormal_sigma)
++                length_of_stay = self.rng_other_hospitals.lognormal(mu, sigma)
++            else:  # X-Ray Department
++                mu, sigma = self.lognormal_to_normal(self.xray_department_lognormal_mu, self.xray_department_lognormal_sigma)
++                length_of_stay = self.rng_xray_department.lognormal(mu, sigma)
++
++            yield self.env.timeout(length_of_stay)
++            print(f"Patient {patient_id} from {source} discharged from a critical care bed at {self.env.now:.2f} hours")
++
++            # Intensive cleaning
++            yield self.env.timeout(5)
++            print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+ 
+     def run(self):
+         # Start patient arrival processes
+@@ -63,3 +116,4 @@ class CCU:
+ env = simpy.Environment()
+ ccu = CCU(env)
+ ccu.run()
++
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
