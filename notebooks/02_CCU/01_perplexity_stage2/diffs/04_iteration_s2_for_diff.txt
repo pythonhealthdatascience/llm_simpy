@@ -1,0 +1,57 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 04_iteration_s2.ipynb diffs/04_iteration_s2_for_diff.ipynb
+nbdiff 04_iteration_s2.ipynb diffs/04_iteration_s2_for_diff.ipynb
+--- 04_iteration_s2.ipynb  2024-06-05 12:39:02.303547
++++ diffs/04_iteration_s2_for_diff.ipynb  2024-06-05 13:48:40.130907
+## modified /cells/9/source:
+@@ -1,5 +1,6 @@
+ import simpy
+ import numpy as np
++import pandas as pd
+ from scipy.stats import lognorm
+ 
+ class Experiment:
+@@ -34,6 +35,7 @@ class CCU:
+         self.experiment = experiment
+         self.patient_id_counter = 0
+         self.cancelled_operations = 0
++        self.warmup_end_time = self.experiment.warm_up_period
+         # Set up random number generators for each patient type
+         self.rng_accident_emergency = np.random.default_rng(seed=42)
+         self.rng_wards = np.random.default_rng(seed=43)
+@@ -123,11 +125,14 @@ class CCU:
+ 
+     def elective_admissions_process(self):
+         patient_id = self.patient_id_counter
+-        print(f"Elective Patient {patient_id} requests a critical care bed at {self.env.now:.2f} hours")
+         if self.critical_care_beds.count == self.critical_care_beds.capacity:
+-            print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds")
+-            self.cancelled_operations += 1
++            if self.env.now >= self.warmup_end_time:
++                print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds")
++                self.cancelled_operations += 1
++            else:
++                print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds (warm-up period)")
+         else:
++            print(f"Elective Patient {patient_id} requests a critical care bed at {self.env.now:.2f} hours")
+             with self.critical_care_beds.request() as req:
+                 yield req
+                 print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
+@@ -147,7 +152,15 @@ class CCU:
+         xray_department_process = self.env.process(self.xray_department_arrivals())
+         elective_surgery_process = self.env.process(self.elective_surgery_arrivals())
+         self.env.run(until=self.experiment.total_run_length)
+-        print(f"Total cancelled elective operations: {self.cancelled_operations}")
++
++        # Calculate performance measures
++        performance_measures = {
++            "Total Cancelled Elective Operations": self.cancelled_operations
++        }
++
++        # Output results in a pandas dataframe
++        results_df = pd.DataFrame.from_dict(performance_measures, orient='index', columns=['Value'])
++        print(results_df)
+ 
+ # Run the simulation
+ experiment = Experiment()
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
