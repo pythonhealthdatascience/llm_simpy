@@ -1,0 +1,123 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 08_iteration_s2.ipynb diffs/08_iteration_s2_for_diff.ipynb
+nbdiff 08_iteration_s2.ipynb diffs/08_iteration_s2_for_diff.ipynb
+--- 08_iteration_s2.ipynb  2024-06-06 11:06:32.708405
++++ diffs/08_iteration_s2_for_diff.ipynb  2024-06-06 15:36:29.816296
+## modified /cells/14/source:
+@@ -37,28 +37,29 @@ class CCU:
+         self.patient_id_counter = 0
+         self.cancelled_operations = 0
+         self.warmup_end_time = self.experiment.warm_up_period
+-        self.total_unplanned_waiting_time = 0 # Initialize total waiting time
+-        self.total_unplanned_admissions = 0 # Initialize total unplanned admissions
+-        self.total_treatment_time = 0 # Initialize total treatment time
+-        
+-        # Set up random number generators for each patient type
++        self.total_unplanned_waiting_time = 0
++        self.total_unplanned_admissions = 0
++        self.total_treatment_time = 0
+         self.rng_accident_emergency = np.random.default_rng(seed=42)
+         self.rng_wards = np.random.default_rng(seed=43)
+         self.rng_emergency_surgery = np.random.default_rng(seed=44)
+         self.rng_other_hospitals = np.random.default_rng(seed=45)
+         self.rng_xray_department = np.random.default_rng(seed=46)
+         self.rng_elective_surgery = np.random.default_rng(seed=47)
+-        
+-        # Set up critical care bed resource
+         self.critical_care_beds = simpy.Resource(env, capacity=self.experiment.num_critical_care_beds)
+ 
+     def lognormal_to_normal(self, mu, sigma):
+-        """Convert lognormal parameters to underlying normal distribution"""
+         zeta = np.log(mu**2 / np.sqrt(sigma**2 + mu**2))
+         sigma_norm = np.sqrt(np.log(sigma**2 / mu**2 + 1))
+         mu_norm = zeta
+         return mu_norm, sigma_norm
+ 
++    def warmup_complete(self):
++        yield self.env.timeout(self.warmup_end_time)
++        self.patient_id_counter = 0
++        if self.experiment.trace:
++            print("Warm-up complete")
++
+     def accident_emergency_arrivals(self):
+         while True:
+             yield self.env.timeout(self.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
+@@ -119,7 +120,6 @@ class CCU:
+                 print(f"Patient {patient_id} from {source} waited {waiting_time:.2f} hours")
+                 print(f"Patient {patient_id} from {source} admitted to a critical care bed at {self.env.now:.2f} hours")
+ 
+-            # Determine length of stay based on source
+             if source == "Accident and Emergency":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.accident_emergency_lognormal_mu, self.experiment.accident_emergency_lognormal_sigma)
+                 length_of_stay = self.rng_accident_emergency.lognormal(mu, sigma)
+@@ -132,13 +132,12 @@ class CCU:
+             elif source == "Other Hospitals":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.other_hospitals_lognormal_mu, self.experiment.other_hospitals_lognormal_sigma)
+                 length_of_stay = self.rng_other_hospitals.lognormal(mu, sigma)
+-            else: # X-Ray Department
++            else:
+                 mu, sigma = self.lognormal_to_normal(self.experiment.xray_department_lognormal_mu, self.experiment.xray_department_lognormal_sigma)
+                 length_of_stay = self.rng_xray_department.lognormal(mu, sigma)
+ 
+             yield self.env.timeout(length_of_stay)
+ 
+-            # Add treatment time and waiting time to totals if simulation time has exceeded warm-up period
+             if self.env.now >= self.warmup_end_time:
+                 self.total_treatment_time += length_of_stay
+                 self.total_unplanned_waiting_time += waiting_time
+@@ -147,9 +146,6 @@ class CCU:
+             if self.experiment.trace:
+                 print(f"Patient {patient_id} from {source} discharged from a critical care bed at {self.env.now:.2f} hours")
+ 
+-            # Intensive cleaning
+-            if self.experiment.trace:
+-                print(f"Patient {patient_id} from {source} requests a critical care bed for intensive cleaning at {self.env.now:.2f} hours")
+             yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+             if self.experiment.trace:
+                 print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+@@ -173,34 +169,30 @@ class CCU:
+                     print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
+                 length_of_stay = self.rng_elective_surgery.exponential(self.experiment.elective_surgery_treatment_rate)
+                 yield self.env.timeout(length_of_stay)
+-                # Add treatment time to total if simulation time has exceeded warm-up period
+                 if self.env.now >= self.warmup_end_time:
+                     self.total_treatment_time += length_of_stay
+                 if self.experiment.trace:
+                     print(f"Elective Patient {patient_id} discharged from a critical care bed at {self.env.now:.2f} hours")
+-                # Intensive cleaning
+                 yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+                 if self.experiment.trace:
+                     print(f"Intensive cleaning completed for Elective Patient {patient_id} at {self.env.now:.2f} hours")
+ 
+     def run(self):
+-        # Start patient arrival processes
+         accident_emergency_process = self.env.process(self.accident_emergency_arrivals())
+         wards_process = self.env.process(self.wards_arrivals())
+         emergency_surgery_process = self.env.process(self.emergency_surgery_arrivals())
+         other_hospitals_process = self.env.process(self.other_hospitals_arrivals())
+         xray_department_process = self.env.process(self.xray_department_arrivals())
+         elective_surgery_process = self.env.process(self.elective_surgery_arrivals())
+-
++        warmup_complete_process = self.env.process(self.warmup_complete())
+         self.env.run(until=self.experiment.total_run_length)
+ 
+-        # Calculate bed utilization
++        # Calculate bed utilization as a proportion
+         bed_utilization = self.total_treatment_time / (self.experiment.num_critical_care_beds * self.experiment.results_collection_period)
+ 
+         # Calculate bed occupancy
+         bed_occupancy = bed_utilization * self.experiment.num_critical_care_beds
+ 
+-        # Calculate performance measures
+         performance_measures = {
+             "Total Cancelled Elective Operations": self.cancelled_operations,
+             "Mean Unplanned Admission Waiting Time (hours)": self.total_unplanned_waiting_time / self.total_unplanned_admissions if self.total_unplanned_admissions > 0 else 0,
+@@ -208,7 +200,6 @@ class CCU:
+             "Bed Occupancy": bed_occupancy
+         }
+ 
+-        # Output results in a pandas dataframe
+         results_df = pd.DataFrame.from_dict(performance_measures, orient='index', columns=['Value'])
+         print(results_df)
+ 
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
