@@ -1,0 +1,16 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 10_iteration_s2.ipynb diffs/10_iteration_s2_for_diff.ipynb
+nbdiff 10_iteration_s2.ipynb diffs/10_iteration_s2_for_diff.ipynb
+--- 10_iteration_s2.ipynb  2024-06-06 16:12:14.124561
++++ diffs/10_iteration_s2_for_diff.ipynb  2024-06-06 16:54:25.814047
+## modified /cells/9/source:
+@@ -209,7 +209,7 @@ class CCU:
+         }
+ 
+         results_df = pd.DataFrame.from_dict(performance_measures, orient='index', columns=['Value'])
+-        print(results_df)
++        return results_df
+ 
+ # Run the simulation
+ experiment = Experiment(trace=False)  # Set trace=True to enable event printing
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
