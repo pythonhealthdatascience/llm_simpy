@@ -1,0 +1,112 @@
+nbdiff 13_iteration_s2.ipynb diffs/13_iteration_s2_for_diff.ipynb
+--- 13_iteration_s2.ipynb  2024-06-14 13:16:03.559050
++++ diffs/13_iteration_s2_for_diff.ipynb  2024-06-14 18:13:18.229744
+## inserted before /cells/12:
++  code cell:
++    id: c46f426b-2263-4913-ac8a-ec2f5e12f6b9
++    source:
++      import numpy as np
++      
++      class Experiment:
++          def __init__(self, 
++                       accident_emergency_arrival_rate=22.72, 
++                       wards_arrival_rate=26.0, 
++                       emergency_surgery_arrival_rate=37.0, 
++                       other_hospitals_arrival_rate=47.2, 
++                       xray_department_arrival_rate=575.0, 
++                       elective_surgery_arrival_rate=17.91, 
++                       elective_surgery_arrival_std_dev=3.16, 
++                       accident_emergency_lognormal_mu=128.79, 
++                       accident_emergency_lognormal_sigma=267.51, 
++                       wards_lognormal_mu=177.89, 
++                       wards_lognormal_sigma=276.54, 
++                       emergency_surgery_lognormal_mu=140.15, 
++                       emergency_surgery_lognormal_sigma=218.02, 
++                       other_hospitals_lognormal_mu=212.86, 
++                       other_hospitals_lognormal_sigma=457.67, 
++                       xray_department_lognormal_mu=87.53, 
++                       xray_department_lognormal_sigma=108.67, 
++                       elective_surgery_treatment_rate=57.34, 
++                       num_critical_care_beds=24, 
++                       intensive_cleaning_duration=5, 
++                       results_collection_period=12 * 30 * 24, 
++                       warm_up_period=30 * 24, 
++                       trace=False, 
++                       random_number_set=0):
++              self.accident_emergency_arrival_rate = accident_emergency_arrival_rate
++              self.wards_arrival_rate = wards_arrival_rate
++              self.emergency_surgery_arrival_rate = emergency_surgery_arrival_rate
++              self.other_hospitals_arrival_rate = other_hospitals_arrival_rate
++              self.xray_department_arrival_rate = xray_department_arrival_rate
++              self.elective_surgery_arrival_rate = elective_surgery_arrival_rate
++              self.elective_surgery_arrival_std_dev = elective_surgery_arrival_std_dev
++              self.accident_emergency_lognormal_mu = accident_emergency_lognormal_mu
++              self.accident_emergency_lognormal_sigma = accident_emergency_lognormal_sigma
++              self.wards_lognormal_mu = wards_lognormal_mu
++              self.wards_lognormal_sigma = wards_lognormal_sigma
++              self.emergency_surgery_lognormal_mu = emergency_surgery_lognormal_mu
++              self.emergency_surgery_lognormal_sigma = emergency_surgery_lognormal_sigma
++              self.other_hospitals_lognormal_mu = other_hospitals_lognormal_mu
++              self.other_hospitals_lognormal_sigma = other_hospitals_lognormal_sigma
++              self.xray_department_lognormal_mu = xray_department_lognormal_mu
++              self.xray_department_lognormal_sigma = xray_department_lognormal_sigma
++              self.elective_surgery_treatment_rate = elective_surgery_treatment_rate
++              self.num_critical_care_beds = num_critical_care_beds
++              self.intensive_cleaning_duration = intensive_cleaning_duration
++              self.results_collection_period = results_collection_period
++              self.warm_up_period = warm_up_period
++              self.total_run_length = self.warm_up_period + self.results_collection_period
++              self.trace = trace
++              self.random_number_set = random_number_set
++              
++              self.setup_streams(random_number_set)
++      
++          def setup_streams(self, random_number_set):
++              master_stream = np.random.default_rng(random_number_set)
++              seeds = master_stream.integers(0, np.iinfo(np.int64).max, 12, dtype=np.int64)
++              self.rng_accident_emergency = np.random.default_rng(seeds[0])
++              self.rng_wards = np.random.default_rng(seeds[1])
++              self.rng_emergency_surgery = np.random.default_rng(seeds[2])
++              self.rng_other_hospitals = np.random.default_rng(seeds[3])
++              self.rng_xray_department = np.random.default_rng(seeds[4])
++              self.rng_elective_surgery = np.random.default_rng(seeds[5])
++              self.rng_elective_treatment = np.random.default_rng(seeds[6])
++              self.rng_unplanned_treatment = np.random.default_rng(seeds[7])
+
+## modified /cells/12/source:
+@@ -3,33 +3,6 @@ import numpy as np
+ import pandas as pd
+ from scipy.stats import lognorm
+ 
+-class Experiment:
+-    def __init__(self, accident_emergency_arrival_rate=22.72, wards_arrival_rate=26.0, emergency_surgery_arrival_rate=37.0, other_hospitals_arrival_rate=47.2, xray_department_arrival_rate=575.0, elective_surgery_arrival_rate=17.91, elective_surgery_arrival_std_dev=3.16, accident_emergency_lognormal_mu=128.79, accident_emergency_lognormal_sigma=267.51, wards_lognormal_mu=177.89, wards_lognormal_sigma=276.54, emergency_surgery_lognormal_mu=140.15, emergency_surgery_lognormal_sigma=218.02, other_hospitals_lognormal_mu=212.86, other_hospitals_lognormal_sigma=457.67, xray_department_lognormal_mu=87.53, xray_department_lognormal_sigma=108.67, elective_surgery_treatment_rate=57.34, num_critical_care_beds=24, intensive_cleaning_duration=5, results_collection_period=12 * 30 * 24, warm_up_period=30 * 24, trace=False):
+-        self.accident_emergency_arrival_rate = accident_emergency_arrival_rate
+-        self.wards_arrival_rate = wards_arrival_rate
+-        self.emergency_surgery_arrival_rate = emergency_surgery_arrival_rate
+-        self.other_hospitals_arrival_rate = other_hospitals_arrival_rate
+-        self.xray_department_arrival_rate = xray_department_arrival_rate
+-        self.elective_surgery_arrival_rate = elective_surgery_arrival_rate
+-        self.elective_surgery_arrival_std_dev = elective_surgery_arrival_std_dev
+-        self.accident_emergency_lognormal_mu = accident_emergency_lognormal_mu
+-        self.accident_emergency_lognormal_sigma = accident_emergency_lognormal_sigma
+-        self.wards_lognormal_mu = wards_lognormal_mu
+-        self.wards_lognormal_sigma = wards_lognormal_sigma
+-        self.emergency_surgery_lognormal_mu = emergency_surgery_lognormal_mu
+-        self.emergency_surgery_lognormal_sigma = emergency_surgery_lognormal_sigma
+-        self.other_hospitals_lognormal_mu = other_hospitals_lognormal_mu
+-        self.other_hospitals_lognormal_sigma = other_hospitals_lognormal_sigma
+-        self.xray_department_lognormal_mu = xray_department_lognormal_mu
+-        self.xray_department_lognormal_sigma = xray_department_lognormal_sigma
+-        self.elective_surgery_treatment_rate = elective_surgery_treatment_rate
+-        self.num_critical_care_beds = num_critical_care_beds
+-        self.intensive_cleaning_duration = intensive_cleaning_duration
+-        self.results_collection_period = results_collection_period
+-        self.warm_up_period = warm_up_period
+-        self.total_run_length = self.warm_up_period + self.results_collection_period
+-        self.trace = trace
+-
+ class CCU:
+     def __init__(self, env, experiment):
+         self.env = env
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
