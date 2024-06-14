@@ -1,0 +1,29 @@
+nbdiff 12_iteration_s2.ipynb diffs/12_iteration_s2_for_diff.ipynb
+--- 12_iteration_s2.ipynb  2024-06-14 12:39:39.903121
++++ diffs/12_iteration_s2_for_diff.ipynb  2024-06-14 13:18:42.766145
+## modified /cells/13/source:
+@@ -3,6 +3,15 @@ import numpy as np
+ import pandas as pd
+ from scipy.stats import lognorm
+ 
++def results_summary(results_df):
++    # Drop the replication column
++    results_df = results_df.drop('Replication', axis=1)
++
++    # Calculate the mean and standard deviation of each column
++    summary_df = results_df.describe().loc[['mean', 'std']].T
++
++    return summary_df
++
+ class Experiment:
+     def __init__(self, accident_emergency_arrival_rate=22.72, wards_arrival_rate=26.0, emergency_surgery_arrival_rate=37.0, other_hospitals_arrival_rate=47.2, xray_department_arrival_rate=575.0, elective_surgery_arrival_rate=17.91, elective_surgery_arrival_std_dev=3.16, accident_emergency_lognormal_mu=128.79, accident_emergency_lognormal_sigma=267.51, wards_lognormal_mu=177.89, wards_lognormal_sigma=276.54, emergency_surgery_lognormal_mu=140.15, emergency_surgery_lognormal_sigma=218.02, other_hospitals_lognormal_mu=212.86, other_hospitals_lognormal_sigma=457.67, xray_department_lognormal_mu=87.53, xray_department_lognormal_sigma=108.67, elective_surgery_treatment_rate=57.34, num_critical_care_beds=24, intensive_cleaning_duration=5, results_collection_period=12 * 30 * 24, warm_up_period=30 * 24, trace=False):
+         self.accident_emergency_arrival_rate = accident_emergency_arrival_rate
+
+## modified /cells/14/source:
+@@ -1,4 +1,4 @@
+-# Example usage (written by LLM)
++# Example usage (written by tester)
+ experiment = Experiment(trace=False)
+ results = multiple_replications(experiment, num_replications=5)
+-results
++results_summary(results)
