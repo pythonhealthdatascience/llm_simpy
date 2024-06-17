@@ -1,0 +1,48 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 17_iteration_s2.ipynb diffs/17_iteration_s2_for_diff.ipynb
+nbdiff 17_iteration_s2.ipynb diffs/17_iteration_s2_for_diff.ipynb
+--- 17_iteration_s2.ipynb  2024-06-17 19:02:17.043443
++++ diffs/17_iteration_s2_for_diff.ipynb  2024-06-17 19:41:44.281180
+## inserted before /cells/8:
++  code cell:
++    id: 3a1c7114-ec58-40ea-aab7-f1344f1c9072
++    source:
++      def get_experiments():
++          experiments = {}
++          for num_beds in range(23, 29):
++              experiment_name = f"Experiment with {num_beds} beds"
++              experiment = Experiment(num_critical_care_beds=num_beds)
++              experiments[experiment_name] = experiment
++          return experiments
++      
++      def run_all_experiments(experiments, num_replications):
++          experiment_summaries = {}
++          for experiment_name, experiment in experiments.items():
++              print(f"Running {experiment_name}")
++              env = simpy.Environment()
++              ccu = CCU(env, experiment)
++              results = multiple_replications(experiment, num_replications)
++              summary = results_summary(results)
++              experiment_summaries[experiment_name] = summary
++          return experiment_summaries
++      
++      def summary_of_experiments(experiment_summaries):
++          summary_df = pd.DataFrame()
++          for experiment_name, summary in experiment_summaries.items():
++              if summary_df.empty:
++                  summary_df = summary
++                  summary_df = summary_df.add_prefix(f"{experiment_name}_")
++              else:
++                  summary = summary.add_prefix(f"{experiment_name}_")
++                  summary_df = pd.concat([summary_df, summary], axis=1)
++          return summary_df
+
+## inserted before /cells/11:
++  code cell:
++    id: d21f6ce2-3efd-4dd8-8744-70f82a1a084d
++    source:
++      # test code (written by tester)
++      experiments = get_experiments()
++      all_results = run_all_experiments(experiments, 5)
++      summary_of_experiments(all_results).round(2)
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
