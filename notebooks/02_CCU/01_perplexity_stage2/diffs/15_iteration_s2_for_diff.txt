@@ -1,0 +1,156 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 15_iteration_s2.ipynb diffs/15_iteration_s2_for_diff.ipynb
+nbdiff 15_iteration_s2.ipynb diffs/15_iteration_s2_for_diff.ipynb
+--- 15_iteration_s2.ipynb  2024-06-17 09:38:50.540336
++++ diffs/15_iteration_s2_for_diff.ipynb  2024-06-17 18:36:06.265412
+## modified /cells/11/source:
+@@ -1,5 +1,3 @@
+-import numpy as np
+-
+ class Experiment:
+     def __init__(self, 
+                  accident_emergency_arrival_rate=22.72, 
+@@ -51,7 +49,14 @@ class Experiment:
+         self.total_run_length = self.warm_up_period + self.results_collection_period
+         self.trace = trace
+         self.random_number_set = random_number_set
+-        
++        self.rng_accident_emergency = np.random.default_rng()
++        self.rng_wards = np.random.default_rng()
++        self.rng_emergency_surgery = np.random.default_rng()
++        self.rng_other_hospitals = np.random.default_rng()
++        self.rng_xray_department = np.random.default_rng()
++        self.rng_elective_surgery = np.random.default_rng()
++        self.rng_elective_treatment = np.random.default_rng()
++        self.rng_unplanned_treatment = np.random.default_rng()
+         self.setup_streams(random_number_set)
+ 
+     def setup_streams(self, random_number_set):
+@@ -63,5 +68,6 @@ class Experiment:
+         self.rng_other_hospitals = np.random.default_rng(seeds[3])
+         self.rng_xray_department = np.random.default_rng(seeds[4])
+         self.rng_elective_surgery = np.random.default_rng(seeds[5])
+-        self.rng_elective_treatment = np.random.default_rng(seeds[6])
+-        self.rng_unplanned_treatment = np.random.default_rng(seeds[7])
++        self.rng_unplanned_treatment = np.random.default_rng(seeds[6])
++        self.rng_elective_treatment = np.random.default_rng(seeds[7])
++        
+
+
+## modified /cells/13/source:
+@@ -8,12 +8,6 @@ class CCU:
+         self.total_unplanned_waiting_time = 0
+         self.total_unplanned_admissions = 0
+         self.total_treatment_time = 0
+-        self.rng_accident_emergency = np.random.default_rng()
+-        self.rng_wards = np.random.default_rng()
+-        self.rng_emergency_surgery = np.random.default_rng()
+-        self.rng_other_hospitals = np.random.default_rng()
+-        self.rng_xray_department = np.random.default_rng()
+-        self.rng_elective_surgery = np.random.default_rng()
+         self.critical_care_beds = simpy.Resource(env, capacity=self.experiment.num_critical_care_beds)
+ 
+     def lognormal_to_normal(self, mu, sigma):
+@@ -38,7 +32,7 @@ class CCU:
+ 
+     def accident_emergency_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
++            yield self.env.timeout(self.experiment.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -46,7 +40,7 @@ class CCU:
+ 
+     def wards_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_wards.exponential(self.experiment.wards_arrival_rate))
++            yield self.env.timeout(self.experiment.rng_wards.exponential(self.experiment.wards_arrival_rate))
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from the Wards at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -54,7 +48,7 @@ class CCU:
+ 
+     def emergency_surgery_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
++            yield self.env.timeout(self.experiment.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -62,7 +56,7 @@ class CCU:
+ 
+     def other_hospitals_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
++            yield self.env.timeout(self.experiment.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Other Hospitals at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -70,7 +64,7 @@ class CCU:
+ 
+     def xray_department_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
++            yield self.env.timeout(self.experiment.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -78,7 +72,7 @@ class CCU:
+ 
+     def elective_surgery_arrivals(self):
+         while True:
+-            yield self.env.timeout(self.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
++            yield self.env.timeout(self.experiment.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
+             if self.experiment.trace:
+                 print(f"Elective Patient {self.patient_id_counter} arrived at {self.env.now:.2f} hours")
+             self.patient_id_counter += 1
+@@ -95,33 +89,28 @@ class CCU:
+             if self.experiment.trace:
+                 print(f"Patient {patient_id} from {source} waited {waiting_time:.2f} hours")
+                 print(f"Patient {patient_id} from {source} admitted to a critical care bed at {self.env.now:.2f} hours")
+-
+             if source == "Accident and Emergency":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.accident_emergency_lognormal_mu, self.experiment.accident_emergency_lognormal_sigma)
+-                length_of_stay = self.rng_accident_emergency.lognormal(mu, sigma)
++                length_of_stay = self.experiment.rng_unplanned_treatment.lognormal(mu, sigma)
+             elif source == "Wards":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.wards_lognormal_mu, self.experiment.wards_lognormal_sigma)
+-                length_of_stay = self.rng_wards.lognormal(mu, sigma)
++                length_of_stay = self.experiment.rng_unplanned_treatment.lognormal(mu, sigma)
+             elif source == "Emergency Surgery":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.emergency_surgery_lognormal_mu, self.experiment.emergency_surgery_lognormal_sigma)
+-                length_of_stay = self.rng_emergency_surgery.lognormal(mu, sigma)
++                length_of_stay = self.experiment.rng_unplanned_treatment.lognormal(mu, sigma)
+             elif source == "Other Hospitals":
+                 mu, sigma = self.lognormal_to_normal(self.experiment.other_hospitals_lognormal_mu, self.experiment.other_hospitals_lognormal_sigma)
+-                length_of_stay = self.rng_other_hospitals.lognormal(mu, sigma)
++                length_of_stay = self.experiment.rng_unplanned_treatment.lognormal(mu, sigma)
+             else:
+                 mu, sigma = self.lognormal_to_normal(self.experiment.xray_department_lognormal_mu, self.experiment.xray_department_lognormal_sigma)
+-                length_of_stay = self.rng_xray_department.lognormal(mu, sigma)
+-
++                length_of_stay = self.experiment.rng_unplanned_treatment.lognormal(mu, sigma)
+             yield self.env.timeout(length_of_stay)
+-
+             if self.env.now >= self.warmup_end_time:
+                 self.total_treatment_time += length_of_stay
+                 self.total_unplanned_waiting_time += waiting_time
+                 self.total_unplanned_admissions += 1
+-
+             if self.experiment.trace:
+                 print(f"Patient {patient_id} from {source} discharged from a critical care bed at {self.env.now:.2f} hours")
+-
+             yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+             if self.experiment.trace:
+                 print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+@@ -143,7 +132,7 @@ class CCU:
+                 yield req
+                 if self.experiment.trace:
+                     print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
+-                length_of_stay = self.rng_elective_surgery.exponential(self.experiment.elective_surgery_treatment_rate)
++                length_of_stay = self.experiment.rng_elective_treatment.exponential(self.experiment.elective_surgery_treatment_rate)
+                 yield self.env.timeout(length_of_stay)
+                 if self.env.now >= self.warmup_end_time:
+                     self.total_treatment_time += length_of_stay
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
