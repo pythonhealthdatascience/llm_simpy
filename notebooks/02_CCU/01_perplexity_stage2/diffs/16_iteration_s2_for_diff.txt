@@ -1,0 +1,63 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 16_iteration_s2.ipynb diffs/16_iteration_s2_for_diff.ipynb
+nbdiff 16_iteration_s2.ipynb diffs/16_iteration_s2_for_diff.ipynb
+--- 16_iteration_s2.ipynb  2024-06-17 18:50:18.844158
++++ diffs/16_iteration_s2_for_diff.ipynb  2024-06-17 19:02:39.367309
+## modified /cells/14/source:
+@@ -33,49 +33,49 @@ class CCU:
+     def accident_emergency_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.unplanned_admissions_process("Accident and Emergency"))
+ 
+     def wards_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_wards.exponential(self.experiment.wards_arrival_rate))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from the Wards at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.unplanned_admissions_process("Wards"))
+ 
+     def emergency_surgery_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.unplanned_admissions_process("Emergency Surgery"))
+ 
+     def other_hospitals_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from Other Hospitals at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.unplanned_admissions_process("Other Hospitals"))
+ 
+     def xray_department_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Patient {self.patient_id_counter} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.unplanned_admissions_process("X-Ray Department"))
+ 
+     def elective_surgery_arrivals(self):
+         while True:
+             yield self.env.timeout(self.experiment.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
++            self.patient_id_counter += 1
+             if self.experiment.trace:
+                 print(f"Elective Patient {self.patient_id_counter} arrived at {self.env.now:.2f} hours")
+-            self.patient_id_counter += 1
+             self.env.process(self.elective_admissions_process())
+ 
+     def unplanned_admissions_process(self, source):
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ 
