@@ -1,0 +1,23 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 14_iteration_s2.ipynb diffs/14_iteration_s2_for_diff.ipynb
+nbdiff 14_iteration_s2.ipynb diffs/14_iteration_s2_for_diff.ipynb
+--- 14_iteration_s2.ipynb  2024-06-14 18:28:12.296382
++++ diffs/14_iteration_s2_for_diff.ipynb  2024-06-17 09:38:54.956315
+## modified /cells/11/source:
+@@ -1,13 +1,15 @@
++import pandas as pd
++
+ def multiple_replications(experiment, num_replications=5):
+     all_results = []
+-
+     for i in range(num_replications):
++        experiment.setup_streams(i)  # Call setup_streams method
+         env = simpy.Environment()
+         ccu = CCU(env, experiment)
+         ccu.reset_kpi()
+         results = ccu.run()
+         results['Replication'] = i + 1
+         all_results.append(results)
+-
+     combined_results = pd.concat(all_results, ignore_index=True)
+     return combined_results
++
