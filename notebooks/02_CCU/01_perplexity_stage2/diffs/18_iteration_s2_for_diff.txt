@@ -1,0 +1,31 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 18_iteration_s2.ipynb diffs/18_iteration_s2_for_diff.ipynb
+nbdiff 18_iteration_s2.ipynb diffs/18_iteration_s2_for_diff.ipynb
+--- 18_iteration_s2.ipynb  2024-06-17 19:45:34.959784
++++ diffs/18_iteration_s2_for_diff.ipynb  2024-06-19 09:46:37.153535
+## inserted before /cells/9:
++  code cell:
++    id: 1e31eb9c-7d50-4523-aefa-16026b9f6ebd
++    source:
++      import streamlit as st
++      import pandas as pd
++      
++      def main():
++          st.title("CCU Simulation")
++      
++          # Create a button to trigger the simulation
++          if st.button("Simulate"):
++              # Display a spinner while the simulation is running
++              with st.spinner("Please wait for results..."):
++                  # Call the multiple_replications function
++                  experiment = Experiment(trace=False)
++                  results = multiple_replications(experiment, num_replications=5)
++      
++                  # Call the results_summary function
++                  summary = results_summary(results)
++      
++              # Display the results as a DataFrame
++              st.subheader("Simulation Results")
++              st.dataframe(summary)
++      
++      if __name__ == "__main__":
++          main()
