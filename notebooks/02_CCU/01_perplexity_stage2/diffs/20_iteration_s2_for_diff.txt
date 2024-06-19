@@ -1,0 +1,21 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 20_iteration_s2.ipynb diffs/20_iteration_s2_for_diff.ipynb
+nbdiff 20_iteration_s2.ipynb diffs/20_iteration_s2_for_diff.ipynb
+--- 20_iteration_s2.ipynb  2024-06-19 10:06:17.767725
++++ diffs/20_iteration_s2_for_diff.ipynb  2024-06-19 10:24:05.742037
+## modified /cells/9/source:
+@@ -1,5 +1,14 @@
++import streamlit as st
++import pandas as pd
++# from your_module import Experiment, multiple_replications, results_summary
++
+ def main():
+-    st.title("CCU Simulation")
++    st.title("A simulation model of bed-occupancy in a critical care unit")
++    st.write("This is a recreation of a model reported in a published academic study:")
++    st.write("""
++    "J D Griffiths, M Jones, M S Read & J E Williams (2010) A simulation model of bed-occupancy in a critical care unit, Journal of Simulation, 4:1, 52-59, DOI: 10.1057/jos.2009.22"
++    """)
++    st.markdown("[Link to the original study](https://www.tandfonline.com/doi/full/10.1057/jos.2009.22)")
+ 
+     # Add sidebar
+     st.sidebar.title("Experiment Parameters")
