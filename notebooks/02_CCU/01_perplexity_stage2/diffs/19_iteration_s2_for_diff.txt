@@ -1,0 +1,55 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/02_CCU/01_perplexity_stage2$ nbdiff 19_iteration_s2.ipynb diffs/19_iteration_s2_for_diff.ipynb
+nbdiff 19_iteration_s2.ipynb diffs/19_iteration_s2_for_diff.ipynb
+--- 19_iteration_s2.ipynb  2024-06-19 09:47:39.861938
++++ diffs/19_iteration_s2_for_diff.ipynb  2024-06-19 10:08:10.451105
+## modified /cells/8/source:
+@@ -1,23 +1,40 @@
+-import streamlit as st
+-import pandas as pd
+-
+ def main():
+     st.title("CCU Simulation")
+ 
++    # Add sidebar
++    st.sidebar.title("Experiment Parameters")
++
++    # Number of critical care beds
++    num_critical_care_beds = st.sidebar.slider("Number of Critical Care Beds", min_value=20, max_value=30, value=24, step=1)
++
++    # Intensive cleaning duration
++    intensive_cleaning_duration = st.sidebar.number_input("Intensive Cleaning Duration (hours)", min_value=1.0, max_value=10.0, value=5.0, step=0.1)
++
++    # Trace
++    trace = st.sidebar.checkbox("Trace", value=False)
++
++    # Number of replications
++    num_replications = st.sidebar.number_input("Number of Replications", min_value=1, max_value=10, value=5, step=1)
++
+     # Create a button to trigger the simulation
+     if st.button("Simulate"):
+         # Display a spinner while the simulation is running
+         with st.spinner("Please wait for results..."):
+-            # Call the multiple_replications function
+-            experiment = Experiment(trace=False)
+-            results = multiple_replications(experiment, num_replications=5)
++            # Create an instance of Experiment with the specified parameters
++            experiment = Experiment(num_critical_care_beds=num_critical_care_beds,
++                                    intensive_cleaning_duration=intensive_cleaning_duration,
++                                    trace=trace,
++                                    random_number_set=0)
++
++            # Run the simulation
++            results = multiple_replications(experiment, num_replications=num_replications)
+ 
+             # Call the results_summary function
+             summary = results_summary(results)
+ 
+-        # Display the results as a DataFrame
+-        st.subheader("Simulation Results")
+-        st.dataframe(summary)
++            # Display the results as a DataFrame
++            st.subheader("Simulation Results")
++            st.dataframe(summary)
+ 
+ if __name__ == "__main__":
+     main()
