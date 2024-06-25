@@ -546,7 +546,9 @@ def calculate_occupancy_frequencies(data):
     return relative_frequency, cumulative_frequency, unique_values
 
 
-def occupancy_plot(relative_frequency, unique_values, x_label="No. people in ASU", fig_size=(12, 5)):
+def occupancy_plot(
+    relative_frequency, unique_values, x_label="No. people in ASU", fig_size=(12, 5)
+):
     """Generate a plot of the occupancy relative frequency distribution.
 
     Parameters:
@@ -559,18 +561,13 @@ def occupancy_plot(relative_frequency, unique_values, x_label="No. people in ASU
     - matplotlib.figure.Figure, matplotlib.axes.Axes: The figure and axes of the plot.
     """
     fig, ax = plt.subplots(figsize=fig_size)
-    ax.bar(unique_values, relative_frequency, align='center', alpha=0.7)
-    
-    # Dynamically set x-axis ticks based on the range of unique values
-    max_value = max(unique_values)
-    tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
-    ax.set_xticks(np.arange(0, max_value + 1, tick_step))
-    
+    ax.bar(unique_values, relative_frequency, align="center", alpha=0.7)
+    ax.set_xticks(np.arange(0, 31, 1))
     ax.set_xlabel(x_label)
-    ax.set_ylabel('Relative Frequency')
-    plt.grid(axis='y', linestyle='--', alpha=0.6)
-    plt.title('Occupancy Relative Frequency Distribution')
-    plt.tight_layout()
+    ax.set_ylabel("Relative Frequency")
+    plt.grid(axis="y", linestyle="--", alpha=0.6)
+    plt.title("Occupancy Relative Frequency Distribution")
+    plt.show()
     return fig, ax
 
 
@@ -579,21 +576,19 @@ def calculate_prob_delay(relative_frequencies, cumulative_frequencies):
     return prob_delay
 
 
-def prob_delay_plot(prob_delay, unique_values, x_label="No. acute beds available", fig_size=(12, 5)):
+def prob_delay_plot(
+    prob_delay, unique_values, x_label="No. acute beds available", fig_size=(12, 5)
+):
     fig, ax = plt.subplots(figsize=fig_size)
-    ax.step(unique_values, prob_delay, where='post')
-    
-    # Dynamically set x-axis ticks based on the range of unique values
-    max_value = max(unique_values)
-    tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
-    ax.set_xticks(np.arange(0, max_value + 1, tick_step))
-    
+    ax.step(unique_values, prob_delay, where="post")
+    ax.set_xticks(np.arange(0, 31, 1))
     ax.set_xlabel(x_label)
-    ax.set_ylabel('Probability of Delay')
-    plt.grid(axis='y', linestyle='--', alpha=0.6)
-    plt.title('Probability of Delay Distribution')
-    plt.tight_layout()
+    ax.set_ylabel("Probability of Delay")
+    plt.grid(axis="y", linestyle="--", alpha=0.6)
+    plt.title("Probability of Delay Distribution")
+    plt.show()
     return fig, ax
+
 
 def single_run(experiment):
     """Run a single simulation with the provided experiment configuration.
@@ -692,38 +687,36 @@ def combine_pdelay_results(rep_results):
     """
     result_list_asu = []
     result_list_rehab = []
-    
-    max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
-    max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
-    
+
     for rep_result in rep_results:
-        prob_delay_asu = rep_result['prob_delay_asu']
-        unique_vals_asu = rep_result['unique_vals_asu']
-        
+        prob_delay_asu = rep_result["prob_delay_asu"]
+        unique_vals_asu = rep_result["unique_vals_asu"]
+
         min_occupancy_asu = min(unique_vals_asu)
-        
-        new_array_asu = np.zeros(max_occupancy_asu + 1)
+
+        new_array_asu = np.zeros(30)
         for i, val in zip(unique_vals_asu, prob_delay_asu):
             new_array_asu[i] = val
-        
+
         new_array_asu[:min_occupancy_asu] = 1.0
-        
+
         result_list_asu.append(new_array_asu)
-        
-        prob_delay_rehab = rep_result['prob_delay_rehab']
-        unique_vals_rehab = rep_result['unique_vals_rehab']
-        
+
+        prob_delay_rehab = rep_result["prob_delay_rehab"]
+        unique_vals_rehab = rep_result["unique_vals_rehab"]
+
         min_occupancy_rehab = min(unique_vals_rehab)
-        
-        new_array_rehab = np.zeros(max_occupancy_rehab + 1)
+
+        new_array_rehab = np.zeros(30)
         for i, val in zip(unique_vals_rehab, prob_delay_rehab):
             new_array_rehab[i] = val
-        
+
         new_array_rehab[:min_occupancy_rehab] = 1.0
-        
+
         result_list_rehab.append(new_array_rehab)
-    
+
     return np.array(result_list_asu), np.array(result_list_rehab)
+
 
 def combine_occup_results(rep_results):
     """Combine the occupancy frequency results from multiple simulation runs.
@@ -735,29 +728,26 @@ def combine_occup_results(rep_results):
     """
     result_list_asu = []
     result_list_rehab = []
-    
-    max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
-    max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
-    
+
     for rep_result in rep_results:
-        relative_freq_asu = rep_result['relative_freq_asu']
-        unique_vals_asu = rep_result['unique_vals_asu']
-        
-        new_array_asu = np.zeros(max_occupancy_asu + 1)
+        relative_freq_asu = rep_result["relative_freq_asu"]
+        unique_vals_asu = rep_result["unique_vals_asu"]
+
+        new_array_asu = np.zeros(30)
         for i, val in zip(unique_vals_asu, relative_freq_asu):
             new_array_asu[i] = val
-        
+
         result_list_asu.append(new_array_asu)
-        
-        relative_freq_rehab = rep_result['relative_freq_rehab']
-        unique_vals_rehab = rep_result['unique_vals_rehab']
-        
-        new_array_rehab = np.zeros(max_occupancy_rehab + 1)
+
+        relative_freq_rehab = rep_result["relative_freq_rehab"]
+        unique_vals_rehab = rep_result["unique_vals_rehab"]
+
+        new_array_rehab = np.zeros(30)
         for i, val in zip(unique_vals_rehab, relative_freq_rehab):
             new_array_rehab[i] = val
-        
+
         result_list_rehab.append(new_array_rehab)
-    
+
     return np.array(result_list_asu), np.array(result_list_rehab)
 
 

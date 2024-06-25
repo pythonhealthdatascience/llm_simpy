@@ -43,12 +43,14 @@ parts:
         - file: notebooks/02_CCU/01_perplexity/19_iteration
         - file: notebooks/02_CCU/01_perplexity/20_iteration
         - file: notebooks/02_CCU/01_perplexity/21_iteration
+        - file: notebooks/02_CCU/01_perplexity/22_iteration
     - caption: Stroke + Rehab model
       chapters:
       - file: notebooks/03_stroke/01_asu_rehab_model
       - file: notebooks/03_stroke/02_auto_testing
       - file: notebooks/03_stroke/03_manual_testing
       - file: notebooks/03_stroke/04_run_script
+      - file: notebooks/03_stroke/05_interface
       - file: notebooks/03_stroke/04_asu_rehab_prompts
         sections:
         - file: notebooks/03_stroke/01_perplexity/01_iteration
@@ -78,6 +80,10 @@ parts:
         - file: notebooks/03_stroke/01_perplexity/25_iteration
         - file: notebooks/03_stroke/01_perplexity/26_iteration
         - file: notebooks/03_stroke/01_perplexity/27_iteration
+        - file: notebooks/03_stroke/01_perplexity/28_iteration
+        - file: notebooks/03_stroke/01_perplexity/29_iteration
+        - file: notebooks/03_stroke/01_perplexity/30_iteration
+        - file: notebooks/03_stroke/01_perplexity/31_iteration
     - caption: Discussion
       chapters:
       - file: notebooks/04_discussion/01_license
