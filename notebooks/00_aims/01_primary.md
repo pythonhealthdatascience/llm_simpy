@@ -1,10 +1,11 @@
 # Primary aims
 
-Our aim is to use LLMs as a tool to simplify, speed up, and add value to the process of recreating a simulation model reported in the literature.  We note that due to the time involved in coding a DES model, in many cases the lack of access to a computer model is a reuse barrier to an individual researcher or NHS professional with specialist simulation knowledge.   
+Our study is focussed on the feasibility of prompting LLMs to support the coding and recreation of simulation models in health. By recreation we mean that the design of a discrete-event simulation model is based on model documentation reported in an academic journal article. Recreations will be in the Python simulation package `simpy`. To test the feasibility, we aim to write no Python or `simpy` code representing model logic (arrival processes, queuing, activities, sampling, balking etc) manually. We will instead engineer plain English prompts for an LLM and use the generated code instead. As the recreated model is code based, and potentially not user friendly for individuals not trained in Python, we will also investigate prompting an LLM to generate a simple browser based user interface.  Our primary research objectives are:
 
-This is early research to check that our proposal works in principle and pilot the approach with a small number of models. Our long-term aim is to provide guidance (e.g. the form and language used in queries), opportunities, challenges, risks to validity, and limitations in the use of LLMs to support recreating models to enable reproduction of results, models reuse and enhance education.
-
-1. Given a set of engineered prompts describing a DES model, establish if it is feasible to use an LLM to generate a python and simpy model that is functional and passes verification tests designed by a human user.
+1. Given a set of engineered prompts describing a DES model, establish if it is feasible to use an LLM to generate a Python and `simpy` model that is functional and passes verification tests designed by a human user.
 2. Given a set of engineered prompts of a user interface, establish if it feasible to use an LLM to generate a streamlit web app interface to a simpy model that can pass verification tests designed by a human user.
-3. Pilot using a LLM to support the recreation of a healthcare DES model identified in the literature.
+3. Pilot using a LLM to support the recreation of two healthcare DES models identified in the literature.
 4. Pilot generating a contemporary user interface to increase accessibility.
+5. Test to what degree the study can be reproduced by another modeller.
+
+There is much interest in LLMs and the potential for modelling support. Our long-term aim is to provide guidance (e.g. the form and language used in prompts), opportunities, challenges, risks to validity, and limitations in the use of LLMs to support recreating models to enable reproduction of results, models reuse and enhance education.
