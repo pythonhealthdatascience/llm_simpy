@@ -1,0 +1,1 @@
+The streamlit script contains a bug when the length of the results arrays passed to the plotting functions is more or less than 30.  Fix the script so that the a dynamic size arange is passed. Show all code in the script.
