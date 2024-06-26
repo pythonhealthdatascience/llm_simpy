@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
 ## Recreation plan and best practice code organisation
 
-The number of modelling iterations needed to recreate the models was not known in advance. Instead we read the articles reporting the model designs and constructed a general plan that ordered and batched iterations into 11 aims of model recreation. {numref}`table-model-building` details the ordered aims of the model recreation process along with a description and examples of changes to the model that could be expected.  Our aims took us from modelling of arrivals of patients and patient classes (e.g. types of stroke, or unplanned emergencies versus elective patients) through to user interface allowing for basic experimentation.  We believe this mirrors how recreation of a DES model would take place regardless of it an LLM was used. 
+The number of modelling iterations needed to recreate the models was not known in advance. Instead we read the articles reporting the model designs and constructed a general plan that ordered and batched iterations into 12 aims of model recreation. {numref}`table-model-building` details the ordered aims of the model recreation process along with a description and examples of changes to the model that could be expected.  Our aims took us from modelling of arrivals of patients and patient classes (e.g. types of stroke, or unplanned emergencies versus elective patients) through to user interface allowing for basic experimentation. We believe this mirrors how recreation of a DES model would take place regardless of it an LLM was used. 
 
 ## General approach to model building
 
@@ -77,6 +77,7 @@ The number of modelling iterations needed to recreate the models was not known i
 | 9       | Output analysis procedures                    | Charts and summary tables                                                                                     |
 | 10      | Common random numbers                         | Allocate unique random number stream to each distribution                                                     |
 | 11      | User interface                                | A web browser based interface for the model. See {cite}`monks2023improving`                                   |
+| 12      | Final bug fixes                               | Patch any remaining bugs identified by a 2nd modeller                                   |
 ```
 To optimise organisation and usability of the `simpy` simulation model we adopted the approach of {cite:p}`monks2023improving` in aims 3, 8 and 11.  The result is that model logic is separated from parameters using an `Experiment` class (used to setup "what-if" experiments).  The `Experiment` class is used in combination with a multiple replications wrapper function to generate results.  This simple organisation enables quick integration with Python web app frameworks such as `streamlit` to make models usable by a wider group of people.
 
