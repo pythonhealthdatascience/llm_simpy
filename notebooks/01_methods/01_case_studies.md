@@ -12,6 +12,15 @@ The model was coded in VBA and has never been published online to our knowledge.
 
 The model represents a Critical (Intensive) Care Unit (CCU). It consists of six classes of entity that arrive following varying static distributions.  These arrivals are either unplanned (emergency) or planned (elective surgery) who share a total of 24 beds.  Unplanned emergency patients are prioritised for critical care beds.  Elective patient balk (a cancelled elective operations) if no beds are available. Patient classes have their own treatment time distributions (length of stay in the CCU).  After discharge a deterministic bed turnaround time is included to allow for intensive cleaning. The aim of the study was to explore capacity requirements and related scenarios and their impact on the number of cancelled operations. A warm-up period and multiple replications are employed.
 
+```{figure} ../../images/critical_care_design.png
+---
+name: ccu_fig
+---
+Logic diagram for design of CCU model
+```
+
+
+
 ## Case 2: Stroke Pathway Capacity Planning Model
 
 The second case study is a [2016 publication in BMC Health Services Research](https://bmchealthservres.biomedcentral.com/articles/10.1186/s12913-016-1789-4):
