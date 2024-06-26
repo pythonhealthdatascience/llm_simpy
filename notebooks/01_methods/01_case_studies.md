@@ -29,4 +29,11 @@ The second case study is a [2016 publication in BMC Health Services Research](ht
 
 The model was coded in the commercial simulation package Simul8 and has never been published online. The authors present a simple generic model to support health services plan to acute stroke ward, rehabilitation ward, and (optionally), early support discharge capacity (ESD). The model was published prior to reporting guidelines for DES, but contains a details appendix allowing for recreation of the model (and uses simple parameters and equations). 
 
-The model allows users to specify a population of stroke, transient ischaemic attack (TIA; or mini-stroke), complex neurological, and other patient types that use acute and rehabilitation services. The patient classes have their own external inter-arrival distributions to acute and rehabilitation services, transfer probabilities between services and length of stay distributions (where first sub division occurs to model ESD versus non-ESD patients).  The model takes an infinite capacity approach to capacity planning and estimates the probability of delay. A warm-up period and multiple replications are employed.  It has a clear logic diagram and good documentation of parameters in the main article and an appendix.
+The model allows users to specify a population of stroke, transient ischaemic attack (TIA; or mini-stroke), complex neurological, and other patient types that use acute and rehabilitation services. The patient classes have their own external inter-arrival distributions to acute and rehabilitation services, transfer probabilities between services and length of stay distributions (where first sub division occurs to model ESD versus non-ESD patients).  The model takes an infinite capacity approach to capacity planning and estimates the probability of delay. A warm-up period and multiple replications are employed.  It has a clear logic diagram and documentation of parameters in the main article and an online appendix.  The ESD modelling is not used or documented in the article we therefore chose to simplify the design and focus on the acute stroke and rehabilitation units; although we aimed for model setup to be simple to extend for ESD capacity modelling.
+
+```{figure} ../../images/stroke_rehab_design.png
+---
+name: ccu_fig
+---
+Logic diagram for design of the acute stroke and community rehabiliation capacity planning model
+```
