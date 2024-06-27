@@ -27,6 +27,7 @@ parts:
         - file: notebooks/02_CCU/06_stress/04_experimentation
         - file: notebooks/02_CCU/06_stress/05_implementation
         - file: notebooks/02_CCU/06_stress/06_code_access
+      - file: notebooks/02_CCU/07_comparison
       - file: notebooks/02_CCU/02_ccu_prompts
         sections:
         - file: notebooks/02_CCU/01_perplexity/00_iteration
@@ -93,7 +94,9 @@ parts:
         - file: notebooks/03_stroke/01_perplexity/29_iteration
         - file: notebooks/03_stroke/01_perplexity/30_iteration
         - file: notebooks/03_stroke/01_perplexity/31_iteration
+    - caption: Results
+      chapters:
+      - file: notebooks/04_results/00_model_comparison
     - caption: Discussion
       chapters:
-      - file: notebooks/04_discussion/00_model_comparison
-      - file: notebooks/04_discussion/01_license
+      - file: notebooks/05_discussion/01_license
