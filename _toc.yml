@@ -19,6 +19,14 @@ parts:
       - file: notebooks/02_CCU/03_manual_testing
       - file: notebooks/02_CCU/04_run_script
       - file: notebooks/02_CCU/05_interface
+      - file: notebooks/02_CCU/06_stress
+        sections:
+        - file: content/06_stress/01_objectives
+        - file: content/06_stress/02_logic
+        - file: content/06_stress/03_data
+        - file: content/06_stress/04_experimentation
+        - file: content/06_stress/05_implementation
+        - file: content/06_stress/06_code_access
       - file: notebooks/02_CCU/02_ccu_prompts
         sections:
         - file: notebooks/02_CCU/01_perplexity/00_iteration
@@ -44,6 +52,7 @@ parts:
         - file: notebooks/02_CCU/01_perplexity/20_iteration
         - file: notebooks/02_CCU/01_perplexity/21_iteration
         - file: notebooks/02_CCU/01_perplexity/22_iteration
+    
     - caption: Stroke + Rehab model
       chapters:
       - file: notebooks/03_stroke/01_asu_rehab_model
