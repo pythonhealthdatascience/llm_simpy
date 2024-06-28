@@ -83,6 +83,8 @@ To optimise organisation and usability of the `simpy` simulation model we adopte
 
 To enable both repeatable replications and variance reduction between experiments, we chose to implement common random number (CRN) streams in our models; i.e. each random statistical distribution used for sampling has its own unique controllable pseudo random number stream {cite:p}`Davies2007`.  This is inline with case study 2 that used Simul8 that implements CRN. However, we note that case study 1 was implemented in VBA and it is unclear if CRN streams were implemented by the authors. We aimed to manage all random sampling through the `numpy.random` module and the PCG-64 pseudo-random number generator. For the pilot we followed a simple approach where the replication number was used to spawn $n$ independent random number streams.
 
+We also aimed to generated code that organised models as Python classes (e.g. a Critical Care Unit model class).  We do not claim this approach improves models above the functional form we demonstrate above. However, our experience is that organising models as classes simplifies testing over a project.
+
 Python code should follow coding standards such as PEP8 and PEP257.  For the pilot we chose to relax these standards to reduce the number of lines the LLMs had to generate (in terms of line wrapping and documentation). After all iterations were completed we used the tool `black` to autoformat the code to meet PEP8 standards.
 
 
