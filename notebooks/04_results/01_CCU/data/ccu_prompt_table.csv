@@ -1,0 +1,24 @@
+Iteration,Added functionality,Stage 1,Stage 2,Difference
+1,Unplanned arrivals,1,4,3
+2,Add treatment,1,3,2
+3,Elective patients,2,2,0
+4,Organise input parameters,2,2,0
+5,Add a warm-up period,1,1,0
+6,Elective cancellations (KPI),1,1,0
+7,Bed Utilisation (KPI),2,2,0
+8,Waiting time (KPI),1,2,1
+9,Bed occupancy (KPI),1,3,2
+10,Patient count (KPI),1,3,2
+11,Multiple replications (1),1,1,0
+12,Multiple replications (2),1,1,0
+13,Multiple replications (3),1,1,0
+14,Summarise results,1,1,0
+15,Common random numbers (1),1,1,0
+16,Common random numbers (2),1,1,0
+17,Common random numbers (3),1,2,1
+18,Common random numbers (4),1,1,0
+19,Batching experiments,1,1,0
+20,streamlit interface (1),1,1,0
+21,streamlit interface (2),1,1,0
+22,streamlit interface (3),1,1,0
+23,Bug fix,1,0,-1
