@@ -2,12 +2,36 @@
 
 ## Prompts versus academic article write-up
 
-Our early 
+A naive approach to work with LLMs to recreate DES model's is to directly copy-paste text from the manuscript (along with instructions to translate the logic into a Python model) into its chat interface.  Although potentially time efficient, we argue this is not an effective approach due both the implicit healthcare process and modelling knowledge that human written narrative may contain. As a simple example consider the folloing extert describing balking of elective patients from our critical care case study (Griffith's et al section 2.1):
+
+*If an arriving patient finds that all beds are occupied, they are sent to a queue. There are two queues built into the model, the ‘Unplanned Admissions’ queue and the ‘Planned Admissions’ queue. The patients in the ‘Planned Admissions’ queue—that is the Elective surgery patients—have their surgery cancelled and are then sent home. The patients in the ‘Unplanned Admissions’ queue wait until a bed becomes available.* Griffiths et al. 2010
+
+A human reader of this text may understand the context and logic exactly ; especially if they have viewed a logic diagram of the model beforehand. On the other hand an LLM prompted in this was is less likely to produce consistent models due to the mixing of patient types in the discussion and lack of precision. 
+
+An alternative approach to use an LLM is to construct (engineer) a prompt for the LLM with the aim of being more precise. For example, if we focus on elective surgery we would construct a prompt to clarify the implicit know:
+
+1. Instruct the LLM to add a new arrival source to the model for elective surgery patients
+2. Precisely define which resources are used by the elective patients on arrival and if these are shared with other types of patient
+3. Identify the **outcome** logic if all beds are in use versus if they are not all in use.
+
+An example subsequent prompt would look as follows:
+
+```
+Add a new arrival source to the CCU: Elective surgery
+
+Elective surgery patients are modelled as a separate process from the unplanned admissions, but share the critical care bed resources. 
+
+As an elective patient arrives to the CCU a check is made on the number of critical care beds available.  There are two outcomes from this check
+
+Outcome 1: the number of beds in use is equal to the total number of beds available. In this case the elective patient leaves the model immediately. This is called a "cancelled operation" event and should be reported to the user.
+
+Outcome 2. the number of beds in use is less than the total number of beds available. In this case the elective patient requests a critical care bed, is treated, and is then discharged. 
+```
 
 
 ## Common tokens
 
-In a health care simulation study, stakeholders and modellers may use multiple terms to refer to the same concept.  For example, in the terms treatment time, treatment duration, and length of stay may be used interchangeably in a conversation or in a written article.  We aimed to make our prompts as specific as possible in order to obtain the iteration of the model that met our design. We therefore attempted to use a common token throughout an individual prompt and across iterations. 
+In a health care simulation study, stakeholders and modellers may use multiple terms to refer to the same concept.  For example, in the terms treatment time, and length of stay may be used interchangeably in a conversation or in a written article.  We aimed to make our prompts as specific as possible in order to obtain the iteration of the model that met our design. We therefore attempted to use a common token throughout an individual prompt and across iterations.  We did allow for shortening of tokens within prompts. For example, if we had introduced the concept of "critical care beds" resources and the model had no other ambiguous resource names we allowed our prompts to refer to "beds".
 
 ## Initial prompt
 
