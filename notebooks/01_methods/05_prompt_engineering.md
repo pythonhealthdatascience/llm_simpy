@@ -17,11 +17,11 @@ An alternative approach to use an LLM is to construct (engineer) a prompt for th
 An example subsequent prompt would look as follows:
 
 ```
-Add a new arrival source to the CCU: Elective surgery
+Add a new arrival source to the CCU: Elective surgery patients.
 
 Elective surgery patients are modelled as a separate process from the unplanned admissions, but share the critical care bed resources. 
 
-As an elective patient arrives to the CCU a check is made on the number of critical care beds available.  There are two outcomes from this check
+As an elective patient arrives to the CCU a check is made on the number of critical care beds available.  There are two outcomes from this check:
 
 Outcome 1: the number of beds in use is equal to the total number of beds available. In this case the elective patient leaves the model immediately. This is called a "cancelled operation" event and should be reported to the user.
 
