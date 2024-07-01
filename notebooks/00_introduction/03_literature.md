@@ -4,13 +4,13 @@
 
 ## Generative AI, Large Language Models and Chatbot AI
 
-Generative AI, unlike traditional supervised machine learning, is designed to create new content such as text, art, music, or code. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, which underpins models like ChatGPT, is a prominent example of an LLM. GPT models have grown significantly in size over time, with each iteration increasing in parameter count (and subsequent storage requirements). For example, GPT-3, has 175 billion parameters (i.e. weights within the neural network architecture) [CITATION NEEDED]. 
+Generative AI, unlike traditional supervised machine learning, is designed to create new novel artefacts such as text, art, music, or code [CITATION needed]. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, which underpins models like ChatGPT, is perhaps the most well known example of an LLM. GPT models all built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text {cite:p}`brown2020languagemodelsfewshotlearners`. GPT-1 was introduced in 2018 and consisted of 117 million parameters {cite:p}`Radford2018ImprovingLU`. The models have grown significantly in size over time, with each iteration increasing in parameter count (and subsequent storage requirements). For example, GPT-3, has 175 billion parameters i.e. weights within the neural network architecture. 
 
-Since 2022, and at the time of writing, public access to LLMs has been made possible via general purpose Chatbot AI tools such as ChatGPT, Perplexity.AI, and Google's Gemini. These LLMs are trained on large amounts of curated text data (including code) from the internet, allowing them to understand and generate human-like text (and code) across a wide range of tasks. ChatGPT, developed by OpenAI, uses the GPT architecture and has been through multiple iterations (GPT-3, GPT-3.5, GPT-4). Perplexity AI uses a similar transformer-based model, potentially incorporating multiple language models including GPT variants. Google's Gemini is a multimodal model designed to work across text, images, audio, and video.  The chatbot's discussed so far are proprietary models. An open source alternative is Meta's Llama. The Llama series has evolved rapidly, with Llama 3 released in April 2024. Llama's architecture is similar to other transformer-based models but aims for efficiency, allowing smaller models to achieve competitive performance. 
+Since 2022, and at the time of writing, wide scale public access to LLMs has been made possible via general purpose Chatbot AI tools such as ChatGPT, Perplexity.AI, and Google's Gemini. The underlying LLMs are trained on large amounts of curated text data (including code) from the internet (although the exact details of data are unknown), allowing them to understand and generate human-like text (and code) across a wide range of tasks. ChatGPT, developed by OpenAI, uses the GPT architecture and has been through multiple iterations (GPT-3, GPT-3.5, GPT-4). Perplexity.AI uses a similar transformer-based model, potentially incorporating multiple language models including GPT variants. Google's Gemini is a multimodal model designed to work across text, images, audio, and video.  The chatbot's discussed so far are proprietary models. An open source alternative is Meta's Llama. The Llama series has evolved rapidly, with Llama 3 released in April 2024. Llama's architecture is similar to other transformer-based models but aims for efficiency, allowing smaller models to achieve competitive performance. 
 
-The overall architecture and training of these models is complex and is not fully transparent given the commercial nature of the companies that create and operate them (at huge cost). In general terms of the models discussed employ techniques like unsupervised pre-training on large datasets, followed by fine-tuning and reinforcement learning from human feedback (RLHF). This latter reinforcement learning is achieved by humans rating responses from the model. It aims to help Chatbot AI's align their output with the human values and intentions of their prompts (the so called alignment problem). This process attempts to filter out inappropriate or offensive content while enhancing the models' ability to provide a relevant response. 
+The overall architecture and training of these models is complex and is not fully transparent given the commercial nature of the companies that create and operate them (at huge cost). In general terms, the models discussed employ techniques such as unsupervised pre-training on large datasets, followed by fine-tuning and reinforcement learning from human feedback (RLHF). This latter reinforcement learning is achieved by humans rating responses output by the model. It aims to help Chatbot AI's tools align the output with the human values and intentions of their prompts (the so called alignment problem). This process attempts to filter out inappropriate or offensive content while enhancing the models' ability to provide a relevant response. 
 
-Chatbot AI tools offer user-friendly "chat" interfaces, allowing humans to interact with them using natural language. They are available in both free and paid tiers, with advanced versions (e.g. at the time of writing GPT-4 for ChatGPT and Perplexity AI, or advanced tiers for Gemini) offering enhanced capabilities.  While LLMs themselves have no memory a chatbot AI has a context window or thread allowing user to interact iteratively with an LLM within a larger context. These contexts have limits and  
+Chatbot AI tools offer user-friendly "chat" interfaces, allowing humans to interact with them using natural language. They are available in both free and paid tiers, with advanced versions (e.g. at the time of writing GPT-4 for ChatGPT and Perplexity AI, or advanced tiers for Gemini) offering enhanced capabilities.  While LLMs themselves have no memory a chatbot AI tool has a context window or thread allowing user to interact iteratively with an LLM within a larger history/context. These size restrictions on these context windows varies with each chatbot AI tool, and 
 
 
 
@@ -37,11 +37,7 @@ The output from a LLM is then refined by Reinforcement Learning from Human Feedb
 {cite:p}`jackson_2024`
 {cite:p}`Akhavan_2024`
 
-## References
 
-```{bibliography}
-:filter: docname in docnames
-```
 
 
 ## Notes
@@ -95,3 +91,9 @@ title brainstorming:
 FOR EDUCATION IN M&S**
 * consider how generative AI will affect simulation education and how teaching in hr
 the field should adapt to accomodate and exploit it.  One such option is student and AI teams where the teams works over a number of iterations to build a computer simulation model. A hypothetical example in NetLogo is presented.
+
+## References
+
+```{bibliography}
+:filter: docname in docnames
+```

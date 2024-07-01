@@ -5,6 +5,7 @@ parts:
       chapters:
       - file: notebooks/00_introduction/01_primary.md
       - file: notebooks/00_introduction/02_secondary.md
+      - file: notebooks/00_introduction/03_literature
     - caption: Methods
       chapters:
       - file: notebooks/01_methods/01_case_studies
