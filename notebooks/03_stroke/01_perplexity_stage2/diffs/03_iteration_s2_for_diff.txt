@@ -1,0 +1,2 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 03_iteration_s2.ipynb diffs/03_iteration_s2_for_diff.ipynb
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 
