@@ -1,6 +1,6 @@
 # Related literature
 
-Before reviewing relevant generative AI research for simulation, we briefly define generative AI and describe popular LLMs and human interaction with them via Chatbot AI tools.  Table 1 summarises the key concepts.
+Before reviewing relevant generative AI research for simulation, we briefly define generative AI and describe popular LLMs and human interaction with them via Chatbot AI tools.  {numref}`key_concepts` summarises the key concepts.
 
 ## Generative AI, LLMs, and Chatbot AI
 
@@ -12,18 +12,33 @@ Human interaction with these models is via a user-friendly chat interface. The u
 
 To mimic creativity, LLMs include an element of randomness in the generation of responses.  This randomness is typically controlled by a "temperature" parameter, where higher values increase variability in outputs, while lower values produce more deterministic results. The use of randomness allows LLMs to generate diverse and creative solutions, but it also means that given the same prompt, an LLM may produce different code outputs across multiple runs. This variability poses challenges for reproducibility in contexts such as code generation for simulation models, where consistent and replicable results are important. By default Chatbot AI tools may not offer direct user control over temperature.
 
-Given the creativity and randomness used in generative AI, the final important concept to define is the formation of prompts.  This has given rise to the discipline of *prompt engineering*: the process of writing a prompt  that results in the most effective LLM performance {cite:p}`liu2021pretrainpromptpredictsystematic`. This is is very recent area of research and there is not yet a consensous on the most effective approaches although various patterns are available {cite:p}`white2023promptpatterncatalogenhance`. For example, *1-shot* or *few-shot* learning where the prompt includes 1 or more simple examples of the task to clarify the context for the LLM.
+Given the creativity and randomness used in generative AI, the final important concept to define is the formation of prompts.  This has given rise to the discipline of *prompt engineering*: the process of writing a prompt  that results in the most effective LLM performance {cite:p}`liu2021pretrainpromptpredictsystematic`. This is is very recent area of research and there is not yet a consensus on the most effective approaches although various patterns are available {cite:p}`white2023promptpatterncatalogenhance`. For example, *1-shot* or *few-shot* learning where the prompt includes 1 or more simple examples of the task to clarify the context for the LLM.
 
-| Topic | Summary |
-|-------|---------|
-| Generative AI | AI models designed to create novel digital content such as text, images, music, or code. |
-| Large Language Models (LLMs) | A subset of generative AI specializing in processing and generating human-like text. |
-| Transformer Architecture | Neural network design using self-attention mechanisms to process and generate text. |
-| Chatbot AI | User-friendly interfaces built on LLMs for interactive communication with humans. |
-| Context Window | The amount of previous conversation an LLM can consider when generating responses. |
-| Alignment Problem | The challenge of ensuring AI outputs align with human values and intentions. |
-| Temperature | A parameter controlling the randomness and creativity in LLM outputs. |
-| Prompt Engineering | The process of crafting effective inputs to elicit desired outputs from LLMs. |
+```{list-table} Key Concepts in Generative AI
+:header-rows: 1
+:widths: 30 70
+:name: key_concepts
+
+* - **Topic**
+  - Summary
+* - **Generative AI**
+  - AI models designed to create novel digital content such as text, images, music, or code.
+* - **Large Language Models (LLMs)**
+  - A subset of generative AI specializing in processing and generating human-like text.
+* - **Transformer Architecture**
+  - Neural network design using self-attention mechanisms to process and generate text.
+* - **Chatbot AI**
+  - AI-powered conversational interfaces that use LLMs to understand and generate human-like responses in real-time interactions.
+* - **Context Window**
+  - The amount of previous conversation an LLM can consider when generating responses.
+* - **Alignment Problem**
+  - The challenge of ensuring AI outputs align with human values and intentions.
+* - **Temperature**
+  - A parameter controlling the randomness and creativity in LLM outputs.
+* - **Prompt Engineering**
+  - The process of crafting effective inputs to elicit desired outputs from LLMs.
+
+```
 
 
 ## unused text
