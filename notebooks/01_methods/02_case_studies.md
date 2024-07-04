@@ -33,7 +33,7 @@ The model allows users to specify a population of stroke, transient ischaemic at
 
 ```{figure} ../../images/stroke_rehab_design.png
 ---
-name: ccu_fig
+name: stroke_fig
 ---
 Logic diagram for design of the acute stroke and community rehabiliation capacity planning model
 ```
