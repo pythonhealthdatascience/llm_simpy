@@ -8,7 +8,7 @@ In phase 2, a second modeller repeated the experiment. I.e. they attempted to re
 
 In phase 3, we compared the artefacts generated and experience of working with the LLM to create the simpy models in phase 1 and 2.  
 
-```{figure} ../../images/diagram_experiment_process.png
+```{figure} ../../images/llm_study_process_info_graphic.png
 ---
 height: 500px
 name: experiment_fig
