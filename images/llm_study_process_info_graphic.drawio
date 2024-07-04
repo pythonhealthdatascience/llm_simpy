@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-07-04T14:52:08.195Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0" etag="SmW5mJzSUjIwZc-OJWRZ" version="24.6.4" type="device">
+<mxfile host="app.diagrams.net" modified="2024-07-04T15:10:38.882Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0" etag="CZ6UixvTxtUlYMBl4WsG" version="24.6.4" type="device">
   <diagram name="Page-1" id="w8LWoz87fvtsjzKu688Y">
-    <mxGraphModel dx="2481" dy="1309" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="3384" dy="1785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -17,16 +17,16 @@
           <mxGeometry x="130" y="250" width="260" height="60" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-4" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/arts-graphic-shapes/designer-artist-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="138" y="382.28000000000003" width="52" height="46.72" as="geometry" />
+          <mxGeometry x="148" y="393.74" width="52" height="46.72" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-10" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/clothes-and-accessories/spectacles-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="138" y="338.56" width="52" height="33.32" as="geometry" />
+          <mxGeometry x="148" y="350.02" width="52" height="33.32" as="geometry" />
         </mxCell>
-        <mxCell id="XfSGeymA4cakWY5rj-nf-11" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Read article&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="341.88" width="100" height="30" as="geometry" />
+        <mxCell id="XfSGeymA4cakWY5rj-nf-11" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Read case study article&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="210" y="353.34" width="150" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-12" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Plan and design model&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="187.42" y="396.2" width="180" height="30" as="geometry" />
+          <mxGeometry x="197.42" y="407.65999999999997" width="180" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-20" value="" style="group" vertex="1" connectable="0" parent="1">
           <mxGeometry x="340" y="256.72" width="48.05000000000001" height="46.549999999999955" as="geometry" />
@@ -55,7 +55,7 @@
         <mxCell id="XfSGeymA4cakWY5rj-nf-30" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/diary-icon.png;" vertex="1" parent="1">
           <mxGeometry x="420" y="180" width="34.13" height="45.5" as="geometry" />
         </mxCell>
-        <mxCell id="XfSGeymA4cakWY5rj-nf-31" value="Log observations on LLM output, behaviour, &amp;amp; issues." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="XfSGeymA4cakWY5rj-nf-31" value="Log observations on LLM output, behaviour, usage challenges, &amp;amp; issues." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="460" y="175.5" width="150" height="50" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-32" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/banking-finance/computer-report-icon.png;" vertex="1" parent="1">
@@ -68,13 +68,13 @@
           <mxGeometry x="402" y="306.55" width="278" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-37" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/logistics-shipping-delivery/boxes-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="137.99999999999997" y="444" width="49.42" height="50" as="geometry" />
+          <mxGeometry x="147.99999999999997" y="455.46" width="49.42" height="50" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-38" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Build reproducible Python 3.10 software environment&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="197.42" y="453.93" width="180" height="30" as="geometry" />
+          <mxGeometry x="200" y="465.46" width="180" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-40" value="&lt;div&gt;Automatic test suite&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="756.0999999999999" y="352.28999999999996" width="118.5" height="30" as="geometry" />
+          <mxGeometry x="780.29" y="348.55999999999995" width="118.5" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-41" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/internet-network-technology/robot-line-icon.png;" vertex="1" parent="1">
           <mxGeometry x="596.05" y="350.0199999999999" width="62" height="46.98" as="geometry" />
@@ -86,7 +86,7 @@
           <mxGeometry x="518.18" y="454.29999999999995" width="33.88" height="41.7" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-45" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/tools-equipment-construction/settings-line-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="712.13" y="350.28" width="46.1" height="36.01" as="geometry" />
+          <mxGeometry x="736.32" y="346.54999999999995" width="46.1" height="36.01" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-58" value="" style="endArrow=classic;html=1;rounded=0;curved=1;" edge="1" parent="1" target="XfSGeymA4cakWY5rj-nf-41">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -142,22 +142,22 @@
           <mxGeometry x="11" y="8.279999999999973" width="30" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-74" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/diary-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="718.1099999999999" y="396.2" width="34.13" height="45.5" as="geometry" />
+          <mxGeometry x="736.3199999999999" y="392.47999999999996" width="34.13" height="45.5" as="geometry" />
         </mxCell>
-        <mxCell id="XfSGeymA4cakWY5rj-nf-75" value="README: to run model" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="752.6999999999999" y="403.96" width="133.4" height="30" as="geometry" />
+        <mxCell id="XfSGeymA4cakWY5rj-nf-75" value="DOCS: to run model" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="776.89" y="400.22999999999996" width="133.4" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-76" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/household-and-furniture/housekeeping-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="718.1099999999999" y="449.78" width="42.13" height="40" as="geometry" />
+          <mxGeometry x="736.3199999999999" y="445.19999999999993" width="42.13" height="40" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-77" value="Autoformat Python code" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="756.0999999999999" y="453.92999999999995" width="133.4" height="30" as="geometry" />
+          <mxGeometry x="780.29" y="450.19999999999993" width="133.4" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-79" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/medical-science-lab/laboratory-microscope-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="719.6299999999999" y="494.78" width="39.1" height="42.41" as="geometry" />
+          <mxGeometry x="736.3199999999999" y="489.84" width="39.1" height="42.41" as="geometry" />
         </mxCell>
-        <mxCell id="XfSGeymA4cakWY5rj-nf-80" value="Independent tester" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="741.1999999999999" y="499.7799999999999" width="133.4" height="30" as="geometry" />
+        <mxCell id="XfSGeymA4cakWY5rj-nf-80" value="Independent review of code and tests" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="765.39" y="496.05" width="144.61" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-87" value="" style="group" vertex="1" connectable="0" parent="1">
           <mxGeometry x="536" y="566.72" width="48.05000000000001" height="46.549999999999955" as="geometry" />
@@ -236,8 +236,8 @@
         <mxCell id="XfSGeymA4cakWY5rj-nf-112" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/medical-science-lab/laboratory-microscope-icon.png;" vertex="1" parent="1">
           <mxGeometry x="537.52" y="799.9999999999999" width="39.1" height="42.41" as="geometry" />
         </mxCell>
-        <mxCell id="XfSGeymA4cakWY5rj-nf-114" value="&lt;b&gt;a.) attempt to reproduce internal results&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="128" y="620" width="250" height="30" as="geometry" />
+        <mxCell id="XfSGeymA4cakWY5rj-nf-114" value="&lt;b&gt;a.) attempt to reproduce model &lt;/b&gt;&lt;i&gt;&lt;b&gt;design&lt;/b&gt;&lt;/i&gt;&lt;b&gt; reusing prompts&lt;br&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="128" y="620" width="352" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-122" value="" style="endArrow=classic;html=1;rounded=0;curved=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -276,16 +276,16 @@
           <mxGeometry x="713.93" y="657.25" width="50" height="43.17" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-138" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/communication-chat-call/archive-line-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="823.4000000000001" y="751.5500000000001" width="51.2" height="46.06" as="geometry" />
+          <mxGeometry x="837.7300000000001" y="751.5500000000001" width="51.2" height="46.06" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-139" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/domain-hosting/cloud-data-download-icon.png;" vertex="1" parent="1">
-          <mxGeometry x="656.0499999999998" y="743.1200000000001" width="62" height="54.49" as="geometry" />
+          <mxGeometry x="670.3799999999999" y="743.1200000000001" width="62" height="54.49" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-142" value="Docker file and hosted image" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="627.85" y="807.89" width="122.15" height="32.11" as="geometry" />
+          <mxGeometry x="642.1800000000001" y="807.89" width="122.15" height="32.11" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-143" value="Archive on Zenodo (mint DOI)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="787.8499999999999" y="810.3" width="122.15" height="32.11" as="geometry" />
+          <mxGeometry x="802.2599999999999" y="810.3" width="122.15" height="32.11" as="geometry" />
         </mxCell>
         <mxCell id="XfSGeymA4cakWY5rj-nf-145" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://uxwing.com/wp-content/themes/uxwing/download/internet-network-technology/robot-line-icon.png;" vertex="1" parent="1">
           <mxGeometry x="178" y="179.19999999999996" width="62" height="46.98" as="geometry" />

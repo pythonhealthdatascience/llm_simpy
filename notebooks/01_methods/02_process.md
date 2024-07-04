@@ -13,5 +13,5 @@ In phase 3, we compared the artefacts generated and experience of working with t
 height: 500px
 name: experiment_fig
 ---
-General sequence of activities in model recreation experiment.
+General overview of activities in the DES model recreation experiment using generative AI.
 ```
