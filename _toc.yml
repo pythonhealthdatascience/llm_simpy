@@ -12,8 +12,8 @@ parts:
       - file: notebooks/01_methods/02_case_studies
       - file: notebooks/01_methods/03_recreation
       - file: notebooks/01_methods/04_design
-      - file: notebooks/01_methods/04_testing
       - file: notebooks/01_methods/05_prompt_engineering
+      - file: notebooks/01_methods/06_testing
     - caption: Critical Care Model
       chapters:
       - file: notebooks/02_CCU/00_stress_report
