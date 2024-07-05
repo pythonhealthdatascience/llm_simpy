@@ -1,6 +1,6 @@
 # Procedure overview
 
-Our experimental procedure followed four stages: a *setup and model design* (stage 0), an *prompt engineering and code generation* (stage 1), *internal replication* (stage 2), and *evaluation and preservation* (stage 3). {numref}`experiment_fig` illustrates these stages and the activities conducted in each. We will shortly describe each stage of the study in detail, but here we provide a high level summary.
+Our study followed four stages: a *setup and model design* (stage 0), an *prompt engineering and code generation* (stage 1), *internal replication* (stage 2), and *evaluation and preservation* (stage 3). {numref}`experiment_fig` illustrates these stages and the activities conducted in each. We will shortly describe each stage of the study in detail, but here we provide a high level summary.
 
 ```{figure} ../../images/llm_study_process_info_graphic.png
 ---
@@ -22,7 +22,5 @@ In stage 2, a second modeller replicated stage 1. I.e. they attempted to recreat
 
 ## Stage 3: evaluation and preservation
 
-In phase 3, we compared the artefacts generated and experience of working with the LLM to create the simpy models in phase 1 and 2.  
-
-Stage 2 was an internal test of replication: i.e. a successful replication is when stage 1 and 2 models produce the same results. As we will design the models to use the same seeds and random number generators we aim for identical results; however, we allow a small allowable tolerance of 5% inline with other replication studies.
+In phase 3, we compared the artefacts generated and experience of working with the LLM to create the simpy models in stage 1 and 2.  We defined a successful internal replication to be when stage 1 and 2 models produced the same results. As designed the models to use the same seeds and random number generators we aimed for identical results; however, we allowed a small tolerance of 5% inline with other replication studies [CITATION NEEDED].  
 
