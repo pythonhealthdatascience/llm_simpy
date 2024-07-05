@@ -22,6 +22,10 @@ In stage 2, a second modeller replicated stage 1. I.e. they attempted to recreat
 
 ## Stage 3: evaluation and preservation
 
-In phase 3, we compared the artefacts generated and experience of working with the LLM to create the simpy models in stage 1 and 2.  We defined a successful internal replication to be when stage 1 and 2 models produced the same results. As designed the models to use the same seeds and random number generators we aimed for identical results; however, we allowed a small tolerance of 5% inline with other replication studies [CITATION NEEDED].  
+### Evaluation
+In stage 3, we compared the artefacts generated and experience of working with the LLM to create the simpy models in stage 1 and 2.  We defined a successful internal replication to be when stage 1 and 2 models produced the same results. As designed the models to use the same seeds and random number generators we aimed for identical results; however, we allowed a small tolerance of 5% inline with other replication studies [CITATION NEEDED]. 
 
+The evaluate the use of the LLM for generating the models the modellers from stage 1 and 2 (TM and AH) initially synthesised their experience of prompting the LLM: identifying common successes/failings, general challenges, coding mistakes, and opportunities.  These results were then reviewed and clarified by the two remaining members of the study team.
+
+### Model Preservation
 The final step in stage 3 was to preserve the models we had recreated so that they are available to others to inspect or use. We first created a Dockerfile that allowed us to build a *container* for the models and research compendium (an image of a complete reproducible software environment including operating system for others to run). We then deposited the research compendium in the open science archive Zenodo and obtained a DOI.
