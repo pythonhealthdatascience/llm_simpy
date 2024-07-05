@@ -10,7 +10,7 @@ General overview of activities in the DES model recreation experiment using gene
 ```
 
 ## Stage 0: setup and model design
-In stage 0, we selected two healthcare DES [case studies](./02_case_studies.md). Prior LLM coding studies had focused on very simple coding tasks comprising of 20-30 lines of code. We aimed to increase the complexity of the coding task for the LLM in our study. We selected DES models that consisted of multiple classes of patient (e.g. multiple arrival sources and differing sampling distributions for length of stay), and at least two activities (delays). From experience we estimated that our designs of such models would require between between 200 - 500 lines of Python code. We would still classify these as simple DES models.  We read the academic papers and wrote down a design for a simulation model organised by the STRESS guideline format for reporting models.  Prior studies of reproducing models from journal articles have been challenging due to reporting ambiguities.  We therefore document any simplifications or additional assumptions (e.g. undocumented parameters or logic or removal of a feature) that were made to enable us to design a functioning version of the model reported in the journal article.  Once this was complete we designed a common Python 3.10 software environment (implemented as a conda virtual environment) that could be used in stages 1 to 3 for running the generated code.
+In stage 0, we selected two healthcare DES [case studies](./02_case_studies.md). Prior LLM coding studies had focused on very simple coding tasks comprising of 20-30 lines of code. We aimed to increase the complexity of the coding task for the LLM in our study. We selected DES models that consisted of multiple classes of patient (e.g. multiple arrival sources and differing sampling distributions for length of stay), and at least two activities (delays). From experience we estimated that our designs of such models would require between between 200 - 500 lines of Python code. We would still classify these as simple DES models.  We read the academic papers and wrote down a design for a simulation model organised by the STRESS guideline format for reporting models {cite:p}`stress_guidelines`.  Prior studies of reproducing models from journal articles have been challenging due to reporting ambiguities.  We therefore document any simplifications or additional assumptions (e.g. undocumented parameters or logic or removal of a feature) that were made to enable us to design a functioning version of the model reported in the journal article.  Once this was complete we designed a common Python 3.10 software environment (implemented as a conda virtual environment) that could be used in stages 1 to 3 for running the generated code.
 
 ## Stage 1: prompt engineering and code generation
 
@@ -29,3 +29,9 @@ The evaluate the use of the LLM for generating the models the modellers from sta
 
 ### Model Preservation
 The final step in stage 3 was to preserve the models we had recreated so that they are available to others to inspect or use. We first created a Dockerfile that allowed us to build a *container* for the models and research compendium (an image of a complete reproducible software environment including operating system for others to run). We then deposited the research compendium in the open science archive Zenodo and obtained a DOI.
+
+## References
+
+```{bibliography}
+:filter: docname in docnames
+```
