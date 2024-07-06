@@ -11,8 +11,3 @@ Large language models (LLMs) have opened up new avenues for the healthcare resea
 *  When the original computer model is unavailable, LLMs can now be employed to create a FOSS version based on the model description provided in a journal article. Following thorough testing, this FOSS model could be utilized for comparable research or NHS initiatives, to replicate the study's findings, or to educate others in constructing FOSS models.
 * Certain published models rely on commercial software with restrictive licensing, limited backward compatibility, and usage fees. By leveraging the model description, an alternative FOSS implementation can be developed, archived, and preserved for future use.
 * LLMs can generate comprehensive documentation for the code itself. For instance, after a model has been created, an LLM can be tasked with explaining the code to both Simpy beginners and experienced users who may want to reuse the model.
-
-## Aims
-Our aim is to use LLMs as a tool to simplify, speed up, and add value to the process of recreating a simulation model reported in the literature.  We note that due to the time involved in coding a DES model, in many cases the lack of access to a computer model is a barrier to an individual researcher or NHS professional with specialist simulation knowledge in reusing a model.   
-
-This is early research to check that our proposal works in principle and pilot the approach with a small number of models. Our long-term aim is to provide guidance (e.g. the form and language used in queries), opportunities, challenges, risks to validity, and limitations in the use of LLMs to support recreating models to enable reproduction of results, models reuse and enhance education.

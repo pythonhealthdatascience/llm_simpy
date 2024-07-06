@@ -3,47 +3,89 @@ root: notebooks/front_page
 parts:
     - caption: Aims
       chapters:
-      - file: notebooks/00_aims/01_primary.md
-      - file: notebooks/00_aims/02_secondary.md
+      - file: notebooks/00_introduction/01_primary.md
+      - file: notebooks/00_introduction/02_secondary.md
+      - file: notebooks/00_introduction/03_literature
     - caption: Methods
       chapters:
-      - file: notebooks/01_methods/01_case_studies
-      - file: notebooks/01_methods/02_process
-      - file: notebooks/01_methods/03_recreation
+      - file: notebooks/01_methods/01_overview
+      - file: notebooks/01_methods/02_recreation
+      - file: notebooks/01_methods/03_case_studies
       - file: notebooks/01_methods/04_design
-      - file: notebooks/01_methods/04_testing
+      - file: notebooks/01_methods/05_prompt_engineering
+      - file: notebooks/01_methods/06_testing
     - caption: Critical Care Model
       chapters:
-      - file: notebooks/02_CCU/01_ccu_model
-      - file: notebooks/02_CCU/02_auto_testing
-      - file: notebooks/02_CCU/03_manual_testing
-      - file: notebooks/02_CCU/04_run_script
-      - file: notebooks/02_CCU/05_interface
-      - file: notebooks/02_CCU/02_ccu_prompts
+      - file: notebooks/02_CCU/00_stress_report
         sections:
-        - file: notebooks/02_CCU/01_perplexity/00_iteration
-        - file: notebooks/02_CCU/01_perplexity/01_iteration
-        - file: notebooks/02_CCU/01_perplexity/02_iteration
-        - file: notebooks/02_CCU/01_perplexity/03_iteration
-        - file: notebooks/02_CCU/01_perplexity/04_iteration
-        - file: notebooks/02_CCU/01_perplexity/05_iteration
-        - file: notebooks/02_CCU/01_perplexity/06_iteration
-        - file: notebooks/02_CCU/01_perplexity/07_iteration
-        - file: notebooks/02_CCU/01_perplexity/08_iteration
-        - file: notebooks/02_CCU/01_perplexity/09_iteration
-        - file: notebooks/02_CCU/01_perplexity/10_iteration
-        - file: notebooks/02_CCU/01_perplexity/11_iteration
-        - file: notebooks/02_CCU/01_perplexity/12_iteration
-        - file: notebooks/02_CCU/01_perplexity/13_iteration
-        - file: notebooks/02_CCU/01_perplexity/14_iteration
-        - file: notebooks/02_CCU/01_perplexity/15_iteration
-        - file: notebooks/02_CCU/01_perplexity/16_iteration
-        - file: notebooks/02_CCU/01_perplexity/17_iteration
-        - file: notebooks/02_CCU/01_perplexity/18_iteration
-        - file: notebooks/02_CCU/01_perplexity/19_iteration
-        - file: notebooks/02_CCU/01_perplexity/20_iteration
-        - file: notebooks/02_CCU/01_perplexity/21_iteration
-        - file: notebooks/02_CCU/01_perplexity/22_iteration
+        - file: notebooks/02_CCU/00_stress/01_objectives
+        - file: notebooks/02_CCU/00_stress/02_logic
+        - file: notebooks/02_CCU/00_stress/03_data
+        - file: notebooks/02_CCU/00_stress/04_experimentation
+        - file: notebooks/02_CCU/00_stress/05_implementation
+        - file: notebooks/02_CCU/00_stress/06_code_access
+      - file: notebooks/02_CCU/01_model_stage1
+        sections:
+        - file: notebooks/02_CCU/01_model_stage1/01_ccu_model
+        - file: notebooks/02_CCU/01_model_stage1/02_auto_testing
+        - file: notebooks/02_CCU/01_model_stage1/03_manual_testing
+        - file: notebooks/02_CCU/01_model_stage1/04_run_script
+        - file: notebooks/02_CCU/01_model_stage1/05_interface
+      - file: notebooks/02_CCU/02_model_stage2
+        sections:
+        - file: notebooks/02_CCU/02_model_stage2/01_ccu_model_stage2
+        - file: notebooks/02_CCU/02_model_stage2/02_auto_testing_stage2
+        - file: notebooks/02_CCU/02_model_stage2/03_manual_testing_stage2 
+      - file: notebooks/02_CCU/03_comparison
+      - file: notebooks/02_CCU/04_prompts_stage1
+        sections:
+        - file: notebooks/02_CCU/04_prompts_stage1/00_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/01_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/02_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/03_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/04_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/05_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/06_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/07_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/08_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/09_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/10_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/11_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/12_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/13_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/14_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/15_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/16_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/17_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/18_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/19_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/20_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/21_iteration
+        - file: notebooks/02_CCU/04_prompts_stage1/22_iteration
+      - file: notebooks/02_CCU/05_prompts_stage2
+        sections:
+        - file: notebooks/02_CCU/05_prompts_stage2/00_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/01_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/02_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/03_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/04_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/05_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/06_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/07_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/08_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/09_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/10_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/11_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/12_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/13_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/14_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/15_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/16_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/17_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/18_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/19_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/20_iteration_s2
+        - file: notebooks/02_CCU/05_prompts_stage2/21_iteration_s2
     - caption: Stroke + Rehab model
       chapters:
       - file: notebooks/03_stroke/01_asu_rehab_model
@@ -84,6 +126,9 @@ parts:
         - file: notebooks/03_stroke/01_perplexity/29_iteration
         - file: notebooks/03_stroke/01_perplexity/30_iteration
         - file: notebooks/03_stroke/01_perplexity/31_iteration
+    - caption: Results
+      chapters:
+      - file: notebooks/04_results/01_CCU/00_model_comparison
     - caption: Discussion
       chapters:
-      - file: notebooks/04_discussion/01_license
+      - file: notebooks/05_discussion/01_license
