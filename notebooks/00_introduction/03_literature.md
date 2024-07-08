@@ -17,36 +17,54 @@ Before reviewing relevant generative AI research for simulation, we briefly defi
   - A subset of generative AI specializing in processing and generating human-like text.
 * - **Transformer Architecture**
   - Neural network design using self-attention mechanisms to process and generate text.
-* - **Chatbot AI**
-  - AI-powered conversational interfaces that use LLMs to understand and generate human-like responses in real-time interactions.
-* - **Context Window**
-  - The amount of previous conversation an LLM can consider when generating responses.
-* - **Alignment Problem**
-  - The challenge of ensuring AI outputs align with human values and intentions.
+* - **Zero-Shot Learning**
+  - The ability of a model to perform tasks or make predictions on categories it hasn't explicitly seen during training.
+* - **Model Scaling**
+  - The process of increasing model size (number of parameters) to improve performance and capabilities.
+* - **Hallucination**
+  - The tendency of LLMs to generate plausible-sounding but factually incorrect or logically flawed content.
+* - **Data Contamination**
+  - The overlap of training data with test data, potentially leading to overestimated model performance.
 * - **Temperature**
   - A parameter controlling the randomness and creativity in LLM outputs.
 * - **Prompt Engineering**
   - The process of crafting effective inputs to elicit desired outputs from LLMs.
-* - **Zero-Shot Learning**
-  - The ability of a model to perform tasks or make predictions on categories it hasn't explicitly seen during training.
+* - **Chatbot AI**
+  - AI-powered conversational interfaces that use LLMs to understand and generate human-like responses in real-time interactions.
+* - **Context Window**
+  - The amount of previous conversation an LLM can consider when generating responses.
 * - **RLHF (Reinforcement Learning from Human Feedback)**
   - A technique used to fine-tune LLMs based on human ratings of model outputs.
-* - **Data Contamination**
-  - The overlap of training data with test data, potentially leading to overestimated model performance.
+* - **Alignment Problem**
+  - The challenge of ensuring AI outputs align with human values and intentions.
+
 
 ```
+### Generating novel content using LLMs
 
-Traditional Machine Learning (ML) paradigms, such as classification, train a model to learn patterns within historical labelled data in order to classify new unseen instances. For example, classifying if a brain scan indicates Parkinson's Disease or is healthy. Generative AI models are trained on unlabelled data, and rather than predict or classify their aim is to *create novel digital content* such as text, images, music, or code. In our case this would include the generation of simulation model in Python code. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, which underpin Chatbot AI tools like ChatGPT, is perhaps the most well known example of an LLM. GPT models are built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text {cite:p}`brown2020languagemodelsfewshotlearners, vaswani2023attentionneed`. In simple terms, GPT models are sequence predictors, trained to predict the next token (e.g. a word) in a sequence based on the context of previous tokens. Although sequence prediction itself is useful, a substantive difference of LLMs from traditional ML is *zero-shot learning* - where a model can perform tasks on categories it hasn't explicitly seen during training. This allows LLMs to adapt to new contexts and tasks without additional training, significantly expanding their versatility {cite:p}`brown2020languagemodelsfewshotlearners`. They are a recent innovation: GPT-1 was introduced in 2018 and consisted of 117 million parameters {cite:p}`Radford2018ImprovingLU`. The models have grown significantly in size and capability over time, with each iteration increasing in parameter count (and subsequent cost to train). For example, GPT-3, has 175 billion parameters i.e. weights within the neural network architecture {cite:p}`brown2020languagemodelsfewshotlearners`. The exact specifications of GPT-4 have not been officially confirmed by OpenAI, but it is believed to have up to a trillion parameters {cite:p}`Giabbanelli_GPT_Sim`.
+Traditional Machine Learning (ML) paradigms, such as classification, train a model to learn patterns within historical labelled data in order to classify new unseen instances. For example, classifying if a brain scan indicates Parkinson's Disease or is healthy. Generative AI models are trained on unlabelled data, and rather than predict or classify their aim is to *create novel digital content* such as text, images, music, or code. For example the generation of simulation model in Python code {cite:p}`jackson_2024`. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, which underpins Chatbot AI tools like ChatGPT, is perhaps the most well known example of an LLM. GPT models are built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text {cite:p}`brown2020languagemodelsfewshotlearners, vaswani2023attentionneed`. In simple terms, GPT models are sequence predictors, trained to predict the next token (e.g. a word) in a sequence based on the context of previous tokens. 
 
-Due to the enormous corpus of training data, zero-shot capabilities of LLMs are difficult to evaluate due to contamination of test data {cite:p}`xu2024benchmarkdatacontaminationlarge`. The concept of contamination is analogous to leakage in traditional supervised machine learning {cite:p}`leakage_reference`, i.e., the training data overlaps with test data, accuracy measures are overstated, and the model is simply outputting data it has memorised in training. In the case of LLMs, it is difficult to determine if the training data overlaps with test data and careful evaluations must be designed.
+### Zero-shot learning and model scaling
+
+A key advancement that distinguishes LLMs from traditional ML approaches is their capacity for zero-shot learning - the ability to perform tasks on previously unseen categories without explicit training {cite:p}`brown2020languagemodelsfewshotlearners`. This capability enables LLMs to adapt to novel contexts and tasks, such as generating code based on user specifications, without additional training. The evolution of zero-shot learning has been closely tied to the increasing scale of language models. When GPT-1 was introduced in 2018, it contained 117 million parameters {cite:p}`Radford2018ImprovingLU`. Subsequent iterations have seen substantial growth in model size, with GPT-3 including 175 billion parameters {cite:p}`brown2020languagemodelsfewshotlearners`. The exact specifications of GPT-4 have not been officially confirmed by OpenAI, but it is speculated to contain up to a trillion parameters {cite:p}`Giabbanelli_GPT_Sim`. 
+
+### Challenges: Hallucination and data contamination
+
+Evaluating the zero-shot capabilities of LLMs is challenging due to the potential contamination of test data {cite:p}`xu2024benchmarkdatacontaminationlarge`. The concept of contamination is analogous to leakage in traditional supervised machine learning {cite:p}`leakage_reference`, i.e., the training data overlaps with test data, accuracy measures are overstated, and the model is simply outputting data it has memorised in training. In the case of LLMs, it is difficult to determine if the training data overlaps with test data and careful evaluations must be designed.
+
+A key challenge in the use of LLMs is *hallucination*. LLMs are sequence prediction models: given an input an LLM will always return an output regardless of it is right of wrong. The result is that an LLM will confidently present content that is factually incorrect or logically wrong {cite:p}`huang2023surveyhallucinationlargelanguage`. For example, an LLM might generate plausible-sounding fabricated references in an academic essay, or produce code that appears functional but contains logical errors. Both of these errors may go unnoticed by a user. The causes of hallucination are complex. In the case of coding this may include pre-training of the LLM on code that contains both obvious and subtle bugs.  Active areas of hallucination research include iterative retrieval of information {cite:p}`khot2023_iterative, yao2023_iterative`. Overall it is clear that some level of fact checking or testing must be incorporated into any process that uses content generated by an LLM.
+
+### Randomness and prompt engineering
+
+LLMs include an element of randomness in the generation of responses.  This randomness is typically controlled by a "temperature" parameter, where higher values increase variability in outputs, while lower values produce more deterministic results. The use of randomness allows LLMs to generate diverse and creative solutions, but it also means that given the same prompt, an LLM may produce different code outputs across multiple runs. This variability poses challenges for reproducibility in contexts such as code generation for simulation models, where consistent and replicable results are important. By default Chatbot AI tools may not offer direct user control over temperature.
+
+Given the randomness used in generative AI, and a LLMs tendency to hallucinate, another important concept to define is the formation of prompts. This has given rise to the discipline of *prompt engineering*: the process of writing a prompt  that results in the most effective LLM performance {cite:p}`liu2021pretrainpromptpredictsystematic`. This is is very recent area of research and there is not yet a consensus on the most effective approaches although various patterns are available {cite:p}`white2023promptpatterncatalogenhance`. For example, *1-shot* or *few-shot* learning where the prompt includes 1 or more simple examples of the task to clarify the context for the LLM.
+
+### Fine tuning LLMs and Chatbot AI
 
 Since 2022, and at the time of writing, wide scale public access to LLMs has been made possible by general purpose Chatbot AI tools such as ChatGPT, Perplexity.AI, and Google's Gemini. The underlying LLMs are trained on large amounts of curated web data (including code from sources such as StackOverFlow and GitHub) and fine tuned for chat based human interaction. In general, the tools have been show to understand and generate human-like text (and code) across a wide range of tasks. The overall architecture and training of these models is complex and is not fully known given the commercial nature of the companies that create and operate them (at huge cost). As a general rule, however, LLMs such as GPT-3.5 or 4 are not used as is, instead the models are combined with reinforcement learning from human feedback (RLHF) where a workforce reviews and rates responses output by the model {cite:p}`casper2023RLHFlimitations`. RLHF aims to help Chatbot AI's tools align responses with the human values and the intentions of their prompts (the so called alignment problem). This process attempts to filter out inappropriate or offensive content while enhancing the models' ability to provide a relevant response. 
 
 Human interaction with these models is via a user-friendly chat interface. The underpinning LLM in use varies by free and paid tiers (e.g. at the time of writing ChatGPT offers a free GPT-3.5 or paid GPT-4 tier). While the LLM architectures have no memory of prior prompts a chatbot AI tool has a context window allowing a user to interact *iteratively* with an LLM within a larger history/context of prompts and responses. There are size restrictions on these context windows that varies with each chatbot AI tool and underlying model.
-
-To mimic creativity, LLMs include an element of randomness in the generation of responses.  This randomness is typically controlled by a "temperature" parameter, where higher values increase variability in outputs, while lower values produce more deterministic results. The use of randomness allows LLMs to generate diverse and creative solutions, but it also means that given the same prompt, an LLM may produce different code outputs across multiple runs. This variability poses challenges for reproducibility in contexts such as code generation for simulation models, where consistent and replicable results are important. By default Chatbot AI tools may not offer direct user control over temperature.
-
-Given the creativity and randomness used in generative AI, another important concept to define is the formation of prompts. This has given rise to the discipline of *prompt engineering*: the process of writing a prompt  that results in the most effective LLM performance {cite:p}`liu2021pretrainpromptpredictsystematic`. This is is very recent area of research and there is not yet a consensus on the most effective approaches although various patterns are available {cite:p}`white2023promptpatterncatalogenhance`. For example, *1-shot* or *few-shot* learning where the prompt includes 1 or more simple examples of the task to clarify the context for the LLM.
 
 ## Generative AI and computer simulation
 
