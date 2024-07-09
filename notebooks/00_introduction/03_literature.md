@@ -1,7 +1,5 @@
 # Related literature
 
-I am writing a literature review on generative AI and LLMs.  I've included the draft below.  This includes a summary table in Myst markdown.  Do you have any suggestions to improve it?  Are there any factual inaccuracies in what I have written? I have all the references cited, I have just not included them here. Here is the txt: 
-
 ## Generative AI, LLMs, and Chatbot AI
 
 Before reviewing relevant generative AI research for simulation, we briefly define generative AI and describe popular LLMs and human interaction with them via Chatbot AI tools.  {numref}`key_concepts` summarises the key concepts.
@@ -44,23 +42,21 @@ Before reviewing relevant generative AI research for simulation, we briefly defi
 ```
 ### Generating novel content using LLMs
 
-Traditional Machine Learning (ML) paradigms, such as classification, train a model to learn patterns within historical labelled data in order to classify new unseen instances. For example, classifying if a brain scan indicates Parkinson's Disease or is healthy. Generative AI models are trained on unlabelled data, and rather than predict or classify their aim is to *create novel digital content* such as text, images, music, or code. For example the generation of simulation model in Python code {cite:p}`jackson_2024`. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, which underpins Chatbot AI tools like ChatGPT, is perhaps the most well known example of an LLM. GPT models are built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text {cite:p}`brown2020languagemodelsfewshotlearners, vaswani2023attentionneed`. In simple terms, GPT models are sequence predictors, trained to predict the next token (e.g. a word) in a sequence based on the context of previous tokens. 
+Traditional Machine Learning (ML) paradigms, such as classification, train a model to learn patterns within historical labelled data in order to classify new unseen instances. For example, classifying if a brain scan indicates Parkinson's Disease or is healthy. Generative AI models are trained on unlabelled data, and rather than predict or classify their aim is to *create novel digital content* such as text, images, music, or code. For example the generation of a simple simulation model in Python code {cite:p}`jackson_2024`. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, that underpins AI Chatbot tools like ChatGPT, is perhaps the most well known example of an LLM. GPT models are built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text {cite:p}`brown2020languagemodelsfewshotlearners, vaswani2023attentionneed`. In simple terms, GPT models are sequence predictors, trained to predict the next token (e.g. a word) in a sequence based on the context of previous tokens. 
 
 ### Zero-shot learning and model scaling
 
 A key advancement that distinguishes LLMs from traditional ML approaches is their capacity for zero-shot learning - the ability to perform tasks on previously unseen categories without explicit training {cite:p}`brown2020languagemodelsfewshotlearners`. This capability enables LLMs to adapt to novel contexts and tasks, such as generating code based on user specifications, without additional training. The evolution of zero-shot learning has been closely tied to the increasing scale of language models. When GPT-1 was introduced in 2018, it contained 117 million parameters {cite:p}`Radford2018ImprovingLU`. Subsequent iterations have seen substantial growth in model size, with GPT-3 including 175 billion parameters {cite:p}`brown2020languagemodelsfewshotlearners`. The exact specifications of GPT-4 have not been officially confirmed by OpenAI, but it is speculated to contain up to a trillion parameters {cite:p}`Giabbanelli_GPT_Sim`. 
 
-### Challenges: Hallucination and data contamination
+### Challenges and limitations: data contamination and hallucination
 
 Evaluating the zero-shot capabilities of LLMs is challenging due to the potential contamination of test data {cite:p}`xu2024benchmarkdatacontaminationlarge`. The concept of contamination is analogous to leakage in traditional supervised machine learning {cite:p}`leakage_reference`, i.e., the training data overlaps with test data, accuracy measures are overstated, and the model is simply outputting data it has memorised in training. In the case of LLMs, it is difficult to determine if the training data overlaps with test data and careful evaluations must be designed.
 
-<!-- A key challenge in the use of LLMs is *hallucination*. LLMs are sequence prediction models that prioritise the most probable next word in the sequence, even if it is inaccurate. In more straightforward language, given an input a model will always return an output regardless of it is right of wrong. The result is that an LLM will confidently present content that is factually incorrect or logically wrong {cite:p}`huang2023surveyhallucinationlargelanguage`. For example, an LLM might generate plausible-sounding fabricated references in an academic essay, or produce code that appears functional but contains logical errors. Both of these errors may go unnoticed by a user and have significant consequences, such as wasted time debugging nonsensical code or the spread of misinformation. The causes of hallucination are complex. In the case of coding this may include pre-training of the LLM on code that contains both obvious and subtle bugs.  Active areas of hallucination research include iterative retrieval of information {cite:p}`khot2023_iterative, yao2023_iterative`. Overall it is clear that some level of fact checking or testing must be incorporated into any process that uses content generated by an LLM.
- -->
-A key challenge in the use of LLMs is *hallucination*. LLMs are sequence prediction models that prioritize generating the most probable next word in a sequence, even if it is inaccurate. Simply put, given an input, a model will always produce an output, whether it is correct or not. As a result, an LLM may confidently present content that is factually incorrect or logically flawed {cite:p}`huang2023surveyhallucinationlargelanguage, Ziwei_hallucinations_ref2`.
+A key challenge in the use of LLMs is mitigating the risk of *hallucination*. LLMs are sequence prediction models that prioritize generating the most probable next word in a sequence, even if it is inaccurate. Simply put, given an input, a model will always produce an output, whether it is correct or not. As a result, an LLM may "hallucinate": confidently present content that is factually incorrect, logically flawed, or at odds with the provided training data {cite:p}`huang2023surveyhallucinationlargelanguage, Ziwei_hallucinations_ref2`.
 
 For example, an LLM might generate plausible-sounding but fabricated references in an academic essay or produce code that appears functional but contains logical errors. These errors may go unnoticed by users, and have consequences that vary from minor (e.g. wasted time from debugging nonsensical code) to severe (e.g. incorrect decisions based on the results of a flawed simulation model). The causes of hallucination are complex and varied. In coding, for instance, it might stem from pre-training the LLM on code that contains both obvious and subtle bugs.
 
-Active areas of research to address hallucination include iterative retrieval of information {cite:p}`khot2023_iterative, yao2023_iterative`, that can involve refining outputs through multiple iterations to provide more context. Given the potential for hallucinations, it is crucial to incorporate some form of fact-checking or testing mechanisms in any work that relies on content generated by an LLM.
+Hallucination is a major limitation of generative AI and hence is an active area of research {cite:p}`Ziwei_hallucinations_ref2`. Promising approaches include variations on the theme of iterative retrieval of information {cite:p}`khot2023_iterative, yao2023_iterative`, that can involve refining outputs through multiple iterations each providing more context or fact checking. Another approach is to estimate model uncertainty statistics that can highlight LLM knowledge deficiencies {cite:p}`Farquhar2024`. For the immediate future it seems likely that hallucination will continue to be a major challenge for safe and productive use of generative AI. As such it is crucial to incorporate some form of fact-checking or testing mechanisms in any work that relies on content generated by an LLM.
 
 ### Randomness and prompt engineering
 
@@ -76,6 +72,8 @@ Human interaction with these models is via a user-friendly chat interface. The u
 
 ## Generative AI and computer simulation
 
+## Automated code generation
+
 Recent research has begun to investigate hybrid modelling where generative AI is combined with computer simulation. Several pioneering studies have examined small scale applications and conceptual frameworks {cite:p}`jackson_2024, Akhavan_2024, Shrestha_gpt_explain_model, Giabbanelli_GPT_Sim, plooy_ai_2023`. These studies have spanned discrete-event simulation, system dynamics, conceptual modelling, and model documentation and demonstrate the broad potential of generative AI to computer simulation.
 
 {cite:t}`jackson_2024` explored the potential of using GPT-based models to produce simulation models for inventory and process control in logistics systems. Their research focused on the concept of an "NLP shortcut," which aims to bypass traditional conceptual modelling and coding steps for discrete-event simulation. The study used the OpenAI Davinci Codex (a code based API to the GPT-3 model) to successfully generate simple Python based simulations of logistics systems (e.g. a single-product inventory-control system). The LLM outputs consists of 20-30 lines of Python code implementing simple DES model logic and code to plot model output.  Use of the Codex is incorporated into a framework that included dynamic execution of the generated code and review by a human expert.
@@ -84,11 +82,22 @@ Recent research has begun to investigate hybrid modelling where generative AI is
 
 {cite:t}`plooy_ai_2023` focussed on using ChatGPT (GPT-4) to generate Python code implementing a simple System Dynamics model of a resource bound population in equilibrium. They outline a six step approach to iterative generate a model with ChatGPTs help. Early steps focus on textual information describing equations for stocks and flows that are first manually implemented in the commercial simulation package [iSee Stella Architect](https://iseesystems.com/). The final step converts the generated equations into 32 lines of Python code with outputs verified by comparing the manually created and generated models.
 
-{cite:t}`Giabbanelli_GPT_Sim` is a conceptual study that hypothesised about the potential of LLM application across common simulation tasks. The study focused on four key areas: structuring conceptual models, summarizing simulation outputs, improving accessibility to simulation platforms, and explaining simulation errors with guidance for resolution. For example, 
+### Conceputal modelling
+
+{cite:t}`Giabbanelli_GPT_Sim` is a conceptual study that hypothesised about the potential of LLM application across common simulation tasks. The study focused on four key areas: structuring conceptual models, summarizing simulation outputs, improving accessibility to simulation platforms, and explaining simulation errors with guidance for resolution. For example, the potential to use the emerging capability of LLMs to convert images to text to provide automated explanations of charts of simulation output could benefit both non-experts and people with visual impaired.
 
 {cite:t}`Shrestha_gpt_explain_model` proposed a process to automatically explain simulation models by generative AI to create version a simplified conceptual model text from more complex causal maps. Their approach involved decomposing large conceptual models into smaller parts and then performing Natural Language Generation (NLG) using a fine-tuned GPT-3 model. 
 
-While these studies demonstrate the potential of generative AI in simulation modelling, they also highlight the need for a balanced approach that leverages AI capabilities while maintaining the critical role of human expertise. As the field continues to evolve, further research is needed to explore the full potential of human-AI collaboration in simulation modeling and to address the challenges associated with integrating generative AI into existing simulation practices.
+### Conclusions
+
+Despite the limited body of research, these initial investigations suggest a potential role for generative AI in the future of computer simulation. 
+
+* Role of modeller still vital in planning and verification:
+* Iterative role
+* Not explored issues with hallucination
+* Not explore more complex models.
+
+Further research is needed to explore the integration of generative AI across a wider range of simulation paradigms and to develop robust frameworks for human-AI collaboration in the simulation development process.
 
 
 
