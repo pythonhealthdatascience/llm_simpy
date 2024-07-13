@@ -1,0 +1,77 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 15_iteration_s2.ipynb diffs/15_iteration_s2_for_diff.ipynb
+nbdiff 15_iteration_s2.ipynb diffs/15_iteration_s2_for_diff.ipynb
+--- 15_iteration_s2.ipynb  2024-07-13 04:46:04.199774
++++ diffs/15_iteration_s2_for_diff.ipynb  2024-07-13 09:36:04.668878
+## modified /cells/17/source:
+@@ -2,12 +2,12 @@ class RehabilitationUnit:
+     def __init__(self, env, experiment):
+         self.env = env
+         self.experiment = experiment
+-        self.trace = experiment.params['trace']
+         self.total_arrivals = 0
+         self.patient_counts = {
+             'Stroke': 0,
+             'Complex Neurological': 0,
+-            'Other': 0
++            'Other': 0,
++            'TIA': 0
+         }
+         # Inter-arrival time means (in days)
+         self.stroke_iat_external = experiment.params['rehab_stroke_iat']
+@@ -21,27 +21,18 @@ class RehabilitationUnit:
+ 
+     def stroke_generator(self):
+         while True:
+-            interarrival_time = np.random.exponential(self.stroke_iat_external)
+-            yield self.env.timeout(interarrival_time)
++            yield self.env.timeout(np.random.exponential(self.stroke_iat_external))
+             self.patient_arrival('Stroke')
+-            if self.experiment.params['trace']:
+-                print(f"Time {self.env.now:.2f}: Next Stroke arrival in {interarrival_time:.2f} days")
+ 
+     def complex_neuro_generator(self):
+         while True:
+-            interarrival_time = np.random.exponential(self.complex_neuro_iat_external)
+-            yield self.env.timeout(interarrival_time)
++            yield self.env.timeout(np.random.exponential(self.complex_neuro_iat_external))
+             self.patient_arrival('Complex Neurological')
+-            if self.experiment.params['trace']:
+-                print(f"Time {self.env.now:.2f}: Next Complex Neurological arrival in {interarrival_time:.2f} days")
+ 
+     def other_generator(self):
+         while True:
+-            interarrival_time = np.random.exponential(self.other_iat_external)
+-            yield self.env.timeout(interarrival_time)
++            yield self.env.timeout(np.random.exponential(self.other_iat_external))
+             self.patient_arrival('Other')
+-            if self.experiment.params['trace']:
+-                print(f"Time {self.env.now:.2f}: Next Other arrival in {interarrival_time:.2f} days")
+ 
+     def patient_arrival(self, patient_type):
+         patient_id = self.total_arrivals
+@@ -61,6 +52,8 @@ class RehabilitationUnit:
+             yield from self.stroke_rehab_treatment(patient_id)
+         elif patient_type == 'Complex Neurological':
+             yield from self.complex_neurological_rehab_treatment(patient_id)
++        elif patient_type == 'TIA':
++            yield from self.tia_rehab_treatment(patient_id)
+         else:
+             yield from self.other_rehab_treatment(patient_id)
+ 
+@@ -106,3 +99,16 @@ class RehabilitationUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) completed rehab treatment")
+             print(f" Post-rehab destination: {post_rehab_destination}")
+             print(f" Length of stay: {length_of_stay:.2f} days")
++
++    def tia_rehab_treatment(self, patient_id):
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0, 1])  # Always 'Other' for TIA patients
++        
++        length_of_stay = np.random.lognormal(mean=np.log(18.7**2 / np.sqrt(23.5**2 + 18.7**2)), 
++                                             sigma=np.sqrt(np.log(1 + (23.5**2 / 18.7**2))))
++        
++        yield self.env.timeout(length_of_stay)
++        
++        if self.experiment.params['trace']:
++            print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) completed rehab treatment")
++            print(f" Post-rehab destination: {post_rehab_destination}")
++            print(f" Length of stay: {length_of_stay:.2f} days")
