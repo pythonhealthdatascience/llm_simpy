@@ -1,0 +1,124 @@
+gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 18_iteration_s2.ipynb diffs/18_iteration_s2_for_diff.ipynb
+nbdiff 18_iteration_s2.ipynb diffs/18_iteration_s2_for_diff.ipynb
+--- 18_iteration_s2.ipynb  2024-07-15 04:04:43.468367
++++ diffs/18_iteration_s2_for_diff.ipynb  2024-07-15 06:58:55.707761
+## modified /cells/18/source:
+@@ -26,18 +26,18 @@ class PatientType:
+ 
+ 
+ class AcuteStrokeUnit:
+-    def __init__(self, env, experiment):
++    def __init__(self, env, experiment, rehab_unit):
+         self.env = env
+         self.experiment = experiment
++        self.rehab_unit = rehab_unit
+         self.run_length = experiment.params['run_length']
+         self.total_arrivals = 0
+         self.occupancy = 0
+         self.trace = experiment.params['trace']
+-        
+         self.patient_types = {
+-            name: PatientType(name, 
+-                              params['interarrival_time'], 
+-                              params['post_asu_probabilities'], 
++            name: PatientType(name,
++                              params['interarrival_time'],
++                              params['post_asu_probabilities'],
+                               params['los_params'])
+             for name, params in experiment.params['patient_types'].items()
+         }
+@@ -51,73 +51,71 @@ class AcuteStrokeUnit:
+         while True:
+             interarrival_time = patient_type.generate_interarrival_time()
+             yield self.env.timeout(interarrival_time)
+-            
+             self.total_arrivals += 1
+             patient_type.count += 1
+             patient_id = self.total_arrivals - 1
+-
+             post_asu_destination = patient_type.sample_post_asu_destination()
+ 
+             if self.trace:
+                 print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) arrived")
+-                print(f"  Total arrivals: {self.total_arrivals}")
+-                print(f"  {patient_type.name} arrivals: {patient_type.count}")
+-                print(f"  Post-ASU destination: {post_asu_destination}")
+-                print(f"  Next {patient_type.name} arrival in {interarrival_time:.2f} days")
++                print(f" Total arrivals: {self.total_arrivals}")
++                print(f" {patient_type.name} arrivals: {patient_type.count}")
++                print(f" Post-ASU destination: {post_asu_destination}")
++                print(f" Next {patient_type.name} arrival in {interarrival_time:.2f} days")
+ 
+             self.occupancy += 1
+             if self.trace:
+-                print(f"  Current occupancy: {self.occupancy}")
++                print(f" Current occupancy: {self.occupancy}")
+ 
+             self.env.process(self.acute_treatment(patient_type, patient_id, post_asu_destination))
+ 
+     def acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         if patient_type.name == 'Stroke':
+-            yield from self.stroke_acute_treatment(patient_type, patient_id, post_asu_destination)
++            yield from self.stroke_acute_treatment(patient_id, post_asu_destination)
+         elif patient_type.name == 'TIA':
+-            yield from self.tia_acute_treatment(patient_type, patient_id)
++            yield from self.tia_acute_treatment(patient_type, patient_id, post_asu_destination)
+         elif patient_type.name == 'Complex Neurological':
+-            yield from self.complex_neurological_acute_treatment(patient_type, patient_id)
++            yield from self.complex_neurological_acute_treatment(patient_type, patient_id, post_asu_destination)
+         else:  # Other
+-            yield from self.other_acute_treatment(patient_type, patient_id)
++            yield from self.other_acute_treatment(patient_type, patient_id, post_asu_destination)
+ 
+         self.occupancy -= 1
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) left ASU")
+-            print(f"  Current occupancy: {self.occupancy}")
++            print(f" Current occupancy: {self.occupancy}")
+ 
+-    def stroke_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+-        los = patient_type.sample_length_of_stay(post_asu_destination)
++    def stroke_acute_treatment(self, patient_id, post_asu_destination):
++        los = self.patient_types['Stroke'].sample_length_of_stay(post_asu_destination)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) starting acute treatment")
+-            print(f"  Length of stay: {los:.2f} days")
++            print(f" Length of stay: {los:.2f} days")
+         yield self.env.timeout(los)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) finished acute treatment")
+ 
+-    def tia_acute_treatment(self, patient_type, patient_id):
++    def tia_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) starting acute treatment")
+-            print(f"  Length of stay: {los:.2f} days")
++            print(f" Length of stay: {los:.2f} days")
+         yield self.env.timeout(los)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) finished acute treatment")
+ 
+-    def complex_neurological_acute_treatment(self, patient_type, patient_id):
++    def complex_neurological_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) starting acute treatment")
+-            print(f"  Length of stay: {los:.2f} days")
++            print(f" Length of stay: {los:.2f} days")
+         yield self.env.timeout(los)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) finished acute treatment")
+ 
+-    def other_acute_treatment(self, patient_type, patient_id):
++    def other_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) starting acute treatment")
+-            print(f"  Length of stay: {los:.2f} days")
++            print(f" Length of stay: {los:.2f} days")
+         yield self.env.timeout(los)
+         if self.trace:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) finished acute treatment")
+
++            print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) finished acute treatment")
