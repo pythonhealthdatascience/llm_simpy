@@ -1,0 +1,291 @@
+nbdiff 20_iteration_s2.ipynb diffs/20_iteration_s2_for_diff.ipynb
+--- 20_iteration_s2.ipynb  2024-07-22 01:11:48.960202
++++ diffs/20_iteration_s2_for_diff.ipynb  2024-07-22 04:34:20.001292
+## modified /cells/17/source:
+@@ -3,7 +3,7 @@ class AcuteStrokeUnit:
+         self.env = env
+         self.experiment = experiment
+         self.rehab_unit = rehab_unit
+-        self.run_length = experiment.params['run_length']
++        #self.results_collection_period = experiment.params['results_collection_period']
+         self.total_arrivals = 0
+         self.occupancy = 0
+         self.trace = experiment.params['trace']
+@@ -15,7 +15,6 @@ class AcuteStrokeUnit:
+     def run(self):
+         for patient_type in self.patient_types.values():
+             self.env.process(self.patient_generator(patient_type))
+-        self.env.run(until=self.run_length)
+ 
+     def patient_generator(self, patient_type):
+         while True:
+@@ -38,7 +37,7 @@ class AcuteStrokeUnit:
+ 
+     def acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         if patient_type.name == 'Stroke':
+-            yield from self.stroke_acute_treatment(patient_id, post_asu_destination)
++            yield from self.stroke_acute_treatment(patient_type, patient_id, post_asu_destination)
+         elif patient_type.name == 'TIA':
+             yield from self.tia_acute_treatment(patient_type, patient_id, post_asu_destination)
+         elif patient_type.name == 'Complex Neurological':
+@@ -50,7 +49,7 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) left ASU")
+             print(f" Current occupancy: {self.occupancy}")
+ 
+-    def stroke_acute_treatment(self, patient_id, post_asu_destination):
++    def stroke_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = self.patient_types['Stroke'].sample_length_of_stay(post_asu_destination)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) starting acute treatment")
+@@ -60,7 +59,10 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) finished acute treatment")
+         if post_asu_destination == "Rehab":
+             self.rehab_unit.occupancy += 1
+-            self.env.process(self.rehab_unit.stroke_rehab_treatment(patient_id))
++            self.rehab_unit.arrivals_from_asu +=1
++            self.env.process(self.rehab_unit.rehab_treatment(patient_type, patient_id))
++            if self.trace:
++                print(f" Post-ASU destination (stroke to stroke rehab): {post_asu_destination, patient_id}")
+ 
+     def tia_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+@@ -72,7 +74,10 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) finished acute treatment")
+         if post_asu_destination == "Rehab":
+             self.rehab_unit.occupancy += 1
+-            self.env.process(self.rehab_unit.tia_rehab_treatment(patient_id))
++            self.rehab_unit.arrivals_from_asu +=1
++            self.env.process(self.rehab_unit.rehab_treatment(patient_type, patient_id))
++            if self.trace:
++                print(f" Post-ASU destination (tia to tia rehab): {post_asu_destination, patient_id}")
+ 
+     def complex_neurological_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+@@ -84,7 +89,10 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) finished acute treatment")
+         if post_asu_destination == "Rehab":
+             self.rehab_unit.occupancy += 1
+-            self.env.process(self.rehab_unit.complex_neurological_rehab_treatment(patient_id))
++            self.rehab_unit.arrivals_from_asu +=1
++            self.env.process(self.rehab_unit.rehab_treatment(patient_type, patient_id))
++            if self.trace:
++                print(f" Post-ASU destination (complex to complex rehab): {post_asu_destination, patient_id}")
+ 
+     def other_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay()
+@@ -96,4 +104,7 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) finished acute treatment")
+         if post_asu_destination == "Rehab":
+             self.rehab_unit.occupancy += 1
+-            self.env.process(self.rehab_unit.other_rehab_treatment(patient_id))
++            self.rehab_unit.arrivals_from_asu +=1
++            self.env.process(self.rehab_unit.rehab_treatment(patient_type, patient_id))
++            if self.trace:
++                print(f" Post-ASU destination (other to other rehab): {post_asu_destination, patient_id}")
+
+
+## modified /cells/27/source:
+@@ -1,7 +1,7 @@
+ def run_acute_stroke_unit_model():
+     # Create the experiment
+     experiment = Experiment({
+-        'run_length': 365*5,  # Run for 5 years
++        'results_collection_period': 365*5,  # Run for 5 years
+         'trace': False,  # Set to True if you want to see detailed logs
+         'acute_audit_interval': 1  # Audit every 1 day
+     })
+@@ -16,10 +16,11 @@ def run_acute_stroke_unit_model():
+     asu = AcuteStrokeUnit(env, experiment, rehab_unit)
+ 
+     # Start the audit process for ASU
+-    env.process(experiment.audit_acute_occupancy(env, experiment.params['acute_audit_interval'], asu))
++    env.process(experiment.audit_acute_occupancy(env, experiment.warm_up, experiment.params['acute_audit_interval'], asu, experiment))
+ 
+     # Run the model
+     asu.run()
++    env.run(until=experiment.params['results_collection_period'] + experiment.warm_up)
+ 
+     # Calculate occupancy frequencies of the ASU occupancy
+     rel_freq, cum_freq, unique_vals = calculate_occupancy_frequencies(experiment.asu_occupancy)
+
+## modified /cells/32/source:
+@@ -1,124 +1,35 @@
+-class RehabilitationUnit:
+-    def __init__(self, env, experiment):
+-        self.env = env
+-        self.experiment = experiment
+-        self.trace = experiment.params['trace']
+-        self.total_arrivals = 0
+-        self.arrivals_from_asu = 0 #added by tester
+-        self.patient_counts = {
+-            'Stroke': 0,
+-            'Complex Neurological': 0,
+-            'Other': 0,
+-            'TIA': 0
+-        }
+-        self.occupancy = 0  # New member variable for occupancy
+-        # Inter-arrival time means (in days)
+-        self.stroke_iat_external = experiment.params['rehab_stroke_iat']
+-        self.complex_neuro_iat_external = experiment.params['rehab_neuro_iat']
+-        self.other_iat_external = experiment.params['rehab_other_iat']
+- 
+-    def run(self):    # Start patient generators
+-        self.env.process(self.stroke_generator())
+-        self.env.process(self.complex_neuro_generator())
+-        self.env.process(self.other_generator())   
++def run_rehabilitation_unit_model():
++    experiment = Experiment({
++        'results_collection_period': 365*5,
++        'trace': False,  # Set to True if you want to see detailed logs
++    })
++    env = simpy.Environment()
++    rehab_unit = RehabilitationUnit(env, experiment)
+ 
+-    def stroke_generator(self):
+-        while True:
+-            yield self.env.timeout(np.random.exponential(self.stroke_iat_external))
+-            self.patient_arrival('Stroke')
++    # Initialize the audit of rehab occupancy as a SimPy process
++    env.process(experiment.audit_rehab_occupancy(env, experiment.warm_up, experiment.params['rehab_audit_interval'], rehab_unit, experiment))
+ 
+-    def complex_neuro_generator(self):
+-        while True:
+-            yield self.env.timeout(np.random.exponential(self.complex_neuro_iat_external))
+-            self.patient_arrival('Complex Neurological')
++    # Run the model for the results_collection_period + warm_up
++    rehab_unit.run()
++    env.run(until=experiment.params['results_collection_period'] + experiment.warm_up)
+ 
+-    def other_generator(self):
+-        while True:
+-            yield self.env.timeout(np.random.exponential(self.other_iat_external))
+-            self.patient_arrival('Other')
++    # Calculate occupancy frequencies of the rehab occupancy
++    rel_freq, cum_freq, unique_vals = calculate_occupancy_frequencies(experiment.rehab_occupancy)
+ 
+-    def patient_arrival(self, patient_type):
+-        patient_id = self.total_arrivals
+-        self.total_arrivals += 1
+-        self.patient_counts[patient_type] += 1
+-        self.occupancy += 1  # Increment occupancy
+-        
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) arrived at RU")
+-            print(f" Total arrivals: {self.total_arrivals}")
+-            print(f" {patient_type} arrivals: {self.patient_counts[patient_type]}")
+-            print(f" Current patient counts: {self.patient_counts}")
+-            print(f" Current occupancy: {self.occupancy}")
+-        
+-        self.env.process(self.rehab_treatment(patient_type, patient_id))
++    # Display an occupancy plot for the rehab unit
++    fig, ax = occupancy_plot(rel_freq, unique_vals, x_label="No. of people in rehab")
++    plt.show()
+ 
+-    def rehab_treatment(self, patient_type, patient_id):
+-        if patient_type == 'Stroke':
+-            yield from self.stroke_rehab_treatment(patient_id)
+-        elif patient_type == 'Complex Neurological':
+-            yield from self.complex_neurological_rehab_treatment(patient_id)
+-        elif patient_type == 'TIA':
+-            yield from self.tia_rehab_treatment(patient_id)
+-        else:
+-            yield from self.other_rehab_treatment(patient_id)
+-        
+-        self.occupancy -= 1  # Decrement occupancy
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) left RU")
+-            print(f" Current occupancy: {self.occupancy}")
++    # Calculate the probability of delay for rehab
++    prob_delay = calculate_prob_delay(rel_freq, cum_freq)
+ 
+-    def stroke_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])
+-        
+-        if post_rehab_destination == 'ESD':
+-            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_esd_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_esd_los_std']**2 + self.experiment.params['rehab_stroke_esd_los_mean']**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_esd_los_std']**2 / self.experiment.params['rehab_stroke_esd_los_mean']**2))))
+-        else:
+-            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_other_los_std']**2 + self.experiment.params['rehab_stroke_other_los_mean']**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_other_los_std']**2 / self.experiment.params['rehab_stroke_other_los_mean']**2))))
+-        
+-        yield self.env.timeout(length_of_stay)
+-        
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) completed rehab treatment")
+-            print(f" Post-rehab destination: {post_rehab_destination}")
+-            print(f" Length of stay: {length_of_stay:.2f} days")
++    # Display a probability of delay plot for rehab
++    fig, ax = prob_delay_plot(prob_delay, unique_vals, x_label="No. rehab beds available")
++    plt.show()
+ 
+-    def complex_neurological_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_complex_neuro_post_destination_probs'])
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_complex_neuro_los_mean']**2 / np.sqrt(self.experiment.params['rehab_complex_neuro_los_std']**2 + self.experiment.params['rehab_complex_neuro_los_mean']**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_complex_neuro_los_std']**2 / self.experiment.params['rehab_complex_neuro_los_mean']**2))))
+-        
+-        yield self.env.timeout(length_of_stay)
+-        
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) completed rehab treatment")
+-            print(f" Post-rehab destination: {post_rehab_destination}")
+-            print(f" Length of stay: {length_of_stay:.2f} days")
++    print("\nSimulation completed.")
++    print(f"Total rehab arrivals: {rehab_unit.total_arrivals}")
++    print(f"Final rehab patient counts: {rehab_unit.patient_counts}")
+ 
+-    def other_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_other_post_destination_probs'])
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_other_los_std']**2 + self.experiment.params['rehab_other_los_mean']**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_other_los_std']**2 / self.experiment.params['rehab_other_los_mean']**2))))
+-        
+-        yield self.env.timeout(length_of_stay)
+-        
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) completed rehab treatment")
+-            print(f" Post-rehab destination: {post_rehab_destination}")
+-            print(f" Length of stay: {length_of_stay:.2f} days")
+-
+-    def tia_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0, 1])  # Always 'Other' for TIA patients
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(18.7**2 / np.sqrt(23.5**2 + 18.7**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (23.5**2 / 18.7**2))))
+-        
+-        yield self.env.timeout(length_of_stay)
+-        
+-        if self.experiment.params['trace']:
+-            print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) completed rehab treatment")
+-            print(f" Post-rehab destination: {post_rehab_destination}")
+-            print(f" Length of stay: {length_of_stay:.2f} days")
++if __name__ == "__main__":
++    run_rehabilitation_unit_model()
+
+## modified /cells/36/source:
+@@ -1,7 +1,7 @@
+ def run_combined_acute_model():
+     # Create the experiment
+     experiment = Experiment({
+-        'run_length': 365*5,  # Run for 5 years
++        'results_collection_period': 365*5,  # Run for 5 years
+         'trace': False,  # Set to True if you want to see detailed logs
+     })
+ 
+@@ -19,11 +19,11 @@ def run_combined_acute_model():
+     asu.run()
+ 
+     # Start the audit process 
+-    env.process(experiment.audit_acute_occupancy(env, 1, asu))
+-    env.process(experiment.audit_rehab_occupancy(env, 1, rehab_unit))  
++    env.process(experiment.audit_acute_occupancy(env, experiment.warm_up, experiment.params['acute_audit_interval'], asu, experiment))
++    env.process(experiment.audit_rehab_occupancy(env, experiment.warm_up, experiment.params['rehab_audit_interval'], rehab_unit, experiment))  
+ 
+     # Run the model
+-    env.run(until=experiment.params['run_length'])
++    env.run(until=experiment.params['results_collection_period'] + experiment.warm_up)
+ 
+     # Calculate occupancy frequencies 
+     rel_freq_a, cum_freq_a, unique_vals_a = calculate_occupancy_frequencies(experiment.asu_occupancy)
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 
