@@ -1,0 +1,52 @@
+nbdiff 23_iteration_s2.ipynb diffs/23_iteration_s2_for_diff.ipynb
+--- 23_iteration_s2.ipynb  2024-07-23 08:54:05.728992
++++ diffs/23_iteration_s2_for_diff.ipynb  2024-07-23 09:41:12.449856
+## modified /cells/15/source:
+@@ -1,15 +1,16 @@
++import numpy as np
++
+ class Experiment:
+-    def __init__(self, params=None):
++    def __init__(self, params=None, random_number_set=0):
+         default_params = {
+             'results_collection_period': 5 * 365,
+-            'warm_up': 1095,  # Added here, immediately below results_collection_period
++            'warm_up': 1095,
+             'trace': False,
+-            'acute_audit_interval': 1,  # Default to 1 day
+-            'rehab_audit_interval': 1,  # Default to 1 day
++            'acute_audit_interval': 1,
++            'rehab_audit_interval': 1,
+             'rehab_stroke_iat': 21.8,
+             'rehab_neuro_iat': 31.7,
+             'rehab_other_iat': 28.6,
+-            # New parameters for RehabilitationUnit
+             'rehab_stroke_esd_los_mean': 30.3,
+             'rehab_stroke_esd_los_std': 23.1,
+             'rehab_stroke_other_los_mean': 28.4,
+@@ -50,9 +51,11 @@ class Experiment:
+         else:
+             self.params = self.merge_params(default_params, params)
+ 
+-        self.asu_occupancy = []  # Initialize the list to store ASU occupancy
+-        self.rehab_occupancy = []  # Initialize the list to store rehab occupancy
+-        self.warm_up = self.params['warm_up']  # Initialize warm_up period from params
++        self.asu_occupancy = []
++        self.rehab_occupancy = []
++        self.warm_up = self.params['warm_up']
++
++        self.setup_streams(random_number_set)
+ 
+     def merge_params(self, default, new):
+         merged = default.copy()
+@@ -78,3 +81,10 @@ class Experiment:
+     def reset_kpi(self):
+         self.asu_occupancy = []
+         self.rehab_occupancy = []
++
++    def setup_streams(self, random_number_set):
++        self.streams = []
++        generator = np.random.default_rng(random_number_set)
++        seeds = generator.integers(0, np.iinfo(np.int64).max, size=25)
++        for seed in seeds:
++            self.streams.append(np.random.default_rng(seed))
