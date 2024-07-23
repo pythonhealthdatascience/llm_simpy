@@ -1,0 +1,292 @@
+(base) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ conda activate gen_simpy
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 22_iteration_s2.ipynb diffs/22_iteration_s2_for_diff.ipynb
+nbdiff 22_iteration_s2.ipynb diffs/22_iteration_s2_for_diff.ipynb
+--- 22_iteration_s2.ipynb  2024-07-23 08:38:36.654743
++++ diffs/22_iteration_s2_for_diff.ipynb  2024-07-23 08:45:05.304096
+## inserted before /cells/12:
++  code cell:
++    id: b4369a82-14a1-490e-a450-2ab30766b641
++    source:
++      def lognormal_to_normal(mean, std):
++          """
++          Convert lognormal moments to normal moments.
++          
++          Parameters:
++          mean (float): Mean of the lognormal distribution.
++          std (float): Standard deviation of the lognormal distribution.
++          
++          Returns:
++          tuple: (mean, std) of the corresponding normal distribution.
++          """
++          normal_mean = np.log(mean ** 2 / np.sqrt(std ** 2 + mean ** 2))
++          normal_std = np.sqrt(np.log(std ** 2 / mean ** 2 + 1))
++          return normal_mean, normal_std
+
+## modified /cells/19/source:
+@@ -4,23 +4,41 @@ class RehabilitationUnit:
+         self.experiment = experiment
+         self.trace = experiment.params['trace']
+         self.total_arrivals = 0
+-        self.arrivals_from_asu = 0 #added by tester
++        self.arrivals_from_asu = 0
+         self.patient_counts = {
+             'Stroke': 0,
+             'Complex Neurological': 0,
+             'Other': 0,
+             'TIA': 0
+         }
+-        self.occupancy = 0  # New member variable for occupancy
+-        # Inter-arrival time means (in days)
++        self.occupancy = 0
+         self.stroke_iat_external = experiment.params['rehab_stroke_iat']
+         self.complex_neuro_iat_external = experiment.params['rehab_neuro_iat']
+         self.other_iat_external = experiment.params['rehab_other_iat']
+- 
+-    def run(self):    # Start patient generators
++
++        # Convert lognormal moments to normal moments
++        self.stroke_esd_mean, self.stroke_esd_std = lognormal_to_normal(
++            experiment.params['rehab_stroke_esd_los_mean'],
++            experiment.params['rehab_stroke_esd_los_std']
++        )
++        self.stroke_other_mean, self.stroke_other_std = lognormal_to_normal(
++            experiment.params['rehab_stroke_other_los_mean'],
++            experiment.params['rehab_stroke_other_los_std']
++        )
++        self.complex_neuro_mean, self.complex_neuro_std = lognormal_to_normal(
++            experiment.params['rehab_complex_neuro_los_mean'],
++            experiment.params['rehab_complex_neuro_los_std']
++        )
++        self.other_mean, self.other_std = lognormal_to_normal(
++            experiment.params['rehab_other_los_mean'],
++            experiment.params['rehab_other_los_std']
++        )
++        self.tia_mean, self.tia_std = lognormal_to_normal(18.7, 23.5)  # TIA parameters
++
++    def run(self):
+         self.env.process(self.stroke_generator())
+         self.env.process(self.complex_neuro_generator())
+-        self.env.process(self.other_generator())   
++        self.env.process(self.other_generator())
+ 
+     def stroke_generator(self):
+         while True:
+@@ -41,15 +59,15 @@ class RehabilitationUnit:
+         patient_id = self.total_arrivals
+         self.total_arrivals += 1
+         self.patient_counts[patient_type] += 1
+-        self.occupancy += 1  # Increment occupancy
+-        
++        self.occupancy += 1
++
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) arrived at RU")
+             print(f" Total arrivals: {self.total_arrivals}")
+             print(f" {patient_type} arrivals: {self.patient_counts[patient_type]}")
+             print(f" Current patient counts: {self.patient_counts}")
+             print(f" Current occupancy: {self.occupancy}")
+-        
++
+         self.env.process(self.rehab_treatment(patient_type, patient_id))
+ 
+     def rehab_treatment(self, patient_type, patient_id):
+@@ -61,24 +79,22 @@ class RehabilitationUnit:
+             yield from self.tia_rehab_treatment(patient_id)
+         else:
+             yield from self.other_rehab_treatment(patient_id)
+-        
+-        self.occupancy -= 1  # Decrement occupancy
++
++        self.occupancy -= 1
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) left RU")
+             print(f" Current occupancy: {self.occupancy}")
+ 
+     def stroke_rehab_treatment(self, patient_id):
+         post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])
+-        
++
+         if post_rehab_destination == 'ESD':
+-            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_esd_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_esd_los_std']**2 + self.experiment.params['rehab_stroke_esd_los_mean']**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_esd_los_std']**2 / self.experiment.params['rehab_stroke_esd_los_mean']**2))))
++            length_of_stay = np.random.lognormal(self.stroke_esd_mean, self.stroke_esd_std)
+         else:
+-            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_other_los_std']**2 + self.experiment.params['rehab_stroke_other_los_mean']**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_other_los_std']**2 / self.experiment.params['rehab_stroke_other_los_mean']**2))))
+-        
++            length_of_stay = np.random.lognormal(self.stroke_other_mean, self.stroke_other_std)
++
+         yield self.env.timeout(length_of_stay)
+-        
++
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) completed rehab treatment")
+             print(f" Post-rehab destination: {post_rehab_destination}")
+@@ -86,12 +102,11 @@ class RehabilitationUnit:
+ 
+     def complex_neurological_rehab_treatment(self, patient_id):
+         post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_complex_neuro_post_destination_probs'])
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_complex_neuro_los_mean']**2 / np.sqrt(self.experiment.params['rehab_complex_neuro_los_std']**2 + self.experiment.params['rehab_complex_neuro_los_mean']**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_complex_neuro_los_std']**2 / self.experiment.params['rehab_complex_neuro_los_mean']**2))))
+-        
++
++        length_of_stay = np.random.lognormal(self.complex_neuro_mean, self.complex_neuro_std)
++
+         yield self.env.timeout(length_of_stay)
+-        
++
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) completed rehab treatment")
+             print(f" Post-rehab destination: {post_rehab_destination}")
+@@ -99,12 +114,11 @@ class RehabilitationUnit:
+ 
+     def other_rehab_treatment(self, patient_id):
+         post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_other_post_destination_probs'])
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_other_los_std']**2 + self.experiment.params['rehab_other_los_mean']**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_other_los_std']**2 / self.experiment.params['rehab_other_los_mean']**2))))
+-        
++
++        length_of_stay = np.random.lognormal(self.other_mean, self.other_std)
++
+         yield self.env.timeout(length_of_stay)
+-        
++
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) completed rehab treatment")
+             print(f" Post-rehab destination: {post_rehab_destination}")
+@@ -112,12 +126,11 @@ class RehabilitationUnit:
+ 
+     def tia_rehab_treatment(self, patient_id):
+         post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0, 1])  # Always 'Other' for TIA patients
+-        
+-        length_of_stay = np.random.lognormal(mean=np.log(18.7**2 / np.sqrt(23.5**2 + 18.7**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (23.5**2 / 18.7**2))))
+-        
++
++        length_of_stay = np.random.lognormal(self.tia_mean, self.tia_std)
++
+         yield self.env.timeout(length_of_stay)
+-        
++
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) completed rehab treatment")
+             print(f" Post-rehab destination: {post_rehab_destination}")
+
+## inserted before /cells/26:
++  code cell:
++    id: b84b9daf-7e29-42f0-bcc0-0d8411eadcd8
++    source:
++      def multiple_replications(experiment, num_replications=5):
++          rep_results = []
++          for _ in range(num_replications):
++              result = single_run(experiment)
++              rep_results.append(result)
++          return rep_results
++      
++      def combine_pdelay_results(rep_results):
++          asu_results = []
++          rehab_results = []
++      
++          for result in rep_results:
++              prob_delay_asu = result['prob_delay_asu']
++              unique_vals_asu = result['unique_vals_asu']
++              min_occupancy_asu = min(unique_vals_asu)
++      
++              asu_array = np.zeros(30)
++              asu_array[unique_vals_asu] = prob_delay_asu
++              asu_array[:min_occupancy_asu] = 1.0
++              asu_results.append(asu_array)
++      
++              prob_delay_rehab = result['prob_delay_rehab']
++              unique_vals_rehab = result['unique_vals_rehab']
++              min_occupancy_rehab = min(unique_vals_rehab)
++      
++              rehab_array = np.zeros(30)
++              rehab_array[unique_vals_rehab] = prob_delay_rehab
++              rehab_array[:min_occupancy_rehab] = 1.0
++              rehab_results.append(rehab_array)
++      
++          return np.array(asu_results), np.array(rehab_results)
++      
++      def combine_occup_results(rep_results):
++          asu_results = []
++          rehab_results = []
++      
++          for result in rep_results:
++              relative_freq_asu = result['relative_freq_asu']
++              unique_vals_asu = result['unique_vals_asu']
++      
++              asu_array = np.zeros(30)
++              asu_array[unique_vals_asu] = relative_freq_asu
++              asu_results.append(asu_array)
++      
++              relative_freq_rehab = result['relative_freq_rehab']
++              unique_vals_rehab = result['unique_vals_rehab']
++      
++              rehab_array = np.zeros(30)
++              rehab_array[unique_vals_rehab] = relative_freq_rehab
++              rehab_results.append(rehab_array)
++      
++          return np.array(asu_results), np.array(rehab_results)
++      
++      def mean_results(rep_results):
++          return np.mean(rep_results, axis=0)
++      
++      def summary_table(mean_pdelay, min_beds, max_beds, bed_type):
++          sliced_pdelay = mean_pdelay[min_beds:max_beds+1]
++          data = {
++              "p(delay)": np.round(sliced_pdelay, 2),
++              "1 in every n patients delayed": np.floor(1 / np.round(sliced_pdelay, 2)).astype(int)
++          }
++          df = pd.DataFrame(data, index=range(min_beds, max_beds+1))
++          df.index.name = f"No. {bed_type} beds"
++          return df
++      
++      
++      # Create the experiment
++      experiment = Experiment({
++          'results_collection_period': 365*5,  # Run for 5 years
++          'trace': False,  # Set to True if you want to see detailed logs
++      })
++      
++      # Run multiple replications
++      rep_results = multiple_replications(experiment, num_replications=100)
++      
++      # Combine results
++      asu_pdelay, rehab_pdelay = combine_pdelay_results(rep_results)
++      asu_occup, rehab_occup = combine_occup_results(rep_results)
++      
++      # Calculate mean results
++      mean_pdelay_asu = mean_results(asu_pdelay)
++      mean_pdelay_rehab = mean_results(rehab_pdelay)
++      mean_occup_asu = mean_results(asu_occup)
++      mean_occup_rehab = mean_results(rehab_occup)
++      
++      # Create summary tables
++      asu_summary = summary_table(mean_pdelay_asu, min_beds=9, max_beds=14, bed_type="ASU")
++      rehab_summary = summary_table(mean_pdelay_rehab, min_beds=8, max_beds=14, bed_type="Rehab")
++      
++      # Plot ASU Probability of Delay
++      fig, ax = prob_delay_plot(mean_pdelay_asu, range(30), x_label="No. ASU beds available")
++      plt.title("ASU Probability of Delay")
++      plt.show()
++      
++      # Plot ASU Occupancy
++      fig, ax = occupancy_plot(mean_occup_asu, range(30), x_label="No. of people in ASU")
++      plt.title("ASU Occupancy")
++      plt.show()
++      
++      # Plot Rehab Probability of Delay
++      fig, ax = prob_delay_plot(mean_pdelay_rehab, range(30), x_label="No. rehab beds available")
++      plt.title("Rehab Probability of Delay")
++      plt.show()
++      
++      # Plot Rehab Occupancy
++      fig, ax = occupancy_plot(mean_occup_rehab, range(30), x_label="No. of people in Rehab")
++      plt.title("Rehab Occupancy")
++      plt.show()
++      
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 
