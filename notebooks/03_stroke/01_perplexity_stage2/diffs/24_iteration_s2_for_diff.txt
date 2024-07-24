@@ -1,0 +1,17 @@
+-def multiple_replications(experiment, num_replications=5):
++def multiple_replications(experiment_instance, num_replications=5):
+     rep_results = []
+-    for _ in range(num_replications):
+-        result = single_run(experiment)
+-        rep_results.append(result)
++    for rep in range(num_replications):
++        # Call setup_streams with the current replication number
++        experiment_instance.setup_streams(rep)
++        
++        # Run the simulation for this replication
++        rep_result = single_run(experiment_instance)
++        
++        # Append the results of this replication
++        rep_results.append(rep_result)
++    
+     return rep_results
