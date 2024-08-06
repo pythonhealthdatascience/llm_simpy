@@ -109,6 +109,7 @@ parts:
         - file: notebooks/03_stroke/02_model_stage2/02_auto_testing_stage2
         - file: notebooks/03_stroke/02_model_stage2/03_manual_testing_stage2
         - file: notebooks/03_stroke/02_model_stage2/04_run_script_stage2
+      - file: notebooks/03_stroke/03_comparison
       - file: notebooks/03_stroke/04_asu_rehab_prompts
         sections:
         - file: notebooks/03_stroke/04_prompts_stage1/01_iteration
