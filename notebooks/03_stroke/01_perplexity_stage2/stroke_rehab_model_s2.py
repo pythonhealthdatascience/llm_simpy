@@ -488,8 +488,12 @@ def occupancy_plot(relative_freq, unique_values, x_label="No. people in ward", f
     ax.set_xlabel(x_label)
     ax.set_ylabel("Relative Frequency")
     ax.set_title("Occupancy Distribution")
-    ax.set_xticks(range(0, 31))
-    ax.set_xlim(0, 30)
+    
+    # Set x-axis ticks and limits based on the data
+    max_value = max(unique_values)
+    ax.set_xticks(range(0, max_value + 1, max(1, max_value // 10)))
+    ax.set_xlim(0, max_value)
+    
     return fig, ax
 
 
@@ -513,8 +517,12 @@ def prob_delay_plot(prob_delay, unique_values, x_label="No. acute beds available
     ax.set_xlabel(x_label)
     ax.set_ylabel("Probability of Delay")
     ax.set_title("Probability of Delay vs. Number of Beds Available")
-    ax.set_xticks(range(0, 31))
-    ax.set_xlim(0, 30)
+    
+    # Set x-axis ticks and limits based on the data
+    max_value = max(unique_values)
+    ax.set_xticks(range(0, max_value + 1, max(1, max_value // 10)))
+    ax.set_xlim(0, max_value)
+    
     ax.set_ylim(0, 1)
     return fig, ax
 
@@ -591,12 +599,21 @@ def combine_pdelay_results(rep_results):
     asu_results = []
     rehab_results = []
 
+    # Determine the maximum occupancy value across all results
+    max_occupancy = max(
+        max(max(result['unique_vals_asu']), max(result['unique_vals_rehab']))
+        for result in rep_results
+    )
+
+    # Use max_occupancy + 1 to ensure we include the maximum value
+    array_size = max_occupancy + 1
+
     for result in rep_results:
         prob_delay_asu = result['prob_delay_asu']
         unique_vals_asu = result['unique_vals_asu']
         min_occupancy_asu = min(unique_vals_asu)
 
-        asu_array = np.zeros(30)
+        asu_array = np.zeros(array_size)
         asu_array[unique_vals_asu] = prob_delay_asu
         asu_array[:min_occupancy_asu] = 1.0
         asu_results.append(asu_array)
@@ -605,7 +622,7 @@ def combine_pdelay_results(rep_results):
         unique_vals_rehab = result['unique_vals_rehab']
         min_occupancy_rehab = min(unique_vals_rehab)
 
-        rehab_array = np.zeros(30)
+        rehab_array = np.zeros(array_size)
         rehab_array[unique_vals_rehab] = prob_delay_rehab
         rehab_array[:min_occupancy_rehab] = 1.0
         rehab_results.append(rehab_array)
@@ -613,25 +630,31 @@ def combine_pdelay_results(rep_results):
     return np.array(asu_results), np.array(rehab_results)
 
 
-# In[17]:
-
-
 def combine_occup_results(rep_results):
     asu_results = []
     rehab_results = []
+
+    # Determine the maximum occupancy value across all results
+    max_occupancy = max(
+        max(max(result['unique_vals_asu']), max(result['unique_vals_rehab']))
+        for result in rep_results
+    )
+
+    # Use max_occupancy + 1 to ensure we include the maximum value
+    array_size = max_occupancy + 1
 
     for result in rep_results:
         relative_freq_asu = result['relative_freq_asu']
         unique_vals_asu = result['unique_vals_asu']
 
-        asu_array = np.zeros(30)
+        asu_array = np.zeros(array_size)
         asu_array[unique_vals_asu] = relative_freq_asu
         asu_results.append(asu_array)
 
         relative_freq_rehab = result['relative_freq_rehab']
         unique_vals_rehab = result['unique_vals_rehab']
 
-        rehab_array = np.zeros(30)
+        rehab_array = np.zeros(array_size)
         rehab_array[unique_vals_rehab] = relative_freq_rehab
         rehab_results.append(rehab_array)
 
@@ -650,13 +673,33 @@ def mean_results(rep_results):
 # In[19]:
 
 
-def summary_table(mean_pdelay, min_beds, max_beds, bed_type):
-    sliced_pdelay = mean_pdelay[min_beds:max_beds+1]
+def summary_table(prob_delay, min_beds, max_beds, bed_type="ASU"):
     data = {
-        "p(delay)": np.round(sliced_pdelay, 2),
-        "1 in every n patients delayed": np.floor(1 / np.round(sliced_pdelay, 2)).astype(int)
+        f"No. {bed_type} beds": [],
+        "Probability of delay": [],
+        "% patients delayed": [],
+        "1 in every n patients delayed": []
     }
-    df = pd.DataFrame(data, index=range(min_beds, max_beds+1))
-    df.index.name = f"No. {bed_type} beds"
+    
+    for beds in range(min_beds, max_beds + 1):
+        if beds < len(prob_delay):
+            pdelay = prob_delay[beds]
+            data[f"No. {bed_type} beds"].append(beds)
+            data["Probability of delay"].append(f"{pdelay:.2f}")
+            data["% patients delayed"].append(f"{pdelay * 100:.1f}%")
+            if pdelay > 0:
+                data["1 in every n patients delayed"].append(int(np.floor(1 / pdelay)))
+            else:
+                data["1 in every n patients delayed"].append("N/A")
+        else:
+            # If we've run out of data, fill with N/A
+            data[f"No. {bed_type} beds"].append(beds)
+            data["Probability of delay"].append("N/A")
+            data["% patients delayed"].append("N/A")
+            data["1 in every n patients delayed"].append("N/A")
+
+    df = pd.DataFrame(data)
+    df.set_index(f"No. {bed_type} beds", inplace=True)
     return df
+
 

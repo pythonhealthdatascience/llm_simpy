@@ -7,8 +7,20 @@ from stroke_rehab_model_s2 import (
 )
 
 def main():
-    st.title("Stroke Rehabilitation Model Simulation")
-
+    st.title("A Modelling Tool for Capacity Planning in Acute and Community Stroke Services")
+    
+    st.write("""
+    This model is a recreation of the model reported in a published academic study.
+    """)
+    
+    st.write("""
+    **Citation:**
+    
+    Monks T, Worthington D, Allen M, Pitt M, Stein K, James MA. A modelling tool for capacity planning in acute and community stroke services. BMC Health Serv Res. 2016 Sep 29;16(1):530. doi: 10.1186/s12913-016-1789-4. PMID: 27688152; PMCID: PMC5043535.
+    """)
+    
+    st.write("[Link to the original study](https://doi.org/10.1186/s12913-016-1789-4)")
+    
     # Sidebar for input parameters
     st.sidebar.header("Set Patient Inter-arrival Rates")
     stroke_mean = st.sidebar.slider("Stroke patients", min_value=0.0, max_value=10.0, value=1.2, step=0.1)
@@ -67,11 +79,14 @@ def main():
             asu_summary = summary_table(mean_pdelay_asu, min_beds=9, max_beds=14, bed_type="ASU")
             rehab_summary = summary_table(mean_pdelay_rehab, min_beds=10, max_beds=16, bed_type="Rehab")
             
-            # Generate plots
-            fig_pd_asu, ax_pd_asu = prob_delay_plot(mean_pdelay_asu, np.arange(0, 30))
-            fig_pd_rehab, ax_pd_rehab = prob_delay_plot(mean_pdelay_rehab, np.arange(0, 30), "No. rehab beds available")
-            fig_occ_asu, ax_occ_asu = occupancy_plot(mean_occup_asu, np.arange(0, 30))
-            fig_occ_rehab, ax_occ_rehab = occupancy_plot(mean_occup_rehab, np.arange(0, 30), "No. people in rehab")
+            # Generate plots with dynamic ranges
+            x_range_asu = np.arange(len(mean_pdelay_asu))
+            x_range_rehab = np.arange(len(mean_pdelay_rehab))
+            
+            fig_pd_asu, ax_pd_asu = prob_delay_plot(mean_pdelay_asu, x_range_asu)
+            fig_pd_rehab, ax_pd_rehab = prob_delay_plot(mean_pdelay_rehab, x_range_rehab, "No. rehab beds available")
+            fig_occ_asu, ax_occ_asu = occupancy_plot(mean_occup_asu, x_range_asu)
+            fig_occ_rehab, ax_occ_rehab = occupancy_plot(mean_occup_rehab, x_range_rehab, "No. people in rehab")
         
         # Display results
         st.subheader("Acute Stroke Unit Results")
