@@ -1,4 +1,4 @@
-name: gen_simpy2
+name: gen_simpy
 channels:
   - conda-forge
 dependencies:
