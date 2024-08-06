@@ -1,0 +1,88 @@
+gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff diffs/26_iteration_s2_for_diff.ipynb 26_iteration_s2.ipynb
+nbdiff diffs/26_iteration_s2_for_diff.ipynb 26_iteration_s2.ipynb
+--- diffs/26_iteration_s2_for_diff.ipynb  2024-07-26 07:35:31.083354
++++ 26_iteration_s2.ipynb  2024-07-26 05:27:09.610420
+## modified /cells/28/source:
+@@ -41,21 +41,18 @@ class RehabilitationUnit:
+         self.env.process(self.other_generator())
+ 
+     def stroke_generator(self):
+-        stream = self.experiment.streams[14]
+         while True:
+-            yield self.env.timeout(stream.exponential(self.stroke_iat_external))
++            yield self.env.timeout(np.random.exponential(self.stroke_iat_external))
+             self.patient_arrival('Stroke')
+ 
+     def complex_neuro_generator(self):
+-        stream = self.experiment.streams[15]
+         while True:
+-            yield self.env.timeout(stream.exponential(self.complex_neuro_iat_external))
++            yield self.env.timeout(np.random.exponential(self.complex_neuro_iat_external))
+             self.patient_arrival('Complex Neurological')
+ 
+     def other_generator(self):
+-        stream = self.experiment.streams[16]
+         while True:
+-            yield self.env.timeout(stream.exponential(self.other_iat_external))
++            yield self.env.timeout(np.random.exponential(self.other_iat_external))
+             self.patient_arrival('Other')
+ 
+     def patient_arrival(self, patient_type):
+@@ -89,13 +86,12 @@ class RehabilitationUnit:
+             print(f" Current occupancy: {self.occupancy}")
+ 
+     def stroke_rehab_treatment(self, patient_id):
+-        stream = self.experiment.streams[20]
+-        post_rehab_destination = self.experiment.streams[19].choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])
+ 
+         if post_rehab_destination == 'ESD':
+-            length_of_stay = stream.lognormal(self.stroke_esd_mean, self.stroke_esd_std)
++            length_of_stay = np.random.lognormal(self.stroke_esd_mean, self.stroke_esd_std)
+         else:
+-            length_of_stay = stream.lognormal(self.stroke_other_mean, self.stroke_other_std)
++            length_of_stay = np.random.lognormal(self.stroke_other_mean, self.stroke_other_std)
+ 
+         yield self.env.timeout(length_of_stay)
+ 
+@@ -105,10 +101,9 @@ class RehabilitationUnit:
+             print(f" Length of stay: {length_of_stay:.2f} days")
+ 
+     def complex_neurological_rehab_treatment(self, patient_id):
+-        stream = self.experiment.streams[22]
+-        post_rehab_destination = self.experiment.streams[21].choice(['ESD', 'Other'], p=self.experiment.params['rehab_complex_neuro_post_destination_probs'])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_complex_neuro_post_destination_probs'])
+ 
+-        length_of_stay = stream.lognormal(self.complex_neuro_mean, self.complex_neuro_std)
++        length_of_stay = np.random.lognormal(self.complex_neuro_mean, self.complex_neuro_std)
+ 
+         yield self.env.timeout(length_of_stay)
+ 
+@@ -118,10 +113,9 @@ class RehabilitationUnit:
+             print(f" Length of stay: {length_of_stay:.2f} days")
+ 
+     def other_rehab_treatment(self, patient_id):
+-        stream = self.experiment.streams[24]
+-        post_rehab_destination = self.experiment.streams[23].choice(['ESD', 'Other'], p=self.experiment.params['rehab_other_post_destination_probs'])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_other_post_destination_probs'])
+ 
+-        length_of_stay = stream.lognormal(self.other_mean, self.other_std)
++        length_of_stay = np.random.lognormal(self.other_mean, self.other_std)
+ 
+         yield self.env.timeout(length_of_stay)
+ 
+@@ -131,10 +125,9 @@ class RehabilitationUnit:
+             print(f" Length of stay: {length_of_stay:.2f} days")
+ 
+     def tia_rehab_treatment(self, patient_id):
+-        stream = self.experiment.streams[18]
+-        post_rehab_destination = self.experiment.streams[17].choice(['ESD', 'Other'], p=[0, 1])  # Always 'Other' for TIA patients
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0, 1])  # Always 'Other' for TIA patients
+ 
+-        length_of_stay = stream.lognormal(self.tia_mean, self.tia_std)
++        length_of_stay = np.random.lognormal(self.tia_mean, self.tia_std)
+ 
+         yield self.env.timeout(length_of_stay)
+ 
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 

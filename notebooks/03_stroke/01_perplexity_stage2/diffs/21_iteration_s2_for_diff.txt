@@ -1,0 +1,143 @@
+gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 21_iteration_s2.ipynb diffs/21_iteration_s2_for_diff.ipynb
+nbdiff 21_iteration_s2.ipynb diffs/21_iteration_s2_for_diff.ipynb
+--- 21_iteration_s2.ipynb  2024-07-22 09:34:50.239282
++++ diffs/21_iteration_s2_for_diff.ipynb  2024-07-22 10:40:45.148051
+## modified /cells/16/source:
+@@ -74,3 +74,7 @@ class Experiment:
+         while True:
+             experiment.rehab_occupancy.append(rehab_unit.occupancy)
+             yield env.timeout(audit_interval)
++
++    def reset_kpi(self):
++        self.asu_occupancy = []
++        self.rehab_occupancy = []
+
+## modified /cells/34/source:
+@@ -1,75 +1,79 @@
+-def run_combined_acute_model():
+-    # Create the experiment
+-    experiment = Experiment({
+-        'results_collection_period': 365*5,  # Run for 5 years
+-        'trace': False,  # Set to True if you want to see detailed logs
+-    })
++def single_run(experiment):
++    experiment.reset_kpi()
+ 
+     # Create the simulation environment
+     env = simpy.Environment()
+ 
+-    # Create the RehabilitationUnit
++    # Create models
+     rehab_unit = RehabilitationUnit(env, experiment)
+-
+-    # Create the AcuteStrokeUnit with the rehab_unit
+     asu = AcuteStrokeUnit(env, experiment, rehab_unit)
+ 
+     # Run models
+     rehab_unit.run()
+     asu.run()
+ 
+-    # Start the audit process 
++    # Start the audit processes
+     env.process(experiment.audit_acute_occupancy(env, experiment.warm_up, experiment.params['acute_audit_interval'], asu, experiment))
+-    env.process(experiment.audit_rehab_occupancy(env, experiment.warm_up, experiment.params['rehab_audit_interval'], rehab_unit, experiment))  
++    env.process(experiment.audit_rehab_occupancy(env, experiment.warm_up, experiment.params['rehab_audit_interval'], rehab_unit, experiment))
+ 
+-    # Run the model
+-    env.run(until=experiment.params['results_collection_period'] + experiment.warm_up)
++    # Run the simulation
++    env.run(until=experiment.warm_up + experiment.params['results_collection_period'])
+ 
+-    # Calculate occupancy frequencies 
++    # Calculate occupancy frequencies and probabilities of delay
+     rel_freq_a, cum_freq_a, unique_vals_a = calculate_occupancy_frequencies(experiment.asu_occupancy)
++    prob_delay_a = calculate_prob_delay(rel_freq_a, cum_freq_a)
++
+     rel_freq_r, cum_freq_r, unique_vals_r = calculate_occupancy_frequencies(experiment.rehab_occupancy)
++    prob_delay_r = calculate_prob_delay(rel_freq_r, cum_freq_r)
+ 
+-    # Display an occupancy plot for the ASU
+-    fig, ax = occupancy_plot(rel_freq_a, unique_vals_a, x_label="No. of people in ASU")
+-    plt.show()
++    return {
++        'relative_freq_asu': rel_freq_a,
++        'prob_delay_asu': prob_delay_a,
++        'unique_vals_asu': unique_vals_a,
++        'relative_freq_rehab': rel_freq_r,
++        'prob_delay_rehab': prob_delay_r,
++        'unique_vals_rehab': unique_vals_r
++    }
+ 
+-    # Calculate the probability of delay for ASU
+-    prob_delay_a = calculate_prob_delay(rel_freq_a, cum_freq_a)
++def main():
++    # Create the experiment
++    experiment = Experiment({
++        'results_collection_period': 365*5,  # Run for 5 years
++        'trace': False,  # Set to True if you want to see detailed logs
++    })
++
++    # Run the single run
++    results = single_run(experiment)
+ 
+-    # Display a probability of delay plot for ASU
+-    fig, ax = prob_delay_plot(prob_delay_a, unique_vals_a, x_label="No. ASU beds available")
++    # ASU Plots
++    # Probability of delay plot for ASU
++    fig, ax = prob_delay_plot(results['prob_delay_asu'], results['unique_vals_asu'], x_label="No. ASU beds available")
++    plt.title("ASU Probability of Delay")
+     plt.show()
+ 
+-    # Display an occupancy plot for the rehab unit
+-    fig, ax = occupancy_plot(rel_freq_r, unique_vals_r, x_label="No. of people in rehab")
++    # Occupancy plot for ASU
++    fig, ax = occupancy_plot(results['relative_freq_asu'], results['unique_vals_asu'], x_label="No. of people in ASU")
++    plt.title("ASU Occupancy")
+     plt.show()
+ 
+-    # Calculate the probability of delay for rehab
+-    prob_delay_r = calculate_prob_delay(rel_freq_r, cum_freq_r)
++    # Rehab Plots
++    # Probability of delay plot for Rehab
++    fig, ax = prob_delay_plot(results['prob_delay_rehab'], results['unique_vals_rehab'], x_label="No. rehab beds available")
++    plt.title("Rehab Probability of Delay")
++    plt.show()
+ 
+-    # Display a probability of delay plot for rehab
+-    fig, ax = prob_delay_plot(prob_delay_r, unique_vals_r, x_label="No. rehab beds available")
++    # Occupancy plot for Rehab
++    fig, ax = occupancy_plot(results['relative_freq_rehab'], results['unique_vals_rehab'], x_label="No. of people in Rehab")
++    plt.title("Rehab Occupancy")
+     plt.show()
+ 
+-    print("\nSimulation completed.")
+-    print(f"Total ASU arrivals: {asu.total_arrivals}")
+-    for patient_type in asu.patient_types.values():
+-        print(f"Total asu {patient_type.name} asu arrivals: {patient_type.count}")
+-    print(f"Final ASU occupancy: {asu.occupancy}")
+-    print(f"Number of occupancy audits: {len(experiment.asu_occupancy)}")
+-    print(f"Average occupancy: {sum(experiment.asu_occupancy) / len(experiment.asu_occupancy):.2f}")
+-    print(f"Maximum occupancy: {max(experiment.asu_occupancy)}")
+-    print(f"Minimum occupancy: {min(experiment.asu_occupancy)}")
+-    print(f"Simulation time at end of run: {env.now}")
+-    print()
+-    print(f"Total rehab arrivals: {rehab_unit.total_arrivals}")
+-    print(f"Rehab arrivals from ASU: {rehab_unit.arrivals_from_asu}")
+-    print(f"Final rehab patient counts: {rehab_unit.patient_counts}")
+-    print(f"Final rehab occupancy: {rehab_unit.occupancy}")
+-    print(f"Number of rehab occupancy audits: {len(experiment.rehab_occupancy)}")
+-    print(f"Average rehab occupancy: {sum(experiment.rehab_occupancy) / len(experiment.rehab_occupancy):.2f}")
+-    print(f"Maximum rehab occupancy: {max(experiment.rehab_occupancy)}")
+-    print(f"Minimum rehab occupancy: {min(experiment.rehab_occupancy)}")
++    # Print some summary statistics
++    print("\nSummary Statistics:")
++    print(f"ASU Max Occupancy: {max(results['unique_vals_asu'])}")
++    print(f"ASU Average Occupancy: {sum(results['relative_freq_asu'] * results['unique_vals_asu']):.2f}")
++    print(f"Rehab Max Occupancy: {max(results['unique_vals_rehab'])}")
++    print(f"Rehab Average Occupancy: {sum(results['relative_freq_rehab'] * results['unique_vals_rehab']):.2f}")
+ 
+ if __name__ == "__main__":
+-    run_combined_acute_model()
++    main()
++
+

@@ -1,0 +1,117 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 12_iteration_s2.ipynb diffs/12_iteration_s2_for_diff.ipynb
+nbdiff 12_iteration_s2.ipynb diffs/12_iteration_s2_for_diff.ipynb
+--- 12_iteration_s2.ipynb  2024-07-11 04:37:18.535197
++++ diffs/12_iteration_s2_for_diff.ipynb  2024-07-13 00:38:09.480458
+## modified /cells/16/source:
+@@ -4,6 +4,9 @@ class Experiment:
+             'run_length': 5 * 365,
+             'trace': False,
+             'acute_audit_interval': 1,  # Default to 1 day
++            'rehab_stroke_iat': 21.8,
++            'rehab_neuro_iat': 31.7,
++            'rehab_other_iat': 28.6,
+             'patient_types': {
+                 'Stroke': {
+                     'interarrival_time': 1.2,
+@@ -27,12 +30,10 @@ class Experiment:
+                 }
+             }
+         }
+-        
+         if params is None:
+             self.params = default_params
+         else:
+             self.params = self.merge_params(default_params, params)
+-        
+         self.asu_occupancy = []  # Initialize the list to store occupancy
+ 
+     def merge_params(self, default, new):
+
+## modified /cells/21/source:
+@@ -1,47 +1,47 @@
+ class RehabilitationUnit:
+-    def __init__(self, env, stroke_iat=21.8, complex_neuro_iat=31.7, other_iat=28.6):
++    def __init__(self, env, experiment):
+         self.env = env
++        self.experiment = experiment
+         self.total_arrivals = 0
+         self.patient_counts = {
+             'Stroke': 0,
+             'Complex Neurological': 0,
+             'Other': 0
+         }
+-        
++
+         # Inter-arrival time means (in days)
+-        self.stroke_iat_external = stroke_iat
+-        self.complex_neuro_iat_external = complex_neuro_iat
+-        self.other_iat_external = other_iat
+-        
++        self.stroke_iat_external = experiment.params['rehab_stroke_iat']
++        self.complex_neuro_iat_external = experiment.params['rehab_neuro_iat']
++        self.other_iat_external = experiment.params['rehab_other_iat']
++
+         # Start patient generators
+         self.env.process(self.stroke_generator())
+         self.env.process(self.complex_neuro_generator())
+         self.env.process(self.other_generator())
+-    
++
+     def stroke_generator(self):
+         while True:
+             yield self.env.timeout(np.random.exponential(self.stroke_iat_external))
+             self.patient_arrival('Stroke')
+-    
++
+     def complex_neuro_generator(self):
+         while True:
+             yield self.env.timeout(np.random.exponential(self.complex_neuro_iat_external))
+             self.patient_arrival('Complex Neurological')
+-    
++
+     def other_generator(self):
+         while True:
+             yield self.env.timeout(np.random.exponential(self.other_iat_external))
+             self.patient_arrival('Other')
+-    
++
+     def patient_arrival(self, patient_type):
+         patient_id = self.total_arrivals
+         self.total_arrivals += 1
+         self.patient_counts[patient_type] += 1
+         
+-        print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) arrived at RU")
+-        print(f"  Total arrivals: {self.total_arrivals}")
+-        print(f"  {patient_type} arrivals: {self.patient_counts[patient_type]}")
+-        print(f"  Current patient counts: {self.patient_counts}")
+-        
+-        # Patient immediately leaves the model
+-        print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) left RU")
++        if self.experiment.params['trace']:
++            print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) arrived at RU")
++            print(f" Total arrivals: {self.total_arrivals}")
++            print(f" {patient_type} arrivals: {self.patient_counts[patient_type]}")
++            print(f" Current patient counts: {self.patient_counts}")
++            print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) left RU")
+
+## modified /cells/31/source:
+@@ -1,11 +1,15 @@
+ def run_rehabilitation_unit_model(run_length):
++    experiment = Experiment({
++        'run_length': run_length,
++        'trace': False,  # Set to True if you want to see detailed logs
++    })
+     env = simpy.Environment()
+-    ru = RehabilitationUnit(env)
+-    env.run(until=run_length)
++    ru = RehabilitationUnit(env, experiment)
++    env.run(until=experiment.params['run_length'])
+ 
+     print("\nSimulation completed.")
+     print(f"Total arrivals: {ru.total_arrivals}")
+     print(f"Final patient counts: {ru.patient_counts}")
+ 
+ if __name__ == "__main__":
+-    run_rehabilitation_unit_model(365 * 5)  # Run for 5 years
+
++    run_rehabilitation_unit_model(365 * 5)  # Run for 5 years

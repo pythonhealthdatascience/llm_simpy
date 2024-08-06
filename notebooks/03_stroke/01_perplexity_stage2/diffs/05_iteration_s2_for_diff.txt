@@ -1,0 +1,36 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 05_iteration_s2.ipynb diffs/05_iteration_s2_for_diff.ipynb
+nbdiff 05_iteration_s2.ipynb diffs/05_iteration_s2_for_diff.ipynb
+--- 05_iteration_s2.ipynb  2024-07-09 23:20:31.508887
++++ diffs/05_iteration_s2_for_diff.ipynb  2024-07-10 01:05:20.355139
+## modified /cells/10/source:
+@@ -76,6 +76,7 @@ class AcuteStrokeUnit:
+         self.experiment = experiment
+         self.run_length = experiment.params['run_length']
+         self.total_arrivals = 0
++        self.occupancy = 0  # New member variable to track occupancy
+         
+         self.patient_types = {
+             name: PatientType(name, 
+@@ -107,6 +108,9 @@ class AcuteStrokeUnit:
+             print(f"  Post-ASU destination: {post_asu_destination}")
+             print(f"  Next {patient_type.name} arrival in {interarrival_time:.2f} days")
+ 
++            self.occupancy += 1  # Increment occupancy when patient arrives
++            print(f"  Current occupancy: {self.occupancy}")
++
+             self.env.process(self.acute_treatment(patient_type, patient_id, post_asu_destination))
+ 
+     def acute_treatment(self, patient_type, patient_id, post_asu_destination):
+@@ -119,6 +123,10 @@ class AcuteStrokeUnit:
+         else:  # Other
+             yield from self.other_acute_treatment(patient_type, patient_id)
+ 
++        self.occupancy -= 1  # Decrement occupancy when patient leaves
++        print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) left ASU")
++        print(f"  Current occupancy: {self.occupancy}")
++
+     def stroke_acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         los = patient_type.sample_length_of_stay(post_asu_destination)
+         print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) starting acute treatment")
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 

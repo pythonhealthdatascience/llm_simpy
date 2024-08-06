@@ -1,0 +1,198 @@
+base) alison@pop-os:~/Dropbox/code/LLM/llm_simpy$ cd notebooks/03_stroke/01_perplexity_stage2
+(base) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ conda activate gen_simpy
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff diffs/25_iteration_s2_for_diff.ipynb diffs/25_iteration_s2.ipynb
+Missing file diffs/25_iteration_s2.ipynb
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff diffs/25_iteration_s2_for_diff.ipynb 25_iteration_s2.ipynb
+nbdiff diffs/25_iteration_s2_for_diff.ipynb 25_iteration_s2.ipynb
+--- diffs/25_iteration_s2_for_diff.ipynb  2024-07-26 05:29:53.953557
++++ 25_iteration_s2.ipynb  2024-07-24 03:23:02.810165
+## modified /cells/17/source:
+@@ -3,19 +3,17 @@ class PatientType:
+         self.name = name
+         self.interarrival_time = interarrival_time
+         self.count = 0
+-        self.rng = None  # This will be set in the patient_generator method
++        self.rng = np.random.default_rng()
+         self.post_asu_probabilities = post_asu_probabilities
+         self.los_params = los_params
+ 
+     def generate_interarrival_time(self):
+-        return self.exponential(self.interarrival_time)
++        return self.rng.exponential(self.interarrival_time)
+ 
+     def sample_post_asu_destination(self):
+-        if self.rng is None:
+-            raise ValueError("RNG not set for PatientType")
+         return self.rng.choice(['Rehab', 'ESD', 'Other'], p=self.post_asu_probabilities)
+ 
+-    def normal_moments(self, destination=None):
++    def sample_length_of_stay(self, destination=None):
+         if self.name == 'Stroke':
+             mean, std = self.los_params[destination]
+         else:
+@@ -24,4 +22,4 @@ class PatientType:
+         normal_mean = math.log(mean**2 / math.sqrt(std**2 + mean**2))
+         normal_std = math.sqrt(math.log(1 + (std**2 / mean**2)))
+ 
+-        return normal_mean, normal_std
++        return self.rng.lognormal(normal_mean, normal_std)
+
+
+## modified /cells/19/source:
+@@ -1,64 +1,29 @@
+-import simpy
+-
+ class AcuteStrokeUnit:
+     def __init__(self, env, experiment, rehab_unit):
+         self.env = env
+         self.experiment = experiment
+         self.rehab_unit = rehab_unit
++        #self.results_collection_period = experiment.params['results_collection_period']
+         self.total_arrivals = 0
+         self.occupancy = 0
+         self.trace = experiment.params['trace']
+-        
+-        self.patient_types = {}
+-        for name, params in experiment.params['patient_types'].items():
+-            self.patient_types[name] = PatientType(
+-                name, 
+-                params['interarrival_time'], 
+-                params['post_asu_probabilities'], 
+-                params['los_params'],
+-            )
++        self.patient_types = {
++            name: PatientType(name, params['interarrival_time'], params['post_asu_probabilities'], params['los_params'])
++            for name, params in experiment.params['patient_types'].items()
++        }
+ 
+     def run(self):
+         for patient_type in self.patient_types.values():
+             self.env.process(self.patient_generator(patient_type))
+ 
+     def patient_generator(self, patient_type):
+-        # Assign specific streams for each patient type
+-        if patient_type.name == 'Stroke':
+-            arrival_stream = self.experiment.streams[6]
+-            post_asu_stream = self.experiment.streams[7]
+-        elif patient_type.name == 'TIA':
+-            arrival_stream = self.experiment.streams[8]
+-            post_asu_stream = self.experiment.streams[9]
+-        elif patient_type.name == 'Complex Neurological':
+-            arrival_stream = self.experiment.streams[10]
+-            post_asu_stream = self.experiment.streams[11]
+-        else:  # Other
+-            arrival_stream = self.experiment.streams[12]
+-            post_asu_stream = self.experiment.streams[13]
+-
+-        # Replace the RNG in the PatientType instance
+-        patient_type.rng = post_asu_stream
+-
+         while True:
+-            interarrival_time = arrival_stream.exponential(patient_type.interarrival_time)
++            interarrival_time = patient_type.generate_interarrival_time()
+             yield self.env.timeout(interarrival_time)
+             self.total_arrivals += 1
+             patient_type.count += 1
+             patient_id = self.total_arrivals - 1
+             post_asu_destination = patient_type.sample_post_asu_destination()
+-            
+-            # Assign different seeds based on post-ASU destination for stroke patients
+-            if patient_type.name == 'Stroke':
+-                if post_asu_destination == "Rehab":
+-                    los_stream = self.experiment.streams[0]
+-                elif post_asu_destination == "ESD":
+-                    los_stream = self.experiment.streams[1]
+-                else:  # Other
+-                    los_stream = self.experiment.streams[2]
+-            else:
+-                los_stream = None  # Placeholder for non-stroke patients
+-            
+             if self.trace:
+                 print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) arrived")
+                 print(f" Total arrivals: {self.total_arrivals}")
+@@ -68,25 +33,24 @@ class AcuteStrokeUnit:
+             self.occupancy += 1
+             if self.trace:
+                 print(f" Current occupancy: {self.occupancy}")
+-            self.env.process(self.acute_treatment(patient_type, patient_id, post_asu_destination, los_stream))
++            self.env.process(self.acute_treatment(patient_type, patient_id, post_asu_destination))
+ 
+-    def acute_treatment(self, patient_type, patient_id, post_asu_destination, los_stream):
++    def acute_treatment(self, patient_type, patient_id, post_asu_destination):
+         if patient_type.name == 'Stroke':
+-            yield from self.stroke_acute_treatment(patient_type, patient_id, post_asu_destination, los_stream)
++            yield from self.stroke_acute_treatment(patient_type, patient_id, post_asu_destination)
+         elif patient_type.name == 'TIA':
+-            yield from self.tia_acute_treatment(patient_type, patient_id, post_asu_destination, los_stream)
++            yield from self.tia_acute_treatment(patient_type, patient_id, post_asu_destination)
+         elif patient_type.name == 'Complex Neurological':
+-            yield from self.complex_neurological_acute_treatment(patient_type, patient_id, post_asu_destination, los_stream)
++            yield from self.complex_neurological_acute_treatment(patient_type, patient_id, post_asu_destination)
+         else:  # Other
+-            yield from self.other_acute_treatment(patient_type, patient_id, post_asu_destination, los_stream)
++            yield from self.other_acute_treatment(patient_type, patient_id, post_asu_destination)
+         self.occupancy -= 1
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) left ASU")
+             print(f" Current occupancy: {self.occupancy}")
+ 
+-    def stroke_acute_treatment(self, patient_type, patient_id, post_asu_destination, los_stream):
+-        normal_mean, normal_std = self.patient_types['Stroke'].normal_moments(post_asu_destination)
+-        los = los_stream.lognormal(mean=normal_mean, sigma=normal_std)
++    def stroke_acute_treatment(self, patient_type, patient_id, post_asu_destination):
++        los = self.patient_types['Stroke'].sample_length_of_stay(post_asu_destination)
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) starting acute treatment")
+             print(f" Length of stay: {los:.2f} days")
+@@ -95,15 +59,13 @@ class AcuteStrokeUnit:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Stroke) finished acute treatment")
+         if post_asu_destination == "Rehab":
+             self.rehab_unit.occupancy += 1
+-            self.rehab_unit.arrivals_from_asu += 1
++            self.rehab_unit.arrivals_from_asu +=1
+             self.env.process(self.rehab_unit.rehab_treatment(patient_type.name, patient_id))
+             if self.trace:
+                 print(f" Post-ASU destination (stroke to stroke rehab): {post_asu_destination, patient_id}")
+ 
+-
+-    def tia_acute_treatment(self, patient_type, patient_id, post_asu_destination, los_stream):
+-        normal_mean, normal_std = patient_type.normal_moments()
+-        los = self.experiment.streams[3].lognormal(mean=normal_mean, sigma=normal_std)
++    def tia_acute_treatment(self, patient_type, patient_id, post_asu_destination):
++        los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (TIA) starting acute treatment")
+             print(f" Length of stay: {los:.2f} days")
+@@ -117,9 +79,8 @@ class AcuteStrokeUnit:
+             if self.trace:
+                 print(f" Post-ASU destination (tia to tia rehab): {post_asu_destination, patient_id}")
+ 
+-    def complex_neurological_acute_treatment(self, patient_type, patient_id, post_asu_destination, los_stream):
+-        normal_mean, normal_std = patient_type.normal_moments()
+-        los = self.experiment.streams[4].lognormal(mean=normal_mean, sigma=normal_std)
++    def complex_neurological_acute_treatment(self, patient_type, patient_id, post_asu_destination):
++        los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Complex Neurological) starting acute treatment")
+             print(f" Length of stay: {los:.2f} days")
+@@ -133,9 +94,8 @@ class AcuteStrokeUnit:
+             if self.trace:
+                 print(f" Post-ASU destination (complex to complex rehab): {post_asu_destination, patient_id}")
+ 
+-    def other_acute_treatment(self, patient_type, patient_id, post_asu_destination, los_stream):
+-        normal_mean, normal_std = patient_type.normal_moments()
+-        los = self.experiment.streams[5].lognormal(mean=normal_mean, sigma=normal_std)
++    def other_acute_treatment(self, patient_type, patient_id, post_asu_destination):
++        los = patient_type.sample_length_of_stay()
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) starting acute treatment")
+             print(f" Length of stay: {los:.2f} days")
+@@ -147,4 +107,4 @@ class AcuteStrokeUnit:
+             self.rehab_unit.arrivals_from_asu +=1
+             self.env.process(self.rehab_unit.rehab_treatment(patient_type.name, patient_id))
+             if self.trace:
+-                print(f" Post-ASU destination (other to other rehab): {post_asu_destination, patient_id}")
++                print(f" Post-ASU destination (other to other rehab): {post_asu_destination, patient_id}")
+
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 

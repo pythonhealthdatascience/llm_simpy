@@ -1,0 +1,134 @@
+gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 14_iteration_s2.ipynb diffs/14_iteration_s2_for_diff.ipynb
+nbdiff 14_iteration_s2.ipynb diffs/14_iteration_s2_for_diff.ipynb
+--- 14_iteration_s2.ipynb  2024-07-13 04:36:47.502634
++++ diffs/14_iteration_s2_for_diff.ipynb  2024-07-13 04:47:27.515346
+## modified /cells/13/source:
+@@ -1,11 +1,8 @@
+-import simpy
+-import numpy as np
+-import math
+-
+ class RehabilitationUnit:
+     def __init__(self, env, experiment):
+         self.env = env
+         self.experiment = experiment
++        self.trace = experiment.params['trace']
+         self.total_arrivals = 0
+         self.patient_counts = {
+             'Stroke': 0,
+@@ -24,18 +21,27 @@ class RehabilitationUnit:
+ 
+     def stroke_generator(self):
+         while True:
+-            yield self.env.timeout(np.random.exponential(self.stroke_iat_external))
++            interarrival_time = np.random.exponential(self.stroke_iat_external)
++            yield self.env.timeout(interarrival_time)
+             self.patient_arrival('Stroke')
++            if self.experiment.params['trace']:
++                print(f"Time {self.env.now:.2f}: Next Stroke arrival in {interarrival_time:.2f} days")
+ 
+     def complex_neuro_generator(self):
+         while True:
+-            yield self.env.timeout(np.random.exponential(self.complex_neuro_iat_external))
++            interarrival_time = np.random.exponential(self.complex_neuro_iat_external)
++            yield self.env.timeout(interarrival_time)
+             self.patient_arrival('Complex Neurological')
++            if self.experiment.params['trace']:
++                print(f"Time {self.env.now:.2f}: Next Complex Neurological arrival in {interarrival_time:.2f} days")
+ 
+     def other_generator(self):
+         while True:
+-            yield self.env.timeout(np.random.exponential(self.other_iat_external))
++            interarrival_time = np.random.exponential(self.other_iat_external)
++            yield self.env.timeout(interarrival_time)
+             self.patient_arrival('Other')
++            if self.experiment.params['trace']:
++                print(f"Time {self.env.now:.2f}: Next Other arrival in {interarrival_time:.2f} days")
+ 
+     def patient_arrival(self, patient_type):
+         patient_id = self.total_arrivals
+@@ -59,14 +65,14 @@ class RehabilitationUnit:
+             yield from self.other_rehab_treatment(patient_id)
+ 
+     def stroke_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0.4, 0.6])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])
+         
+         if post_rehab_destination == 'ESD':
+-            length_of_stay = np.random.lognormal(mean=np.log(30.3**2 / np.sqrt(23.1**2 + 30.3**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (23.1**2 / 30.3**2))))
++            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_esd_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_esd_los_std']**2 + self.experiment.params['rehab_stroke_esd_los_mean']**2)), 
++                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_esd_los_std']**2 / self.experiment.params['rehab_stroke_esd_los_mean']**2))))
+         else:
+-            length_of_stay = np.random.lognormal(mean=np.log(28.4**2 / np.sqrt(27.2**2 + 28.4**2)), 
+-                                                 sigma=np.sqrt(np.log(1 + (27.2**2 / 28.4**2))))
++            length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_stroke_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_stroke_other_los_std']**2 + self.experiment.params['rehab_stroke_other_los_mean']**2)), 
++                                                 sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_stroke_other_los_std']**2 / self.experiment.params['rehab_stroke_other_los_mean']**2))))
+         
+         yield self.env.timeout(length_of_stay)
+         
+@@ -76,10 +82,10 @@ class RehabilitationUnit:
+             print(f" Length of stay: {length_of_stay:.2f} days")
+ 
+     def complex_neurological_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0.09, 0.91])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_complex_neuro_post_destination_probs'])
+         
+-        length_of_stay = np.random.lognormal(mean=np.log(27.6**2 / np.sqrt(28.4**2 + 27.6**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (28.4**2 / 27.6**2))))
++        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_complex_neuro_los_mean']**2 / np.sqrt(self.experiment.params['rehab_complex_neuro_los_std']**2 + self.experiment.params['rehab_complex_neuro_los_mean']**2)), 
++                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_complex_neuro_los_std']**2 / self.experiment.params['rehab_complex_neuro_los_mean']**2))))
+         
+         yield self.env.timeout(length_of_stay)
+         
+@@ -89,10 +95,10 @@ class RehabilitationUnit:
+             print(f" Length of stay: {length_of_stay:.2f} days")
+ 
+     def other_rehab_treatment(self, patient_id):
+-        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=[0.12, 0.88])
++        post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_other_post_destination_probs'])
+         
+-        length_of_stay = np.random.lognormal(mean=np.log(16.1**2 / np.sqrt(14.1**2 + 16.1**2)), 
+-                                             sigma=np.sqrt(np.log(1 + (14.1**2 / 16.1**2))))
++        length_of_stay = np.random.lognormal(mean=np.log(self.experiment.params['rehab_other_los_mean']**2 / np.sqrt(self.experiment.params['rehab_other_los_std']**2 + self.experiment.params['rehab_other_los_mean']**2)), 
++                                             sigma=np.sqrt(np.log(1 + (self.experiment.params['rehab_other_los_std']**2 / self.experiment.params['rehab_other_los_mean']**2))))
+         
+         yield self.env.timeout(length_of_stay)
+         
+
+## modified /cells/15/source:
+@@ -7,6 +7,18 @@ class Experiment:
+             'rehab_stroke_iat': 21.8,
+             'rehab_neuro_iat': 31.7,
+             'rehab_other_iat': 28.6,
++            # New parameters for RehabilitationUnit
++            'rehab_stroke_esd_los_mean': 30.3,
++            'rehab_stroke_esd_los_std': 23.1,
++            'rehab_stroke_other_los_mean': 28.4,
++            'rehab_stroke_other_los_std': 27.2,
++            'rehab_complex_neuro_los_mean': 27.6,
++            'rehab_complex_neuro_los_std': 28.4,
++            'rehab_other_los_mean': 16.1,
++            'rehab_other_los_std': 14.1,
++            'rehab_stroke_post_destination_probs': [0.4, 0.6],
++            'rehab_complex_neuro_post_destination_probs': [0.09, 0.91],
++            'rehab_other_post_destination_probs': [0.12, 0.88],
+             'patient_types': {
+                 'Stroke': {
+                     'interarrival_time': 1.2,
+@@ -30,10 +42,12 @@ class Experiment:
+                 }
+             }
+         }
++
+         if params is None:
+             self.params = default_params
+         else:
+             self.params = self.merge_params(default_params, params)
++
+         self.asu_occupancy = []  # Initialize the list to store occupancy
+ 
+     def merge_params(self, default, new):
+@@ -50,6 +64,7 @@ class Experiment:
+             yield env.timeout(acute_audit_interval)
+             self.asu_occupancy.append(asu.occupancy)

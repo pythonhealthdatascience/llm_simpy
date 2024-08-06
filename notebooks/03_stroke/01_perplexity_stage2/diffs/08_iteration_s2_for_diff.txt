@@ -1,0 +1,55 @@
+gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 08_iteration_s2.ipynb diffs/08_iteration_s2_for_diff.ipynb
+nbdiff 08_iteration_s2.ipynb diffs/08_iteration_s2_for_diff.ipynb
+--- 08_iteration_s2.ipynb  2024-07-11 00:44:56.331969
++++ diffs/08_iteration_s2_for_diff.ipynb  2024-07-11 01:01:58.876448
+## modified /cells/8/source:
+@@ -176,6 +176,27 @@ class AcuteStrokeUnit:
+         if self.trace:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} (Other) finished acute treatment")
+ 
++
++import matplotlib.pyplot as plt
++
++# [Include all the existing classes and functions here: PatientType, Experiment, AcuteStrokeUnit]
++
++def calculate_occupancy_frequencies(occupancy_list):
++    unique_values, counts = np.unique(occupancy_list, return_counts=True)
++    relative_freq = counts / len(occupancy_list)
++    cumulative_freq = np.cumsum(relative_freq)
++    return relative_freq, cumulative_freq, unique_values
++
++def occupancy_plot(relative_freq, unique_values, x_label="No. people in ASU", figsize=(12, 5)):
++    fig, ax = plt.subplots(figsize=figsize)
++    ax.bar(unique_values, relative_freq)
++    ax.set_xlabel(x_label)
++    ax.set_ylabel("Relative Frequency")
++    ax.set_title("ASU Occupancy Distribution")
++    ax.set_xticks(range(0, 31))
++    ax.set_xlim(0, 30)
++    return fig, ax
++
+ def run_model_with_audit():
+     # Create the experiment
+     experiment = Experiment({
+@@ -204,10 +225,17 @@ def run_model_with_audit():
+     print(f"Average occupancy: {sum(experiment.asu_occupancy) / len(experiment.asu_occupancy):.2f}")
+     print(f"Maximum occupancy: {max(experiment.asu_occupancy)}")
+     print(f"Minimum occupancy: {min(experiment.asu_occupancy)}")
+-    # Added by tester. Breakdown of patient arrivals by type was removed in this iteration.
+-    print(f"Simulation time at end of run: {env.now}") 
++    print(f"Simulation time at end of run: {env.now}")
++
+     for patient_type in asu.patient_types.values():
+         print(f"Total {patient_type.name} arrivals: {patient_type.count}")
+ 
++    # Calculate occupancy frequencies
++    rel_freq, cum_freq, unique_vals = calculate_occupancy_frequencies(experiment.asu_occupancy)
++
++    # Create and display the occupancy plot
++    fig, ax = occupancy_plot(rel_freq, unique_vals)
++    plt.show()
++
+ if __name__ == "__main__":
+     run_model_with_audit()
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 

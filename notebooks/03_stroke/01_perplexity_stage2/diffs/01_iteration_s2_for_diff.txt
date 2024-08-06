@@ -1,0 +1,74 @@
++++ diffs/01_iteration_s2_for_diff.ipynb  2024-06-28 11:24:48.627373
+## modified /cells/15/source:
+@@ -2,16 +2,20 @@ import simpy
+ import numpy as np
+ 
+ class PatientType:
+-    def __init__(self, name, interarrival_time):
++    def __init__(self, name, interarrival_time, post_asu_probabilities):
+         self.name = name
+         self.interarrival_time = interarrival_time
+         self.count = 0
+         self.rng = np.random.default_rng()
++        self.post_asu_probabilities = post_asu_probabilities
+ 
+     def generate_interarrival_time(self):
+         return self.rng.exponential(self.interarrival_time)
+ 
+-class ACUModel:
++    def sample_post_asu_destination(self):
++        return self.rng.choice(['Rehab', 'ESD', 'Other'], p=self.post_asu_probabilities)
++
++class ASUModel:
+     def __init__(self, env, patient_params=None, run_length=5 * 365):
+         self.env = env
+         self.run_length = run_length
+@@ -19,15 +23,15 @@ class ACUModel:
+         
+         if patient_params is None:
+             self.patient_types = {
+-                'Stroke': PatientType('Stroke', 1.2),
+-                'TIA': PatientType('TIA', 9.3),
+-                'Complex Neurological': PatientType('Complex Neurological', 3.6),
+-                'Other': PatientType('Other', 3.2)
++                'Stroke': PatientType('Stroke', 1.2, [0.24, 0.13, 0.63]),
++                'TIA': PatientType('TIA', 9.3, [0.01, 0.01, 0.98]),
++                'Complex Neurological': PatientType('Complex Neurological', 3.6, [0.11, 0.05, 0.84]),
++                'Other': PatientType('Other', 3.2, [0.05, 0.10, 0.85])
+             }
+         else:
+             self.patient_types = {
+-                name: PatientType(name, interarrival_time)
+-                for name, interarrival_time in patient_params.items()
++                name: PatientType(name, params['interarrival_time'], params['post_asu_probabilities'])
++                for name, params in patient_params.items()
+             }
+ 
+     def run(self):
+@@ -44,9 +48,12 @@ class ACUModel:
+             patient_type.count += 1
+             patient_id = self.total_arrivals - 1
+ 
++            post_asu_destination = patient_type.sample_post_asu_destination()
++
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type.name}) arrived")
+             print(f"  Total arrivals: {self.total_arrivals}")
+             print(f"  {patient_type.name} arrivals: {patient_type.count}")
++            print(f"  Post-ASU destination: {post_asu_destination}")
+             print(f"  Next {patient_type.name} arrival in {interarrival_time:.2f} days")
+             print()
+ 
+@@ -55,7 +62,7 @@ class ACUModel:
+ 
+ def main(patient_params=None, run_length=5*365):
+     env = simpy.Environment()
+-    model = ACUModel(env, patient_params, run_length)
++    model = ASUModel(env, patient_params, run_length)
+     model.run()
+ 
+     print("\nSimulation completed.")
+@@ -66,4 +73,3 @@ def main(patient_params=None, run_length=5*365):
+ 
+ if __name__ == "__main__":
+     main()
+-

@@ -1,0 +1,40 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 16_iteration_s2.ipynb diffs/16_iteration_s2_for_diff.ipynb
+nbdiff 16_iteration_s2.ipynb diffs/16_iteration_s2_for_diff.ipynb
+--- 16_iteration_s2.ipynb  2024-07-14 01:07:50.188610
++++ diffs/16_iteration_s2_for_diff.ipynb  2024-07-14 01:39:44.406252
+## modified /cells/13/source:
+@@ -9,6 +9,7 @@ class RehabilitationUnit:
+             'Other': 0,
+             'TIA': 0
+         }
++        self.occupancy = 0  # New member variable for occupancy
+         # Inter-arrival time means (in days)
+         self.stroke_iat_external = experiment.params['rehab_stroke_iat']
+         self.complex_neuro_iat_external = experiment.params['rehab_neuro_iat']
+@@ -38,12 +39,14 @@ class RehabilitationUnit:
+         patient_id = self.total_arrivals
+         self.total_arrivals += 1
+         self.patient_counts[patient_type] += 1
++        self.occupancy += 1  # Increment occupancy
+         
+         if self.experiment.params['trace']:
+             print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) arrived at RU")
+             print(f" Total arrivals: {self.total_arrivals}")
+             print(f" {patient_type} arrivals: {self.patient_counts[patient_type]}")
+             print(f" Current patient counts: {self.patient_counts}")
++            print(f" Current occupancy: {self.occupancy}")
+         
+         self.env.process(self.rehab_treatment(patient_type, patient_id))
+ 
+@@ -56,6 +59,11 @@ class RehabilitationUnit:
+             yield from self.tia_rehab_treatment(patient_id)
+         else:
+             yield from self.other_rehab_treatment(patient_id)
++        
++        self.occupancy -= 1  # Decrement occupancy
++        if self.experiment.params['trace']:
++            print(f"Time {self.env.now:.2f}: Patient {patient_id} ({patient_type}) left RU")
++            print(f" Current occupancy: {self.occupancy}")
+ 
+     def stroke_rehab_treatment(self, patient_id):
+         post_rehab_destination = np.random.choice(['ESD', 'Other'], p=self.experiment.params['rehab_stroke_post_destination_probs'])

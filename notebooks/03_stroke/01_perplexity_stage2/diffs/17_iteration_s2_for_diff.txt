@@ -1,0 +1,86 @@
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ nbdiff 17_iteration_s2.ipynb diffs/17_iteration_s2_for_diff.ipynb
+nbdiff 17_iteration_s2.ipynb diffs/17_iteration_s2_for_diff.ipynb
+--- 17_iteration_s2.ipynb  2024-07-15 03:53:08.477270
++++ diffs/17_iteration_s2_for_diff.ipynb  2024-07-15 04:07:26.607205
+## modified /cells/13/source:
+@@ -1,9 +1,12 @@
++import simpy
++
+ class Experiment:
+     def __init__(self, params=None):
+         default_params = {
+             'run_length': 5 * 365,
+             'trace': False,
+             'acute_audit_interval': 1,  # Default to 1 day
++            'rehab_audit_interval': 1,  # Default to 1 day
+             'rehab_stroke_iat': 21.8,
+             'rehab_neuro_iat': 31.7,
+             'rehab_other_iat': 28.6,
+@@ -48,7 +51,8 @@ class Experiment:
+         else:
+             self.params = self.merge_params(default_params, params)
+ 
+-        self.asu_occupancy = []  # Initialize the list to store occupancy
++        self.asu_occupancy = []  # Initialize the list to store ASU occupancy
++        self.rehab_occupancy = []  # Initialize the list to store rehab occupancy
+ 
+     def merge_params(self, default, new):
+         merged = default.copy()
+@@ -63,3 +67,8 @@ class Experiment:
+         while True:
+             yield env.timeout(acute_audit_interval)
+             self.asu_occupancy.append(asu.occupancy)
++
++    def audit_rehab_occupancy(self, env, rehab_audit_interval, rehab_unit):
++        while True:
++            yield env.timeout(rehab_audit_interval)
++            self.rehab_occupancy.append(rehab_unit.occupancy)
+
+## modified /cells/17/source:
+@@ -207,18 +207,38 @@ if __name__ == "__main__":
+     run_model_with_audit()
+ 
+ 
+-def run_rehabilitation_unit_model(run_length):
++def run_rehabilitation_unit_model():
+     experiment = Experiment({
+-        'run_length': run_length,
++        'run_length': 365*5,
+         'trace': False,  # Set to True if you want to see detailed logs
+     })
+     env = simpy.Environment()
+-    ru = RehabilitationUnit(env, experiment)
++    rehab_unit = RehabilitationUnit(env, experiment)
++
++    # Initialize the audit of rehab occupancy as a SimPy process
++    env.process(experiment.audit_rehab_occupancy(env, 1, rehab_unit))  # Interval of 1 day
++
++    # Run the model for the default run length in the experiment * 10
+     env.run(until=experiment.params['run_length'])
+ 
++    # Calculate occupancy frequencies of the rehab occupancy
++    rel_freq, cum_freq, unique_vals = calculate_occupancy_frequencies(experiment.rehab_occupancy)
++
++    # Display an occupancy plot for the rehab unit
++    fig, ax = occupancy_plot(rel_freq, unique_vals, x_label="No. of people in rehab")
++    plt.show()
++
++    # Calculate the probability of delay for rehab
++    prob_delay = calculate_prob_delay(rel_freq, cum_freq)
++
++    # Display a probability of delay plot for rehab
++    fig, ax = prob_delay_plot(prob_delay, unique_vals, x_label="No. rehab beds available")
++    plt.show()
++
+     print("\nSimulation completed.")
+-    print(f"Total rehab arrivals: {ru.total_arrivals}")
+-    print(f"Final rehab patient counts: {ru.patient_counts}")
++    print(f"Total rehab arrivals: {rehab_unit.total_arrivals}")
++    print(f"Final rehab patient counts: {rehab_unit.patient_counts}")
+ 
+ if __name__ == "__main__":
+-    run_rehabilitation_unit_model(365 * 5)  # Run for 5 years
++    run_rehabilitation_unit_model()
++
+
+(gen_simpy) alison@pop-os:~/Dropbox/code/LLM/llm_simpy/notebooks/03_stroke/01_perplexity_stage2$ 
