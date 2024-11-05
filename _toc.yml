@@ -182,4 +182,5 @@ parts:
       - file: notebooks/04_results/02_stroke/00_model_comparison
     - caption: Discussion
       chapters:
+      - file: notebooks/05_discussion/00_summary
       - file: notebooks/05_discussion/01_license
