@@ -1,0 +1,36 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Using Large Language Models to support researchers
+  reproduce and reuse unpublished health care discrete-event
+  simulation computer models: a feasibility and pilot study
+  in Python
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Thomas
+    family-names: Monks
+    orcid: 'https://orcid.org/0000-0003-2631-4481'
+    affiliation: University of Exeter
+    email: t.m.w.monks@exeter.ac.uk
+  - given-names: Alison
+    family-names: Harper
+    affiliation: University of Exeter
+    orcid: 'https://orcid.org/0000-0001-5274-5037'
+    email: a.l.harper@exeter.ac.uk
+  - given-names: Amy
+    family-names: Heather
+    email: a.heather2@exeter.ac.uk
+    affiliation: University of Exeter
+    orcid: 'https://orcid.org/0000-0002-6596-3479'
+  - given-names: Navonil
+    family-names: Mustafee
+    orcid: 'https://orcid.org/0000-0002-2204-8924'
+    affiliation: University of Exeter
+    email: n.mustafee@exeter.ac.uk
+repository-code: 'https://github.com/pythonhealthdatascience/llm_simpy'
+license: MIT
