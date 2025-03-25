@@ -1,11 +1,19 @@
 # Primary aims
 
-Our study is focussed on the feasibility of prompting LLMs to support the coding and recreation of simulation models in health. By recreation we mean that the design of a discrete-event simulation model is based on model documentation reported in an academic journal article. Recreations will be in the Python simulation package `simpy`. To test the feasibility of LLMs for this task, we aim to generate all code representing model logic (arrival processes, queuing, activities, sampling, balking etc). We will engineer plain English prompts for an LLM and use the generated code. We will not perform any manual coding ourselves, but will debug and test the LLM generated code. As the recreated model is code based, and potentially not user friendly for individuals not trained in Python, we will also investigate prompting an LLM to generate a simple browser based user interface.  Our primary research objectives are:
+Our study investigates the feasibility of using generative AI to recreate DES models in healthcare based on textual descriptions from the academic literature. We focus on generating models in the Python simulation package SimPy {cite}`simpy`, selected for its (i) compatibility with language models' code-generating capabilities, (ii) growing adoption in health service Operational Research {cite:p}`monks_harper_des_review`, and (iii) our expertise in developing SimPy models for healthcare applications {cite:p}`harper2023development,allen2020simulation`.
 
-1. Given a set of engineered prompts describing a DES model, establish if it is feasible to use an LLM to generate a Python and `simpy` model that is functional and passes verification tests designed by a human user.
-2. Given a set of engineered prompts of a user interface, establish if it feasible to use an LLM to generate a `streamlit` dashboard interface to a `simpy` model that can pass verification tests designed by a human user.
-3. Pilot using a LLM to support the recreation of two healthcare DES models identified in the literature.
-4. Pilot generating a contemporary user interface to increase accessibility.
-5. Test to what degree the study can be reproduced by another modeller. 
+To assess feasibility, we engineer prompts for Perplexity.AI to generate complete Python and SimPy code that captures model logic (e.g. arrival processes, queuing, activities, sampling, and balking). Additionally, we explore generating browser-based user interfaces using Streamlit {cite}`streamlit` to enhance accessibility for non-programmers. Our research objectives are to:
 
-There is much interest in LLMs and the potential for modelling support. Our long-term aim is to provide guidance (e.g. the form and language used in prompts), opportunities, challenges, risks to validity, and limitations in the use of LLMs to support recreating models to enable reproduction of results, models reuse and enhance education.
+- Determine if generative AI can produce functional, verifiable SimPy models from engineered prompts describing DES models
+- Assess the feasibility of generating usable Streamlit web interfaces for these models
+- Pilot this approach by recreating two published healthcare DES models
+- Evaluate the reproducibility of our methodology when conducted by different modelers
+
+This work contributes to the growing interest in generative AI applications for modeling {cite:p}`tolk2024hybrid,frydenlund2024modeler,giabbanelli2024broadening,Giabbanelli_GPT_Sim`. Our long-term goal is to develop guidance on prompt engineering and to document the opportunities, challenges, and limitations of using AI to recreate DES models—ultimately supporting result reproduction, model reuse, and educational applications.
+
+## References
+
+```{bibliography}
+:style: plain
+:filter: docname in docnames
+```
