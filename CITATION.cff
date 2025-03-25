@@ -27,10 +27,5 @@ authors:
     email: a.heather2@exeter.ac.uk
     affiliation: University of Exeter
     orcid: 'https://orcid.org/0000-0002-6596-3479'
-  - given-names: Navonil
-    family-names: Mustafee
-    orcid: 'https://orcid.org/0000-0002-2204-8924'
-    affiliation: University of Exeter
-    email: n.mustafee@exeter.ac.uk
 repository-code: 'https://github.com/pythonhealthdatascience/llm_simpy'
 license: MIT
