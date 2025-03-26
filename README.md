@@ -58,12 +58,6 @@ This will build the HTML book locally on your machine.  The terminal will displa
 
 Please cite the archived repository:
 
-> TBC. <!--TODO: Add Zenodo citation-->
-
-You can also cite this GitHub repository as:
-
-> Thomas Monks, Alison Harper, and Amy Heather. **Using Large Language Models to support researchers reproduce and reuse unpublished health care discrete-event simulation computer models: a feasibility and pilot study in Python**. <https://github.com/pythonhealthdatascience/llm_simpy>.
-
 ```bibtex
 @software{llm_simpy,
   author       = {Monks, Thomas and
@@ -82,6 +76,12 @@ You can also cite this GitHub repository as:
   url          = {https://doi.org/10.5281/zenodo.15090961},
 }
 ```
+
+You can also cite this GitHub repository as:
+
+> Thomas Monks, Alison Harper, and Amy Heather. **Using Large Language Models to support researchers reproduce and reuse unpublished health care discrete-event simulation computer models: a feasibility and pilot study in Python**. <https://github.com/pythonhealthdatascience/llm_simpy>.
+
+
 
 A `CITATION.cff` file is also provided.
 
