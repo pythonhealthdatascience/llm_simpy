@@ -9,6 +9,8 @@ Consistent identifier (represents all versions, resolves to latest):
 
 ## :seedling: v0.1.0 
 
+Full research compendium released.
+
 ### Added
 
 * Repository essentials: CHANGELOG, CITATION, README, `binder/environment.yml`
