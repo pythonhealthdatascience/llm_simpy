@@ -1,0 +1,849 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Model design &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_methods/04_design';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Prompt Engineering" href="05_prompt_engineering.html" />
+    <link rel="prev" title="Case study selection" href="03_case_studies.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/01_primary.html">Primary aims</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/02_literature.html">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Model design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_prompt_engineering.html">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_CCU/03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/05_prompts_stage2.html">Prompts Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/20_iteration_s2.html">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_stroke/03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01_methods/04_design.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/01_methods/04_design.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Model design</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simpy-models">Simpy models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation-plan-and-best-practice-code-organisation">Recreation plan and best practice code organisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-approach-to-model-building">General approach to model building</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="model-design">
+<h1>Model design<a class="headerlink" href="#model-design" title="Link to this heading">#</a></h1>
+<section id="simpy-models">
+<h2>Simpy models<a class="headerlink" href="#simpy-models" title="Link to this heading">#</a></h2>
+<p>All generated models were built in <code class="docutils literal notranslate"><span class="pre">simpy</span></code> <span id="id1">[<a class="reference internal" href="#id36" title="Team SimPy. Simpy 3.0.11. https://simpy.readthedocs.io/en/latest/index.html, 2020. Accessed: 2023-10-18.">Team SimPy, 2020</a>]</span>: a process-based DES package implemented in Python that is available under a permissive MIT license. DES models are built by defining Python generator functions and logic to request and return resources. The <code class="docutils literal notranslate"><span class="pre">simpy</span></code> is lightweight and provides a full event scheduling engine. Statistical distributions for sampling, common random number streams, output analysis tools, user interfaces, and model animation are not included. The implementation of all of these tools are available in the general and scientific Python stack. For example, <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">pandas</span></code> for sampling and output analysis, and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for visualising results.</p>
+<p>For those unfamiliar with <code class="docutils literal notranslate"><span class="pre">simpy</span></code>, a simple simulation model of a urgent care call centre is presented below. This is based on introductory tutorial material published elsewhere <span id="id2">[<a class="reference internal" href="#id34" title="T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. NIHR Open Research, 3:48, 2023. URL: https://doi.org/10.3310/nihropenres.13467.1, doi:10.3310/nihropenres.13467.1.">Monks and Harper, 2023</a>, <a class="reference internal" href="#id35" title="Thomas Monks and Alison Harper. SimPy and StreamLit Tutorial Materials for Healthcare Discrete-Event Simulation. July 2023. URL: https://doi.org/10.5281/zenodo.8193001, doi:10.5281/zenodo.8193001.">Monks and Harper, 2023</a>]</span>. In the interest of space we have removed docstrings and comments from the code.  The model consists of three parts. First is patient generator function <code class="docutils literal notranslate"><span class="pre">arrivals_generator</span></code> that generates inter-arrival times following an exponential distribution. Second a <code class="docutils literal notranslate"><span class="pre">service</span></code> function where patient processes request call operator resources and when available samples a call duration from a triangular distribution.  A simulated trace is provided as the model runs.  The final part of the code is a script to run the model. It creates a <code class="docutils literal notranslate"><span class="pre">simpy</span></code> environment (that holds the DES event scheduling engine), the call operator resources, schedules the patient generator function, and starts the simulation run for a user specified run length. See {cite: t}<code class="docutils literal notranslate"><span class="pre">monksharper_simpy_tutorial</span></code> for a full tutorial.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">simpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">def</span> <span class="nf">service</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="n">start_wait</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+    <span class="k">with</span> <span class="n">operators</span><span class="o">.</span><span class="n">request</span><span class="p">()</span> <span class="k">as</span> <span class="n">req</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">req</span>
+
+        <span class="n">waiting_time</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">start_wait</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;operator answered call </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1"> at &#39;</span> \
+              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">call_duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">triangular</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+                                             <span class="n">right</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+        
+        <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">call_duration</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;call </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1"> ended </span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">; &#39;</span> \
+              <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;waiting time was </span><span class="si">{</span><span class="n">waiting_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">arrivals_generator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">caller_count</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">inter_arrival_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="mi">60</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">inter_arrival_time</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;call arrives at: </span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">service</span><span class="p">(</span><span class="n">caller_count</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">env</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">RUN_LENGTH</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">N_OPERATORS</span> <span class="o">=</span> <span class="mi">13</span>
+    
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    <span class="n">operators</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Resource</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="n">N_OPERATORS</span><span class="p">)</span>
+    
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">arrivals_generator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">operators</span><span class="p">))</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">RUN_LENGTH</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;end of run. simulation clock time = </span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="recreation-plan-and-best-practice-code-organisation">
+<h2>Recreation plan and best practice code organisation<a class="headerlink" href="#recreation-plan-and-best-practice-code-organisation" title="Link to this heading">#</a></h2>
+<p>The number of modelling iterations needed to recreate the models was not known in advance. Instead we read the articles reporting the model designs and constructed a general plan that ordered and batched iterations into 12 aims of model recreation. <a class="reference internal" href="#table-model-building"><span class="std std-numref">Table 2</span></a> details the ordered aims of the model recreation process along with a description and examples of changes to the model that could be expected.  Our aims took us from modelling of arrivals of patients and patient classes (e.g. types of stroke, or unplanned emergencies versus elective patients) through to user interface allowing for basic experimentation. We believe this mirrors how recreation of a DES model would take place regardless of it an LLM was used.</p>
+</section>
+<section id="general-approach-to-model-building">
+<h2>General approach to model building<a class="headerlink" href="#general-approach-to-model-building" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="table-model-building">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Ordered aims of the model recreation process</span><a class="headerlink" href="#table-model-building" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Aim</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+<th class="head"><p><strong>Example additions to model</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Arrival processes and logic</p></td>
+<td><p>Single and multiple classes of patients</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Initial queuing logic and activities (delays)</p></td>
+<td><p>Reneging, patient class dependent length of stay in a ward</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Separation of parameters from model logic</p></td>
+<td><p>A configurable Experiment class to hold all model parameters. See <span id="id3">[<a class="reference internal" href="#id34" title="T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. NIHR Open Research, 3:48, 2023. URL: https://doi.org/10.3310/nihropenres.13467.1, doi:10.3310/nihropenres.13467.1.">Monks and Harper, 2023</a>]</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Simulated trace control</p></td>
+<td><p>Functionality to hide and display simulated events</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Patient routing</p></td>
+<td><p>Sampling to determine post ward destinations and activities</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Additional queuing and activities</p></td>
+<td><p>Additional treatment in a different hospital/ward</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Results collection</p></td>
+<td><p>Audit and calculate ward occupancy, bed utilisation, waiting times etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Warm-up period</p></td>
+<td><p>Split the model run length into warm-up and results collection, reset all KPIs, introduce auditing processes.</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Multiple replications</p></td>
+<td><p>Multiple unique runs of the model. See <span id="id4">[<a class="reference internal" href="#id34" title="T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. NIHR Open Research, 3:48, 2023. URL: https://doi.org/10.3310/nihropenres.13467.1, doi:10.3310/nihropenres.13467.1.">Monks and Harper, 2023</a>]</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Output analysis procedures</p></td>
+<td><p>Charts and summary tables</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Common random numbers</p></td>
+<td><p>Allocate unique random number stream to each distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>User interface</p></td>
+<td><p>A web browser based interface for the model. See <span id="id5">[<a class="reference internal" href="#id34" title="T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. NIHR Open Research, 3:48, 2023. URL: https://doi.org/10.3310/nihropenres.13467.1, doi:10.3310/nihropenres.13467.1.">Monks and Harper, 2023</a>]</span></p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>Final bug fixes</p></td>
+<td><p>Patch any remaining bugs identified by a 2nd modeller</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To optimise organisation and usability of the <code class="docutils literal notranslate"><span class="pre">simpy</span></code> simulation model we adopted the approach of <span id="id6">Monks and Harper [<a class="reference internal" href="#id34" title="T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. NIHR Open Research, 3:48, 2023. URL: https://doi.org/10.3310/nihropenres.13467.1, doi:10.3310/nihropenres.13467.1.">2023</a>]</span> in aims 3, 8 and 11.  The result is that model logic is separated from parameters using an <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class (used to setup “what-if” experiments).  The <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> class is used in combination with a multiple replications wrapper function to generate results.  This simple organisation enables quick integration with Python web app frameworks such as <code class="docutils literal notranslate"><span class="pre">streamlit</span></code> to make models usable by a wider group of people.</p>
+<p>To enable both repeatable replications and variance reduction between experiments, we chose to implement common random number (CRN) streams in our models; i.e. each random statistical distribution used for sampling has its own unique controllable pseudo random number stream <span id="id7">[<a class="reference internal" href="#id37" title="R. Davies and R J Brooks. Stream correlations in multiple recursive and congruential generators. Journal of Simulation, 1(2):131–135, 2007. URL: https://doi.org/10.1057/palgrave.jos.4250013, doi:10.1057/palgrave.jos.4250013.">Davies and Brooks, 2007</a>]</span>.  This is inline with case study 2 that used Simul8 that implements CRN. However, we note that case study 1 was implemented in VBA and it is unclear if CRN streams were implemented by the authors. We aimed to manage all random sampling through the <code class="docutils literal notranslate"><span class="pre">numpy.random</span></code> module and the PCG-64 pseudo-random number generator. For the pilot we followed a simple approach where the replication number was used to spawn <span class="math notranslate nohighlight">\(n\)</span> independent random number streams.</p>
+<p>We also aimed to generated code that organised models as Python classes (e.g. a Critical Care Unit model class).  We do not claim this approach improves models above the functional form we demonstrate above. However, our experience is that organising models as classes simplifies testing over a project.</p>
+<p>Python code should follow coding standards such as PEP8 and PEP257.  For the pilot we chose to relax these standards to reduce the number of lines the LLMs had to generate (in terms of line wrapping and documentation). After all iterations were completed we used the tool <code class="docutils literal notranslate"><span class="pre">black</span></code> to autoformat the code to meet PEP8 standards.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id8">
+<div role="list" class="citation-list">
+<div class="citation" id="id37" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">DB07</a><span class="fn-bracket">]</span></span>
+<p>R. Davies and R J Brooks. Stream correlations in multiple recursive and congruential generators. <em>Journal of Simulation</em>, 1(2):131–135, 2007. URL: <a class="reference external" href="https://doi.org/10.1057/palgrave.jos.4250013">https://doi.org/10.1057/palgrave.jos.4250013</a>, <a class="reference external" href="https://doi.org/10.1057/palgrave.jos.4250013">doi:10.1057/palgrave.jos.4250013</a>.</p>
+</div>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MH23a<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>,<a role="doc-backlink" href="#id5">4</a>,<a role="doc-backlink" href="#id6">5</a>)</span>
+<p>T Monks and A Harper. Improving the usability of open health service delivery simulation models using python and web apps. <em>NIHR Open Research</em>, 3:48, 2023. URL: <a class="reference external" href="https://doi.org/10.3310/nihropenres.13467.1">https://doi.org/10.3310/nihropenres.13467.1</a>, <a class="reference external" href="https://doi.org/10.3310/nihropenres.13467.1">doi:10.3310/nihropenres.13467.1</a>.</p>
+</div>
+<div class="citation" id="id35" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">MH23b</a><span class="fn-bracket">]</span></span>
+<p>Thomas Monks and Alison Harper. SimPy and StreamLit Tutorial Materials for Healthcare Discrete-Event Simulation. July 2023. URL: <a class="reference external" href="https://doi.org/10.5281/zenodo.8193001">https://doi.org/10.5281/zenodo.8193001</a>, <a class="reference external" href="https://doi.org/10.5281/zenodo.8193001">doi:10.5281/zenodo.8193001</a>.</p>
+</div>
+<div class="citation" id="id36" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">TeamSimPy20</a><span class="fn-bracket">]</span></span>
+<p>Team SimPy. Simpy 3.0.11. https://simpy.readthedocs.io/en/latest/index.html, 2020. Accessed: 2023-10-18.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/01_methods"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_case_studies.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Case study selection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_prompt_engineering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Prompt Engineering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simpy-models">Simpy models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation-plan-and-best-practice-code-organisation">Recreation plan and best practice code organisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-approach-to-model-building">General approach to model building</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

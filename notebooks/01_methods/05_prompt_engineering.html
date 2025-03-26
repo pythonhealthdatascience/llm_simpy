@@ -1,0 +1,872 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Prompt Engineering &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_methods/05_prompt_engineering';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Testing" href="06_testing.html" />
+    <link rel="prev" title="Model design" href="04_design.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/01_primary.html">Primary aims</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/02_literature.html">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_design.html">Model design</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_CCU/03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/05_prompts_stage2.html">Prompts Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/20_iteration_s2.html">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_stroke/03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01_methods/05_prompt_engineering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/01_methods/05_prompt_engineering.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Prompt Engineering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-versus-academic-article-write-up">Prompts versus academic article write-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tokens">Common tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-prompt">Initial prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refactoring-prompts">Refactoring prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt-engineering">One-shot prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numbered-steps">Numbered steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restrictive-clauses-in-prompts">Restrictive clauses in prompts</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="prompt-engineering">
+<h1>Prompt Engineering<a class="headerlink" href="#prompt-engineering" title="Link to this heading">#</a></h1>
+<section id="prompts-versus-academic-article-write-up">
+<h2>Prompts versus academic article write-up<a class="headerlink" href="#prompts-versus-academic-article-write-up" title="Link to this heading">#</a></h2>
+<p>A naive approach to work with LLMs to recreate DES model’s is to directly copy-paste text from the manuscript (along with instructions to translate the logic into a Python model) into its chat interface.  Although potentially time efficient, we argue this is not an effective approach due both the implicit healthcare process and modelling knowledge that human written narrative may contain. As a simple example consider the folloing extert describing balking of elective patients from our critical care case study (Griffith’s et al section 2.1):</p>
+<p><em>If an arriving patient finds that all beds are occupied, they are sent to a queue. There are two queues built into the model, the ‘Unplanned Admissions’ queue and the ‘Planned Admissions’ queue. The patients in the ‘Planned Admissions’ queue—that is the Elective surgery patients—have their surgery cancelled and are then sent home. The patients in the ‘Unplanned Admissions’ queue wait until a bed becomes available.</em> Griffiths et al. 2010</p>
+<p>A human reader of this text may understand the context and logic exactly ; especially if they have viewed a logic diagram of the model beforehand. On the other hand an LLM prompted in this was is less likely to produce consistent models due to the mixing of patient types in the discussion and lack of precision.</p>
+<p>An alternative approach to use an LLM is to construct (engineer) a prompt for the LLM with the aim of being more precise. For example, if we focus on elective surgery we would construct a prompt to clarify the implicit know:</p>
+<ol class="arabic simple">
+<li><p>Instruct the LLM to add a new arrival source to the model for elective surgery patients</p></li>
+<li><p>Precisely define which resources are used by the elective patients on arrival and if these are shared with other types of patient</p></li>
+<li><p>Identify the <strong>outcome</strong> logic if all beds are in use versus if they are not all in use.</p></li>
+</ol>
+<p>An example subsequent prompt would look as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">arrival</span> <span class="n">source</span> <span class="n">to</span> <span class="n">the</span> <span class="n">CCU</span><span class="p">:</span> <span class="n">Elective</span> <span class="n">surgery</span> <span class="n">patients</span><span class="o">.</span>
+
+<span class="n">Elective</span> <span class="n">surgery</span> <span class="n">patients</span> <span class="n">are</span> <span class="n">modelled</span> <span class="k">as</span> <span class="n">a</span> <span class="n">separate</span> <span class="n">process</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">unplanned</span> <span class="n">admissions</span><span class="p">,</span> <span class="n">but</span> <span class="n">share</span> <span class="n">the</span> <span class="n">critical</span> <span class="n">care</span> <span class="n">bed</span> <span class="n">resources</span><span class="o">.</span> 
+
+<span class="n">As</span> <span class="n">an</span> <span class="n">elective</span> <span class="n">patient</span> <span class="n">arrives</span> <span class="n">to</span> <span class="n">the</span> <span class="n">CCU</span> <span class="n">a</span> <span class="n">check</span> <span class="ow">is</span> <span class="n">made</span> <span class="n">on</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">critical</span> <span class="n">care</span> <span class="n">beds</span> <span class="n">available</span><span class="o">.</span>  <span class="n">There</span> <span class="n">are</span> <span class="n">two</span> <span class="n">outcomes</span> <span class="kn">from</span> <span class="nn">this</span> <span class="n">check</span><span class="p">:</span>
+
+<span class="n">Outcome</span> <span class="mi">1</span><span class="p">:</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">beds</span> <span class="ow">in</span> <span class="n">use</span> <span class="ow">is</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">the</span> <span class="n">total</span> <span class="n">number</span> <span class="n">of</span> <span class="n">beds</span> <span class="n">available</span><span class="o">.</span> <span class="n">In</span> <span class="n">this</span> <span class="n">case</span> <span class="n">the</span> <span class="n">elective</span> <span class="n">patient</span> <span class="n">leaves</span> <span class="n">the</span> <span class="n">model</span> <span class="n">immediately</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">called</span> <span class="n">a</span> <span class="s2">&quot;cancelled operation&quot;</span> <span class="n">event</span> <span class="ow">and</span> <span class="n">should</span> <span class="n">be</span> <span class="n">reported</span> <span class="n">to</span> <span class="n">the</span> <span class="n">user</span><span class="o">.</span>
+
+<span class="n">Outcome</span> <span class="mf">2.</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">beds</span> <span class="ow">in</span> <span class="n">use</span> <span class="ow">is</span> <span class="n">less</span> <span class="n">than</span> <span class="n">the</span> <span class="n">total</span> <span class="n">number</span> <span class="n">of</span> <span class="n">beds</span> <span class="n">available</span><span class="o">.</span> <span class="n">In</span> <span class="n">this</span> <span class="n">case</span> <span class="n">the</span> <span class="n">elective</span> <span class="n">patient</span> <span class="n">requests</span> <span class="n">a</span> <span class="n">critical</span> <span class="n">care</span> <span class="n">bed</span><span class="p">,</span> <span class="ow">is</span> <span class="n">treated</span><span class="p">,</span> <span class="ow">and</span> <span class="ow">is</span> <span class="n">then</span> <span class="n">discharged</span><span class="o">.</span> 
+</pre></div>
+</div>
+</section>
+<section id="common-tokens">
+<h2>Common tokens<a class="headerlink" href="#common-tokens" title="Link to this heading">#</a></h2>
+<p>In a health care simulation study, stakeholders and modellers may use multiple terms to refer to the same concept.  For example, in the terms treatment time, and length of stay may be used interchangeably in a conversation or in a written article.  We aimed to make our prompts as specific as possible in order to obtain the iteration of the model that met our design. We therefore attempted to use a common token throughout an individual prompt and across iterations.  We did allow for shortening of tokens within prompts. For example, if we had introduced the concept of “critical care beds” resources and the model had no other ambiguous resource names we allowed our prompts to refer to “beds”.</p>
+</section>
+<section id="initial-prompt">
+<h2>Initial prompt<a class="headerlink" href="#initial-prompt" title="Link to this heading">#</a></h2>
+<p>In both cases our initial cases were designed to generate a simple working simulation model in <code class="docutils literal notranslate"><span class="pre">simpy</span></code> that generated patient arrivals only. Our hypothesis is that the level of detail and scope could then be expanded in further iterations.  Our initial prompt was one of the most detailed provided. We broke it down into four sections.</p>
+<ul class="simple">
+<li><p><em>Main command</em>: that specified the context (e.g. a Critical Unit DES model), programming language, simulation package and that this was a code generating task.</p></li>
+<li><p><em>General model logic</em>: including time units, arrival sources, model boundaries and run length.</p></li>
+<li><p><em>Simulation inputs</em>: for the first iteration this was always inter-arrivals distributions and parameters.</p></li>
+<li><p><em>Simulation methodology</em>: underlying sampling tools and how this should be implemented.</p></li>
+</ul>
+<p>Below we include the initial prompts from the two case studies.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no need to include the titles in the prompt. However, for clarity we chose to include them in our prompts to the LLM.</p>
+</div>
+<p><strong>Critical Care Unit Model Prompt 1</strong></p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gu">### Main command</span>
+
+Code a discrete-event simulation model of a critical care unit (CCU) in python 3.10 and simpy 4. 
+
+Please code the full model specified. Do not return a simplified version. Show all code.
+
+<span class="gu">### General model logic</span>
+
+All time units in the model are in hours.
+
+Each patient in the model has a unique identifier.  The first patient to arrive has an identifier of 0. For each subsequent patient increment the identifier by 1.
+
+Patients to arrive at the CCU from five different sources: Accident and Emergency, the Wards, Emergency surgery, other hospitals, or the X-Ray department. 
+Each source had a different inter-arrival time distribution.    
+After patients arrive they immediately leave the model.
+
+All patient types must have their own generator function
+
+The model should print out useful information after each event.
+
+the model should include a user settable run length. This defaults to 12 months.
+
+
+<span class="gu">### Simulation inputs</span>
+
+the interarrival time distributions and parameters of patients are dependent on patient type. For each distribution time is measured in hours.
+
+Accident and Emergency = Exponential: 22.72
+the Wards = Exponential: 26.0
+Emergency surgery = Exponential: 37.0
+other hospitals = Exponential: 47.2
+the X-Ray department = Exponential: 575.0 
+
+
+<span class="gu">### simulation methodology</span>
+
+numpy should be use for sampling.
+
+each interarrival distribution should have its own numpy.random.Generator object.
+</pre></div>
+</div>
+<p><strong>Stroke + Rehab Model Prompt 1</strong></p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gu">### Main command</span>
+
+Code a discrete-event simulation model of an Acute Stroke Unit (ACU) in python 3.10 and simpy 4. 
+
+Please code the full model specified. Do not return a simplified version. Show all code.
+
+<span class="gu">### General model logic</span>
+
+All time units in the model are in days.
+
+The model should count the total number of patient arrivals.  The first patient to arrive has an identifier of 0. For each subsequent patient increment the identifier by 1.  
+The model should also maintain counts of the number of patients broken down by their type.
+
+Patients to arrive at the ACU from four different sources: Stroke, TIA, Complex Neurological, or Other. 
+Each source had a different inter-arrival time distribution.  
+After patients arrive they immediately leave the model.
+
+All patient types must have their own generator function.
+
+The model should print out useful information after each event.
+
+The model should include a user settable run length. This defaults to 5 years.
+
+
+<span class="gu">### Simulation inputs</span>
+
+the interarrival time distributions and parameters of patients are dependent on patient type. For each distribution time is measured in days.
+
+Stroke = Exponential: 1.2
+TIA = Exponential: 9.3
+Complex Neurological = Exponential: 3.6
+Other = Exponential: 3.2
+
+
+<span class="gu">### simulation methodology</span>
+
+numpy should be use for sampling.
+
+each interarrival distribution should have its own numpy.random.Generator object.
+</pre></div>
+</div>
+</section>
+<section id="refactoring-prompts">
+<h2>Refactoring prompts<a class="headerlink" href="#refactoring-prompts" title="Link to this heading">#</a></h2>
+<p>Within an iteration, we occasionally made use subsequent short prompts to the refactor (another term is “nudge”) the code closer to our requirements or expectations.  For example, if the code generated made was a set of functions when we preferred classes.  For example:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>re-factor the coding into a CCU class.
+</pre></div>
+</div>
+</section>
+<section id="one-shot-prompt-engineering">
+<h2>One-shot prompt engineering<a class="headerlink" href="#one-shot-prompt-engineering" title="Link to this heading">#</a></h2>
+<p>When refactoring of code was judged to be complex we chose to provide a short example of the refactoring in the prompt for the LLM to mimic (so called 1-short prompt engineering).<br />
+An exert from a prompt given to the LLM from the Stroke + Rehab model is shown below where we are refactoring the code to use random sampling that following best practice.  The LLM must modify the code in multiple methods and also count from 0 to the number of random streams implemented.  We therefore provide an example of how this should be implemented.</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>modify the acute_treatment functions in <span class="sb">`AcuteStrokeUnit`</span> class. Do not modify the acute_treatment functions.
+
+code that uses <span class="sb">`numpy.random`</span>, must be replaced with a call to a unique stream in the <span class="sb">`Experiment`</span> list <span class="sb">`streams`</span>. Select the stream using a hard coded integer. Start from zero and increment by 1 each time to allocate a unique number to each stream.  E.g. in <span class="sb">`stroke_acute_treatment`</span> the first instance of <span class="sb">`length_of_stay = np.random.lognormal(mean=mu, sigma=sigma)`</span> becomes <span class="sb">`length_of_stay = self.experiment.streams[0](mean=mu, sigma=sigma)`</span>; the second instance uses index 1 and the third uses index 2.
+</pre></div>
+</div>
+</section>
+<section id="numbered-steps">
+<h2>Numbered steps<a class="headerlink" href="#numbered-steps" title="Link to this heading">#</a></h2>
+<p>Many simple functions in programming are a series of steps to be followed by the Python interpreter.  Where they were very clear we specified them as a number ordered list of natural language instructions that the LLM could follow. The below illustrate such a prompt applied to creating an initial iteration of a streamlit inteface for the Stroke+Rehab model</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>write python code that creates an interactive user interface using the package streamlit.
+
+The interface should include a main window.
+
+The main window contains a button labelled “Simulate”. After the button is pressed the following logic is implemented:
+
+<span class="k">1.</span> display a spinner with the text “please wait for results”.
+
+<span class="k">2.</span> run the python code included below
+
+<span class="k">3.</span> display a streamlit table for df_acute and df_rehab results
+
+<span class="k">4.</span> display all plots.  Plotting functions return a tuple of figure, axis.
+
+All classes and functions should be imported from a module called <span class="sb">`stroke_rehab_model`</span>
+</pre></div>
+</div>
+</section>
+<section id="restrictive-clauses-in-prompts">
+<h2>Restrictive clauses in prompts<a class="headerlink" href="#restrictive-clauses-in-prompts" title="Link to this heading">#</a></h2>
+<p>We appended restrictive clauses to our prompts to avoid changes to parts of the code that were not part of our design. For example, when specifying a modification to the treatment of patients we could append “Do not modify the patient_generator functions at all” to ensure these were not modified in the same way. Similarly if we were interested in refactoring the Experiment class to add new variables we might specify “only modify the Experiment class” or “do not modify the CCU class” to avoid small changes to the design between iterations.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/01_methods"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_design.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model design</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="06_testing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Testing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-versus-academic-article-write-up">Prompts versus academic article write-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-tokens">Common tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-prompt">Initial prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refactoring-prompts">Refactoring prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt-engineering">One-shot prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numbered-steps">Numbered steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restrictive-clauses-in-prompts">Restrictive clauses in prompts</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

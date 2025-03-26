@@ -1,0 +1,127 @@
+Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+class Experiment:
+    def __init__(self, accident_emergency_arrival_rate=22.72, wards_arrival_rate=26.0, emergency_surgery_arrival_rate=37.0, other_hospitals_arrival_rate=47.2, xray_department_arrival_rate=575.0, elective_surgery_arrival_rate=17.91, elective_surgery_arrival_std_dev=3.16, accident_emergency_lognormal_mu=128.79, accident_emergency_lognormal_sigma=267.51, wards_lognormal_mu=177.89, wards_lognormal_sigma=276.54, emergency_surgery_lognormal_mu=140.15, emergency_surgery_lognormal_sigma=218.02, other_hospitals_lognormal_mu=212.86, other_hospitals_lognormal_sigma=457.67, xray_department_lognormal_mu=87.53, xray_department_lognormal_sigma=108.67, elective_surgery_treatment_rate=57.34, num_critical_care_beds=24, intensive_cleaning_duration=5, results_collection_period=12 * 30 * 24, warm_up_period=30 * 24, trace=False, random_number_set=0):
+        # ... (other attributes)
+        self.rng_accident_emergency = np.random.default_rng()
+        self.rng_wards = np.random.default_rng()
+        self.rng_emergency_surgery = np.random.default_rng()
+        self.rng_other_hospitals = np.random.default_rng()
+        self.rng_xray_department = np.random.default_rng()
+        self.rng_elective_surgery = np.random.default_rng()
+        self.setup_streams(random_number_set)
+
+    def setup_streams(self, random_number_set):
+        master_stream = np.random.default_rng(random_number_set)
+        seeds = master_stream.integers(0, np.iinfo(np.int64).max, 12, dtype=np.int64)
+        self.rng_accident_emergency = np.random.default_rng(seeds[0])
+        self.rng_wards = np.random.default_rng(seeds[1])
+        self.rng_emergency_surgery = np.random.default_rng(seeds[2])
+        self.rng_other_hospitals = np.random.default_rng(seeds[3])
+        self.rng_xray_department = np.random.default_rng(seeds[4])
+        self.rng_elective_surgery = np.random.default_rng(seeds[5])
+        # ... (other methods)
+
+class CCU:
+    def __init__(self, env, experiment):
+        self.env = env
+        self.experiment = experiment
+        self.patient_id_counter = 0
+        self.cancelled_operations = 0
+        self.warmup_end_time = self.experiment.warm_up_period
+        self.total_unplanned_waiting_time = 0
+        self.total_unplanned_admissions = 0
+        self.total_treatment_time = 0
+        self.critical_care_beds = simpy.Resource(env, capacity=self.experiment.num_critical_care_beds)
+
+    def lognormal_to_normal(self, mu, sigma):
+        # ... (same method)
+
+    def warmup_complete(self):
+        # ... (same method)
+
+    def reset_kpi(self):
+        # ... (same method)
+
+    def accident_emergency_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Accident and Emergency"))
+
+    def wards_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_wards.exponential(self.experiment.wards_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from the Wards at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Wards"))
+
+    def emergency_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Emergency Surgery"))
+
+    def other_hospitals_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Other Hospitals at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Other Hospitals"))
+
+    def xray_department_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("X-Ray Department"))
+
+    def elective_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.experiment.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
+            if self.experiment.trace:
+                print(f"Elective Patient {self.patient_id_counter} arrived at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.elective_admissions_process())
+
+    def unplanned_admissions_process(self, source):
+        # ... (same method using experiment.rng_* streams)
+
+    def elective_admissions_process(self):
+        # ... (same method)
+
+    def run(self):
+        # ... (same method)
+
+
+------------------
+
+
+[0;36m  Cell [0;32mIn[2], line 38[0;36m[0m
+[0;31m    def warmup_complete(self):[0m
+[0m    ^[0m
+[0;31mIndentationError[0m[0;31m:[0m expected an indented block after function definition on line 35
+
+

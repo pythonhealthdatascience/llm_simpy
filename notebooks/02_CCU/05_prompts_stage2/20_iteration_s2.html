@@ -1,0 +1,1518 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Iteration 20: streamlit (2) stage 2 &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_CCU/05_prompts_stage2/20_iteration_s2';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Iteration 21: streamlit (3) stage 2" href="21_iteration_s2.html" />
+    <link rel="prev" title="Iteration 19: streamlit (1) stage 2" href="19_iteration_s2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/01_primary.html">Primary aims</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/02_literature.html">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/04_design.html">Model design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/05_prompt_engineering.html">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../05_prompts_stage2.html">Prompts Stage 2</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/01_model_stage1/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/02_model_stage2/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/02_model_stage2/04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../03_stroke/03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../03_stroke/05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/pythonhealthdatascience/llm_simpy/main?urlpath=lab/tree/notebooks/02_CCU/05_prompts_stage2/20_iteration_s2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02_CCU/05_prompts_stage2/20_iteration_s2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/02_CCU/05_prompts_stage2/20_iteration_s2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Iteration 20: streamlit (2) stage 2</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-imports">Notebook imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-prompt">LLM Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#date-and-time-of-input-to-llm">Date and time of input to LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources">Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observations-on-the-llm-output">Observations on the LLM Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-output-1">LLM Output 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-from-prior-iterations">Code from prior iterations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-1-extreme-value-test-1">Test 1: Extreme value test 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-2-extreme-value-test-2">Test 2: Extreme value test 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-3-different-run-length">Test 3: Different run length</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-4-extreme-value-test-3">Test 4: Extreme value test 3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-5-extreme-value-test-4">Test 5: Extreme value test 4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-6-vary-warm-up-parameter">Test 6: Vary Warm-up parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-7-repeatable-results-from-multiple-reps">Test 7: Repeatable results from multiple reps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="iteration-20-streamlit-2-stage-2">
+<h1>Iteration 20: streamlit (2) stage 2<a class="headerlink" href="#iteration-20-streamlit-2-stage-2" title="Link to this heading">#</a></h1>
+<section id="plain-english-summary">
+<h2>Plain English Summary<a class="headerlink" href="#plain-english-summary" title="Link to this heading">#</a></h2>
+<p>The first step in creating a streamlit interface adds a sidebar and adds a few parameters to change. Including the “trace” option that allows a user to check the simulated log of events.</p>
+</section>
+<section id="notebook-imports">
+<h2>Notebook imports<a class="headerlink" href="#notebook-imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">simpy</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="llm-prompt">
+<h2>LLM Prompt<a class="headerlink" href="#llm-prompt" title="Link to this heading">#</a></h2>
+<div class="admonition-llm-prompt admonition">
+<p class="admonition-title">LLM Prompt</p>
+<p>Add a streamlit sidebar that contains a set of sliders and numeric text boxes that are used to set the parameters in an instance of Experiment. the following parameters should be set:</p>
+<ol class="arabic simple">
+<li><p>The number of critical care beds</p></li>
+<li><p>The intensive cleaning duration</p></li>
+<li><p>Trace</p></li>
+<li><p>Number of replications</p></li>
+</ol>
+<p>the default values of slider and text boxes should be the same as those in the Experiment class.</p>
+</div>
+</section>
+<section id="date-and-time-of-input-to-llm">
+<h2>Date and time of input to LLM<a class="headerlink" href="#date-and-time-of-input-to-llm" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>0900 19th June 2024</p>
+</div></blockquote>
+</section>
+<section id="sources">
+<h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
+<p>None reported</p>
+</section>
+<section id="observations-on-the-llm-output">
+<h2>Observations on the LLM Output<a class="headerlink" href="#observations-on-the-llm-output" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The code is similar to stage 1 but it does not treat the module but it has chosen not to treat this as a separate module from the model code.</p></li>
+</ul>
+</section>
+<section id="llm-output-1">
+<h2>LLM Output 1:<a class="headerlink" href="#llm-output-1" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;CCU Simulation&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add sidebar</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Parameters&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Number of critical care beds</span>
+    <span class="n">num_critical_care_beds</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">&quot;Number of Critical Care Beds&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Intensive cleaning duration</span>
+    <span class="n">intensive_cleaning_duration</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span><span class="s2">&quot;Intensive Cleaning Duration (hours)&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Trace</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="s2">&quot;Trace&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Number of replications</span>
+    <span class="n">num_replications</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">number_input</span><span class="p">(</span><span class="s2">&quot;Number of Replications&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Create a button to trigger the simulation</span>
+    <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;Simulate&quot;</span><span class="p">):</span>
+        <span class="c1"># Display a spinner while the simulation is running</span>
+        <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">spinner</span><span class="p">(</span><span class="s2">&quot;Please wait for results...&quot;</span><span class="p">):</span>
+            <span class="c1"># Create an instance of Experiment with the specified parameters</span>
+            <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">num_critical_care_beds</span><span class="o">=</span><span class="n">num_critical_care_beds</span><span class="p">,</span>
+                                    <span class="n">intensive_cleaning_duration</span><span class="o">=</span><span class="n">intensive_cleaning_duration</span><span class="p">,</span>
+                                    <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span>
+                                    <span class="n">random_number_set</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># Run the simulation</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">num_replications</span><span class="o">=</span><span class="n">num_replications</span><span class="p">)</span>
+
+            <span class="c1"># Call the results_summary function</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="n">results_summary</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+            <span class="c1"># Display the results as a DataFrame</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">subheader</span><span class="p">(</span><span class="s2">&quot;Simulation Results&quot;</span><span class="p">)</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">dataframe</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">40</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>             <span class="n">st</span><span class="o">.</span><span class="n">dataframe</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">40</span>     <span class="n">main</span><span class="p">()</span>
+
+<span class="nn">Cell In[2], line 2,</span> in <span class="ni">main</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="n">st</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;CCU Simulation&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="c1"># Add sidebar</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Parameters&quot;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;st&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="code-from-prior-iterations">
+<h2>Code from prior iterations<a class="headerlink" href="#code-from-prior-iterations" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Experiment</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">accident_emergency_arrival_rate</span><span class="o">=</span><span class="mf">22.72</span><span class="p">,</span> 
+                 <span class="n">wards_arrival_rate</span><span class="o">=</span><span class="mf">26.0</span><span class="p">,</span> 
+                 <span class="n">emergency_surgery_arrival_rate</span><span class="o">=</span><span class="mf">37.0</span><span class="p">,</span> 
+                 <span class="n">other_hospitals_arrival_rate</span><span class="o">=</span><span class="mf">47.2</span><span class="p">,</span> 
+                 <span class="n">xray_department_arrival_rate</span><span class="o">=</span><span class="mf">575.0</span><span class="p">,</span> 
+                 <span class="n">elective_surgery_arrival_rate</span><span class="o">=</span><span class="mf">17.91</span><span class="p">,</span> 
+                 <span class="n">elective_surgery_arrival_std_dev</span><span class="o">=</span><span class="mf">3.16</span><span class="p">,</span> 
+                 <span class="n">accident_emergency_lognormal_mu</span><span class="o">=</span><span class="mf">128.79</span><span class="p">,</span> 
+                 <span class="n">accident_emergency_lognormal_sigma</span><span class="o">=</span><span class="mf">267.51</span><span class="p">,</span> 
+                 <span class="n">wards_lognormal_mu</span><span class="o">=</span><span class="mf">177.89</span><span class="p">,</span> 
+                 <span class="n">wards_lognormal_sigma</span><span class="o">=</span><span class="mf">276.54</span><span class="p">,</span> 
+                 <span class="n">emergency_surgery_lognormal_mu</span><span class="o">=</span><span class="mf">140.15</span><span class="p">,</span> 
+                 <span class="n">emergency_surgery_lognormal_sigma</span><span class="o">=</span><span class="mf">218.02</span><span class="p">,</span> 
+                 <span class="n">other_hospitals_lognormal_mu</span><span class="o">=</span><span class="mf">212.86</span><span class="p">,</span> 
+                 <span class="n">other_hospitals_lognormal_sigma</span><span class="o">=</span><span class="mf">457.67</span><span class="p">,</span> 
+                 <span class="n">xray_department_lognormal_mu</span><span class="o">=</span><span class="mf">87.53</span><span class="p">,</span> 
+                 <span class="n">xray_department_lognormal_sigma</span><span class="o">=</span><span class="mf">108.67</span><span class="p">,</span> 
+                 <span class="n">elective_surgery_treatment_rate</span><span class="o">=</span><span class="mf">57.34</span><span class="p">,</span> 
+                 <span class="n">num_critical_care_beds</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> 
+                 <span class="n">intensive_cleaning_duration</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+                 <span class="n">results_collection_period</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">24</span><span class="p">,</span> 
+                 <span class="n">warm_up_period</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">24</span><span class="p">,</span> 
+                 <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                 <span class="n">random_number_set</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accident_emergency_arrival_rate</span> <span class="o">=</span> <span class="n">accident_emergency_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wards_arrival_rate</span> <span class="o">=</span> <span class="n">wards_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emergency_surgery_arrival_rate</span> <span class="o">=</span> <span class="n">emergency_surgery_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_hospitals_arrival_rate</span> <span class="o">=</span> <span class="n">other_hospitals_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xray_department_arrival_rate</span> <span class="o">=</span> <span class="n">xray_department_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elective_surgery_arrival_rate</span> <span class="o">=</span> <span class="n">elective_surgery_arrival_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elective_surgery_arrival_std_dev</span> <span class="o">=</span> <span class="n">elective_surgery_arrival_std_dev</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accident_emergency_lognormal_mu</span> <span class="o">=</span> <span class="n">accident_emergency_lognormal_mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accident_emergency_lognormal_sigma</span> <span class="o">=</span> <span class="n">accident_emergency_lognormal_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wards_lognormal_mu</span> <span class="o">=</span> <span class="n">wards_lognormal_mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wards_lognormal_sigma</span> <span class="o">=</span> <span class="n">wards_lognormal_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emergency_surgery_lognormal_mu</span> <span class="o">=</span> <span class="n">emergency_surgery_lognormal_mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emergency_surgery_lognormal_sigma</span> <span class="o">=</span> <span class="n">emergency_surgery_lognormal_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_hospitals_lognormal_mu</span> <span class="o">=</span> <span class="n">other_hospitals_lognormal_mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_hospitals_lognormal_sigma</span> <span class="o">=</span> <span class="n">other_hospitals_lognormal_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xray_department_lognormal_mu</span> <span class="o">=</span> <span class="n">xray_department_lognormal_mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xray_department_lognormal_sigma</span> <span class="o">=</span> <span class="n">xray_department_lognormal_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elective_surgery_treatment_rate</span> <span class="o">=</span> <span class="n">elective_surgery_treatment_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_critical_care_beds</span> <span class="o">=</span> <span class="n">num_critical_care_beds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intensive_cleaning_duration</span> <span class="o">=</span> <span class="n">intensive_cleaning_duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results_collection_period</span> <span class="o">=</span> <span class="n">results_collection_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warm_up_period</span> <span class="o">=</span> <span class="n">warm_up_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_run_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">warm_up_period</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_collection_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="n">trace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_number_set</span> <span class="o">=</span> <span class="n">random_number_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_accident_emergency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_wards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_emergency_surgery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_other_hospitals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_xray_department</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_elective_surgery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_elective_treatment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_streams</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_streams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_number_set</span><span class="p">):</span>
+        <span class="n">master_stream</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">master_stream</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_accident_emergency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_wards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_emergency_surgery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_other_hospitals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_xray_department</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_elective_surgery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_elective_treatment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        
+
+<span class="k">class</span> <span class="nc">CCU</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancelled_operations</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warmup_end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">warm_up_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_waiting_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_admissions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_treatment_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critical_care_beds</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Resource</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">num_critical_care_beds</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+        <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mu</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">mu</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">sigma_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">mu</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">mu_norm</span> <span class="o">=</span> <span class="n">zeta</span>
+        <span class="k">return</span> <span class="n">mu_norm</span><span class="p">,</span> <span class="n">sigma_norm</span>
+
+    <span class="k">def</span> <span class="nf">warmup_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">warmup_end_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warm-up complete&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_kpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset all performance measures to their original values&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancelled_operations</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_waiting_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_admissions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_treatment_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Reset patient_id_counter</span>
+
+    <span class="k">def</span> <span class="nf">accident_emergency_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_accident_emergency</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">accident_emergency_arrival_rate</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived from Accident and Emergency at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unplanned_admissions_process</span><span class="p">(</span><span class="s2">&quot;Accident and Emergency&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">wards_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_wards</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">wards_arrival_rate</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived from the Wards at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unplanned_admissions_process</span><span class="p">(</span><span class="s2">&quot;Wards&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">emergency_surgery_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_emergency_surgery</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">emergency_surgery_arrival_rate</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived from Emergency Surgery at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unplanned_admissions_process</span><span class="p">(</span><span class="s2">&quot;Emergency Surgery&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">other_hospitals_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_other_hospitals</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">other_hospitals_arrival_rate</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived from Other Hospitals at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unplanned_admissions_process</span><span class="p">(</span><span class="s2">&quot;Other Hospitals&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">xray_department_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_xray_department</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">xray_department_arrival_rate</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived from the X-Ray Department at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unplanned_admissions_process</span><span class="p">(</span><span class="s2">&quot;X-Ray Department&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">elective_surgery_arrivals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_elective_surgery</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">elective_surgery_arrival_rate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">elective_surgery_arrival_std_dev</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span><span class="si">}</span><span class="s2"> arrived at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elective_admissions_process</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">unplanned_admissions_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="n">patient_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> requests a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+        <span class="n">waiting_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_care_beds</span><span class="o">.</span><span class="n">request</span><span class="p">()</span> <span class="k">as</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">req</span>
+            <span class="n">waiting_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">waiting_time</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> waited </span><span class="si">{</span><span class="n">waiting_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> admitted to a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;Accident and Emergency&quot;</span><span class="p">:</span>
+                <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">accident_emergency_lognormal_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">accident_emergency_lognormal_sigma</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;Wards&quot;</span><span class="p">:</span>
+                <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">wards_lognormal_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">wards_lognormal_sigma</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;Emergency Surgery&quot;</span><span class="p">:</span>
+                <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">emergency_surgery_lognormal_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">emergency_surgery_lognormal_sigma</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;Other Hospitals&quot;</span><span class="p">:</span>
+                <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">other_hospitals_lognormal_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">other_hospitals_lognormal_sigma</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lognormal_to_normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">xray_department_lognormal_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">xray_department_lognormal_sigma</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_unplanned_treatment</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">warmup_end_time</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_treatment_time</span> <span class="o">+=</span> <span class="n">length_of_stay</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_waiting_time</span> <span class="o">+=</span> <span class="n">waiting_time</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_admissions</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> discharged from a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">intensive_cleaning_duration</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intensive cleaning completed for Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">elective_admissions_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">patient_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_care_beds</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_care_beds</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">warmup_end_time</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> operation cancelled at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours due to lack of available beds&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cancelled_operations</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> operation cancelled at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours due to lack of available beds (warm-up period)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> requests a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_care_beds</span><span class="o">.</span><span class="n">request</span><span class="p">()</span> <span class="k">as</span> <span class="n">req</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">req</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> admitted to a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+                <span class="n">length_of_stay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">rng_elective_treatment</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">elective_surgery_treatment_rate</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">warmup_end_time</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">total_treatment_time</span> <span class="o">+=</span> <span class="n">length_of_stay</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> discharged from a critical care bed at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">intensive_cleaning_duration</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intensive cleaning completed for Elective Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> hours&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">accident_emergency_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accident_emergency_arrivals</span><span class="p">())</span>
+        <span class="n">wards_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wards_arrivals</span><span class="p">())</span>
+        <span class="n">emergency_surgery_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emergency_surgery_arrivals</span><span class="p">())</span>
+        <span class="n">other_hospitals_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">other_hospitals_arrivals</span><span class="p">())</span>
+        <span class="n">xray_department_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xray_department_arrivals</span><span class="p">())</span>
+        <span class="n">elective_surgery_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elective_surgery_arrivals</span><span class="p">())</span>
+        <span class="n">warmup_complete_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">warmup_complete</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">total_run_length</span><span class="p">)</span>
+
+        <span class="c1"># Calculate bed utilization as a proportion</span>
+        <span class="n">bed_utilization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_treatment_time</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">num_critical_care_beds</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+        <span class="c1"># Calculate bed occupancy</span>
+        <span class="n">bed_occupancy</span> <span class="o">=</span> <span class="n">bed_utilization</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">num_critical_care_beds</span>
+
+        <span class="n">performance_measures</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Total Cancelled Elective Operations&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cancelled_operations</span><span class="p">,</span>
+            <span class="s2">&quot;Mean Unplanned Admission Waiting Time (hours)&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_waiting_time</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_admissions</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_unplanned_admissions</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;Bed Utilization&quot;</span><span class="p">:</span> <span class="n">bed_utilization</span><span class="p">,</span>
+            <span class="s2">&quot;Bed Occupancy&quot;</span><span class="p">:</span> <span class="n">bed_occupancy</span><span class="p">,</span>
+            <span class="s2">&quot;Patient Count&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">patient_id_counter</span>
+        <span class="p">}</span>
+
+        <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">performance_measures</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">results_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_experiments</span><span class="p">():</span>
+    <span class="n">experiments</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">num_beds</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span>
+        <span class="n">experiment_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Experiment with </span><span class="si">{</span><span class="n">num_beds</span><span class="si">}</span><span class="s2"> beds&quot;</span>
+        <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">num_critical_care_beds</span><span class="o">=</span><span class="n">num_beds</span><span class="p">)</span>
+        <span class="n">experiments</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment</span>
+    <span class="k">return</span> <span class="n">experiments</span>
+
+<span class="k">def</span> <span class="nf">run_all_experiments</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="n">num_replications</span><span class="p">):</span>
+    <span class="n">experiment_summaries</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">experiment_name</span><span class="p">,</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running </span><span class="si">{</span><span class="n">experiment_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+        <span class="n">ccu</span> <span class="o">=</span> <span class="n">CCU</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">num_replications</span><span class="p">)</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">results_summary</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="n">experiment_summaries</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary</span>
+    <span class="k">return</span> <span class="n">experiment_summaries</span>
+
+<span class="k">def</span> <span class="nf">summary_of_experiments</span><span class="p">(</span><span class="n">experiment_summaries</span><span class="p">):</span>
+    <span class="n">summary_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">experiment_name</span><span class="p">,</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">experiment_summaries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">summary_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">summary_df</span> <span class="o">=</span> <span class="n">summary</span>
+            <span class="n">summary_df</span> <span class="o">=</span> <span class="n">summary_df</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">experiment_name</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">experiment_name</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
+            <span class="n">summary_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">summary_df</span><span class="p">,</span> <span class="n">summary</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">summary_df</span>
+
+
+<span class="k">def</span> <span class="nf">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">num_replications</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">all_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_replications</span><span class="p">):</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">setup_streams</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># Call setup_streams method</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+        <span class="n">ccu</span> <span class="o">=</span> <span class="n">CCU</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">)</span>
+        <span class="n">ccu</span><span class="o">.</span><span class="n">reset_kpi</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">ccu</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Replication&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="n">combined_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_results</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">combined_results</span>
+
+<span class="k">def</span> <span class="nf">results_summary</span><span class="p">(</span><span class="n">results_df</span><span class="p">):</span>
+    <span class="c1"># Drop the replication column</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Replication&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the mean and standard deviation of each column</span>
+    <span class="n">summary_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">summary_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example usage (modified by tester)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">num_replications</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">results_summary</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># test code (written by tester)</span>
+<span class="n">experiments</span> <span class="o">=</span> <span class="n">get_experiments</span><span class="p">()</span>
+<span class="n">all_results</span> <span class="o">=</span> <span class="n">run_all_experiments</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">summary_of_experiments</span><span class="p">(</span><span class="n">all_results</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
+<p>Here we do a number of regression tests to check that previous functionality is not affected by the <code class="docutils literal notranslate"><span class="pre">multiple_replications</span></code> function.</p>
+<ul class="simple">
+<li><p><strong>Extreme value test 1</strong>: Wards, Em Surgery, other hospitals, x-ray have their inter-arrival time is set to <span class="math notranslate nohighlight">\(M\)</span> a very large number</p>
+<ul>
+<li><p>Expected result: The only type of patient to arrive to the model is “Accident and Emergency.” <strong>NEW</strong>: there are 0 cancelled electives.</p></li>
+<li><p>Actual result <strong>(PASS)</strong>: The only type of patient to arrive to the model is “Accident and Emergency.” <strong>NEW</strong>: there are 0 cancelled electives.</p></li>
+</ul>
+</li>
+<li><p><strong>Extreme value test 2</strong>: All unplanned patient types have have their inter-arrival time is set to <span class="math notranslate nohighlight">\(M\)</span> a very large number</p>
+<ul>
+<li><p>Expected result: The only type of patient to arrive to the model is “Elective.”</p></li>
+<li><p>Actual result <strong>(PASS)</strong>: The only type of patient to arrive to the model is “Elective.”</p></li>
+</ul>
+</li>
+<li><p><strong>Different results collection period</strong>: The results collection period of the model is set to 10 hours.</p>
+<ul>
+<li><p>Expected result: The model runs no longer than warm-up + result collection period = 720 + 10 = 730 simulated time periods</p></li>
+<li><p>Actual result <strong>(PASS)</strong>: The model runs no longer than warm-up + result collection period = 720 + 10 = 730 simulated time periods</p></li>
+</ul>
+</li>
+<li><p><strong>Extreme value test 3</strong>: <code class="docutils literal notranslate"><span class="pre">critical_care_beds</span></code> = 1</p>
+<ul>
+<li><p>Expected result: queues form after first arrival.</p></li>
+<li><p>Actual result <strong>(PASS)</strong>: queues form after first arrival.</p></li>
+</ul>
+</li>
+<li><p><strong>Extreme value test 4</strong>: means of stay_distributions set to <span class="math notranslate nohighlight">\(M\)</span> a very large number.</p>
+<ul>
+<li><p>Expected result: after 24 arrivals queues form and no patients are admitted.</p></li>
+<li><p>Actual result <strong>(PASS)</strong>: after 24 arrivals queues form and no patients are admitted.</p></li>
+</ul>
+</li>
+<li><p><strong>Vary warm up period</strong>: Vary the warm-up period while holding the results collection period constant.</p>
+<ul>
+<li><p>Expected result: Run length is equal to the <code class="docutils literal notranslate"><span class="pre">results_collection_period</span></code></p></li>
+<li><p>Actual result <strong>(PASS)</strong>: Run length is equal to the <code class="docutils literal notranslate"><span class="pre">results_collection_period</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Repeatable results from multiple reps</strong>: Two separate runs of 5 multiple replications</p>
+<ul>
+<li><p>Expected: result:  The results summary tables are identical. The difference of the summary tables is 0.</p></li>
+<li><p>Actual results <strong>(PASS)</strong>:  The results summary tables are identical. The difference of the summary tables is 0.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The extreme value</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">10_000_000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="test-1-extreme-value-test-1">
+<h3>Test 1: Extreme value test 1<a class="headerlink" href="#test-1-extreme-value-test-1" title="Link to this heading">#</a></h3>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">):</span>
+    <span class="c1"># Create a SimPy environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    <span class="n">ccu_model</span> <span class="o">=</span> <span class="n">CCU</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">ccu_model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ccu_model</span><span class="p">,</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extreme_value_test_1</span><span class="p">(</span><span class="n">extreme_value</span><span class="o">=</span><span class="n">M</span><span class="o">*</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extreme value test 1: </span>
+<span class="sd">    </span>
+<span class="sd">    Wards, Em Surgery, other hospitals, x-ray, electives have their inter-arrival time</span>
+<span class="sd">    set to $M$ a very large number</span>
+<span class="sd">    Expected result: The only type of patient to arrive to the model is &quot;Accident and Emergency.&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">wards_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span>
+                            <span class="n">emergency_surgery_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span> <span class="n">other_hospitals_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span>
+                            <span class="n">xray_department_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span> <span class="n">elective_surgery_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span>
+                            <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">extreme_value_test_1</span><span class="p">()</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-2-extreme-value-test-2">
+<h3>Test 2: Extreme value test 2<a class="headerlink" href="#test-2-extreme-value-test-2" title="Link to this heading">#</a></h3>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extreme_value_test_2</span><span class="p">(</span><span class="n">extreme_value</span><span class="o">=</span><span class="n">M</span><span class="o">*</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extreme value test 2: </span>
+<span class="sd">    </span>
+<span class="sd">    All unplanned admissions have their inter-arrival time</span>
+<span class="sd">    set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: The only type of patient to arrive to the model is &quot;Elective&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">accident_emergency_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span> <span class="n">wards_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span>
+                            <span class="n">emergency_surgery_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span> <span class="n">other_hospitals_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span>
+                            <span class="n">xray_department_arrival_rate</span> <span class="o">=</span> <span class="n">extreme_value</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">extreme_value_test_2</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;caught zero division error due to extreme value test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-3-different-run-length">
+<h3>Test 3: Different run length<a class="headerlink" href="#test-3-different-run-length" title="Link to this heading">#</a></h3>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_results_collection_period</span><span class="p">(</span><span class="n">new_collect_period</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Vary the results collection period while holding the </span>
+<span class="sd">    warm-up period constant.</span>
+
+<span class="sd">    Expected result Run length should be no longer than `new_run_length`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">results_collection_period</span><span class="o">=</span><span class="n">new_collect_period</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">total_treatment_time</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">experiment</span><span class="o">.</span><span class="n">results_collection_period</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">test_results_collection_period</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;caught zero division error due to extreme value test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-4-extreme-value-test-3">
+<h3>Test 4: Extreme value test 3<a class="headerlink" href="#test-4-extreme-value-test-3" title="Link to this heading">#</a></h3>
+<p>PASS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extreme_value_test_3</span><span class="p">(</span><span class="n">critical_care_beds</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extreme value test 3: </span>
+<span class="sd">    </span>
+<span class="sd">    Critical care beds set to 1 or parameter</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: when critical_care_beds=1 queues form after first arrival.</span>
+<span class="sd">    Cancellations also begin after 1st arrival.</span>
+
+<span class="sd">    Note: reported utilisation will not quite be 100% because of the patient still</span>
+<span class="sd">    in service.</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">num_critical_care_beds</span><span class="o">=</span><span class="n">critical_care_beds</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">total_treatment_time</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">experiment</span><span class="o">.</span><span class="n">results_collection_period</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">extreme_value_test_3</span><span class="p">()</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-5-extreme-value-test-4">
+<h3>Test 5: Extreme value test 4<a class="headerlink" href="#test-5-extreme-value-test-4" title="Link to this heading">#</a></h3>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extreme_value_test_4</span><span class="p">(</span><span class="n">extreme_value</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extreme value test 4: </span>
+<span class="sd">    </span>
+<span class="sd">    means of stay_distributions set to $M$ a very large number.</span>
+<span class="sd">    Expected result: after 24 arrivals queues form and no patients are admitted.</span>
+
+<span class="sd">    Note: as patients do not leave beds, wait time, utilisation, and occupancy are not calculated.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">accident_emergency_lognormal_mu</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> 
+                 <span class="n">wards_lognormal_mu</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> 
+                 <span class="n">emergency_surgery_lognormal_mu</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> 
+                 <span class="n">other_hospitals_lognormal_mu</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> 
+                 <span class="n">xray_department_lognormal_mu</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> 
+                 <span class="n">elective_surgery_treatment_rate</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>
+                 <span class="n">trace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">extreme_value_test_4</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;caught expected zero division error due to extreme value test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-6-vary-warm-up-parameter">
+<h3>Test 6: Vary Warm-up parameter<a class="headerlink" href="#test-6-vary-warm-up-parameter" title="Link to this heading">#</a></h3>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_warmup_period</span><span class="p">(</span><span class="n">new_warmup_period</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Vary the warm-up period while holding the </span>
+<span class="sd">    results collection period constant.</span>
+
+<span class="sd">    Expected result Run length should be no longer than results_collection_period</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">warm_up_period</span><span class="o">=</span><span class="n">new_warmup_period</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_test</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">experiment</span><span class="o">.</span><span class="n">results_collection_period</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_warmup_period</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="test-7-repeatable-results-from-multiple-reps">
+<h2>Test 7: Repeatable results from multiple reps<a class="headerlink" href="#test-7-repeatable-results-from-multiple-reps" title="Link to this heading">#</a></h2>
+<p>PASS</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_repeatable_reps</span><span class="p">(</span><span class="n">n_reps</span><span class="p">):</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+    <span class="n">replications</span> <span class="o">=</span> <span class="n">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">n_reps</span><span class="p">)</span>
+    <span class="n">rs1</span> <span class="o">=</span>  <span class="n">results_summary</span><span class="p">(</span><span class="n">replications</span><span class="p">)</span>
+
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+    <span class="n">replications</span> <span class="o">=</span> <span class="n">multiple_replications</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">n_reps</span><span class="p">)</span>
+    <span class="n">rs2</span> <span class="o">=</span>  <span class="n">results_summary</span><span class="p">(</span><span class="n">replications</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rs1</span><span class="p">,</span> <span class="n">rs2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs1</span><span class="p">,</span> <span class="n">rs2</span> <span class="o">=</span> <span class="n">test_repeatable_reps</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs1</span> <span class="o">-</span> <span class="n">rs2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/02_CCU/05_prompts_stage2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="19_iteration_s2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Iteration 19: streamlit (1) stage 2</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="21_iteration_s2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Iteration 21: streamlit (3) stage 2</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-imports">Notebook imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-prompt">LLM Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#date-and-time-of-input-to-llm">Date and time of input to LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources">Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observations-on-the-llm-output">Observations on the LLM Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-output-1">LLM Output 1:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-from-prior-iterations">Code from prior iterations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-1-extreme-value-test-1">Test 1: Extreme value test 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-2-extreme-value-test-2">Test 2: Extreme value test 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-3-different-run-length">Test 3: Different run length</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-4-extreme-value-test-3">Test 4: Extreme value test 3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-5-extreme-value-test-4">Test 5: Extreme value test 4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-6-vary-warm-up-parameter">Test 6: Vary Warm-up parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-7-repeatable-results-from-multiple-reps">Test 7: Repeatable results from multiple reps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

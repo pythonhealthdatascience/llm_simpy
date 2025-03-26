@@ -1,0 +1,921 @@
+Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import simpy
+import numpy as np
+import pandas as pd
+from scipy.stats import lognorm
+
+class Experiment:
+    def __init__(self, accident_emergency_arrival_rate=22.72, wards_arrival_rate=26.0, emergency_surgery_arrival_rate=37.0, other_hospitals_arrival_rate=47.2, xray_department_arrival_rate=575.0, elective_surgery_arrival_rate=17.91, elective_surgery_arrival_std_dev=3.16, accident_emergency_lognormal_mu=128.79, accident_emergency_lognormal_sigma=267.51, wards_lognormal_mu=177.89, wards_lognormal_sigma=276.54, emergency_surgery_lognormal_mu=140.15, emergency_surgery_lognormal_sigma=218.02, other_hospitals_lognormal_mu=212.86, other_hospitals_lognormal_sigma=457.67, xray_department_lognormal_mu=87.53, xray_department_lognormal_sigma=108.67, elective_surgery_treatment_rate=57.34, num_critical_care_beds=24, intensive_cleaning_duration=5, results_collection_period=12 * 30 * 24, warm_up_period=30 * 24):
+        self.accident_emergency_arrival_rate = accident_emergency_arrival_rate
+        self.wards_arrival_rate = wards_arrival_rate
+        self.emergency_surgery_arrival_rate = emergency_surgery_arrival_rate
+        self.other_hospitals_arrival_rate = other_hospitals_arrival_rate
+        self.xray_department_arrival_rate = xray_department_arrival_rate
+        self.elective_surgery_arrival_rate = elective_surgery_arrival_rate
+        self.elective_surgery_arrival_std_dev = elective_surgery_arrival_std_dev
+        self.accident_emergency_lognormal_mu = accident_emergency_lognormal_mu
+        self.accident_emergency_lognormal_sigma = accident_emergency_lognormal_sigma
+        self.wards_lognormal_mu = wards_lognormal_mu
+        self.wards_lognormal_sigma = wards_lognormal_sigma
+        self.emergency_surgery_lognormal_mu = emergency_surgery_lognormal_mu
+        self.emergency_surgery_lognormal_sigma = emergency_surgery_lognormal_sigma
+        self.other_hospitals_lognormal_mu = other_hospitals_lognormal_mu
+        self.other_hospitals_lognormal_sigma = other_hospitals_lognormal_sigma
+        self.xray_department_lognormal_mu = xray_department_lognormal_mu
+        self.xray_department_lognormal_sigma = xray_department_lognormal_sigma
+        self.elective_surgery_treatment_rate = elective_surgery_treatment_rate
+        self.num_critical_care_beds = num_critical_care_beds
+        self.intensive_cleaning_duration = intensive_cleaning_duration
+        self.results_collection_period = results_collection_period
+        self.warm_up_period = warm_up_period
+        self.total_run_length = self.warm_up_period + self.results_collection_period
+
+class CCU:
+    def __init__(self, env, experiment):
+        self.env = env
+        self.experiment = experiment
+        self.patient_id_counter = 0
+        self.cancelled_operations = 0
+        self.warmup_end_time = self.experiment.warm_up_period
+        self.total_unplanned_waiting_time = 0  # Initialize total waiting time
+        self.total_unplanned_admissions = 0  # Initialize total unplanned admissions
+
+        # Set up random number generators for each patient type
+        self.rng_accident_emergency = np.random.default_rng(seed=42)
+        self.rng_wards = np.random.default_rng(seed=43)
+        self.rng_emergency_surgery = np.random.default_rng(seed=44)
+        self.rng_other_hospitals = np.random.default_rng(seed=45)
+        self.rng_xray_department = np.random.default_rng(seed=46)
+        self.rng_elective_surgery = np.random.default_rng(seed=47)
+
+        # Set up critical care bed resource
+        self.critical_care_beds = simpy.Resource(env, capacity=self.experiment.num_critical_care_beds)
+
+    def lognormal_to_normal(self, mu, sigma):
+        """Convert lognormal parameters to underlying normal distribution"""
+        zeta = np.log(mu**2 / np.sqrt(sigma**2 + mu**2))
+        sigma_norm = np.sqrt(np.log(sigma**2 / mu**2 + 1))
+        mu_norm = zeta
+        return mu_norm, sigma_norm
+
+    def accident_emergency_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
+            print(f"Patient {self.patient_id_counter} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Accident and Emergency"))
+
+    def wards_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_wards.exponential(self.experiment.wards_arrival_rate))
+            print(f"Patient {self.patient_id_counter} arrived from the Wards at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Wards"))
+
+    def emergency_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
+            print(f"Patient {self.patient_id_counter} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Emergency Surgery"))
+
+    def other_hospitals_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
+            print(f"Patient {self.patient_id_counter} arrived from Other Hospitals at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Other Hospitals"))
+
+    def xray_department_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
+            print(f"Patient {self.patient_id_counter} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("X-Ray Department"))
+
+    def elective_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
+            print(f"Elective Patient {self.patient_id_counter} arrived at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.elective_admissions_process())
+
+    def unplanned_admissions_process(self, source):
+        patient_id = self.patient_id_counter
+        print(f"Patient {patient_id} from {source} requests a critical care bed at {self.env.now:.2f} hours")
+        waiting_time = self.env.now  # Record the time when the patient requests a bed
+        with self.critical_care_beds.request() as req:
+            waiting_time = self.env.now - waiting_time  # Calculate the waiting time
+            yield req
+            print(f"Patient {patient_id} from {source} admitted to a critical care bed at {self.env.now:.2f} hours")
+
+            # Determine length of stay based on source
+            if source == "Accident and Emergency":
+                mu, sigma = self.lognormal_to_normal(self.experiment.accident_emergency_lognormal_mu, self.experiment.accident_emergency_lognormal_sigma)
+                length_of_stay = self.rng_accident_emergency.lognormal(mu, sigma)
+            elif source == "Wards":
+                mu, sigma = self.lognormal_to_normal(self.experiment.wards_lognormal_mu, self.experiment.wards_lognormal_sigma)
+                length_of_stay = self.rng_wards.lognormal(mu, sigma)
+            elif source == "Emergency Surgery":
+                mu, sigma = self.lognormal_to_normal(self.experiment.emergency_surgery_lognormal_mu, self.experiment.emergency_surgery_lognormal_sigma)
+                length_of_stay = self.rng_emergency_surgery.lognormal(mu, sigma)
+            elif source == "Other Hospitals":
+                mu, sigma = self.lognormal_to_normal(self.experiment.other_hospitals_lognormal_mu, self.experiment.other_hospitals_lognormal_sigma)
+                length_of_stay = self.rng_other_hospitals.lognormal(mu, sigma)
+            else:  # X-Ray Department
+                mu, sigma = self.lognormal_to_normal(self.experiment.xray_department_lognormal_mu, self.experiment.xray_department_lognormal_sigma)
+                length_of_stay = self.rng_xray_department.lognormal(mu, sigma)
+
+            yield self.env.timeout(length_of_stay)
+
+            # Add waiting time to total and increment unplanned admissions if simulation time has exceeded warm-up period
+            if self.env.now >= self.warmup_end_time:
+                self.total_unplanned_waiting_time += waiting_time
+                self.total_unplanned_admissions += 1
+                self.total_treatment_time += length_of_stay
+
+            print(f"Patient {patient_id} from {source} discharged from a critical care bed at {self.env.now:.2f} hours")
+
+            # Intensive cleaning
+            yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+            print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+
+    def elective_admissions_process(self):
+        patient_id = self.patient_id_counter
+        if self.critical_care_beds.count == self.critical_care_beds.capacity:
+            if self.env.now >= self.warmup_end_time:
+                print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds")
+                self.cancelled_operations += 1
+            else:
+                print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds (warm-up period)")
+        else:
+            print(f"Elective Patient {patient_id} requests a critical care bed at {self.env.now:.2f} hours")
+            with self.critical_care_beds.request() as req:
+                yield req
+                print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
+                length_of_stay = self.rng_elective_surgery.exponential(self.experiment.elective_surgery_treatment_rate)
+                yield self.env.timeout(length_of_stay)
+                print(f"Elective Patient {patient_id} discharged from a critical care bed at {self.env.now:.2f} hours")
+
+                # Intensive cleaning
+                yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+                print(f"Intensive cleaning completed for Elective Patient {patient_id} at {self.env.now:.2f} hours")
+
+    def run(self):
+        # Start patient arrival processes
+        accident_emergency_process = self.env.process(self.accident_emergency_arrivals())
+        wards_process = self.env.process(self.wards_arrivals())
+        emergency_surgery_process = self.env.process(self.emergency_surgery_arrivals())
+        other_hospitals_process = self.env.process(self.other_hospitals_arrivals())
+        xray_department_process = self.env.process(self.xray_department_arrivals())
+        elective_surgery_process = self.env.process(self.elective_surgery_arrivals())
+
+        self.env.run(until=self.experiment.total_run_length)
+
+        # Calculate performance measures
+        performance_measures = {
+            "Total Cancelled Elective Operations": self.cancelled_operations,
+            "Mean Unplanned Admission Waiting Time (hours)": self.total_unplanned_waiting_time / self.total_unplanned_admissions if self.total_unplanned_admissions > 0 else 0
+        }
+
+        # Output results in a pandas dataframe
+        results_df = pd.DataFrame.from_dict(performance_measures, orient='index', columns=['Value'])
+        print(results_df)
+
+# Run the simulation
+experiment = Experiment()
+env = simpy.Environment()
+ccu = CCU(env, experiment)
+ccu.run()
+
+------------------
+
+----- stdout -----
+Patient 0 arrived from the Wards at 4.30 hours
+Patient 1 from Wards requests a critical care bed at 4.30 hours
+Patient 1 from Wards admitted to a critical care bed at 4.30 hours
+Patient 1 arrived from the Wards at 6.54 hours
+Patient 2 from Wards requests a critical care bed at 6.54 hours
+Patient 2 from Wards admitted to a critical care bed at 6.54 hours
+Patient 2 arrived from Emergency Surgery at 13.71 hours
+Patient 3 from Emergency Surgery requests a critical care bed at 13.71 hours
+Patient 3 from Emergency Surgery admitted to a critical care bed at 13.71 hours
+Elective Patient 3 arrived at 15.80 hours
+Elective Patient 4 requests a critical care bed at 15.80 hours
+Elective Patient 4 admitted to a critical care bed at 15.80 hours
+Patient 2 from Wards discharged from a critical care bed at 17.12 hours
+Intensive cleaning completed for Patient 2 from Wards at 22.12 hours
+Patient 4 arrived from Emergency Surgery at 31.66 hours
+Patient 5 from Emergency Surgery requests a critical care bed at 31.66 hours
+Patient 5 from Emergency Surgery admitted to a critical care bed at 31.66 hours
+Elective Patient 5 arrived at 34.02 hours
+Elective Patient 6 requests a critical care bed at 34.02 hours
+Elective Patient 6 admitted to a critical care bed at 34.02 hours
+Patient 6 arrived from Other Hospitals at 35.95 hours
+Patient 7 from Other Hospitals requests a critical care bed at 35.95 hours
+Patient 7 from Other Hospitals admitted to a critical care bed at 35.95 hours
+Patient 7 arrived from the Wards at 37.51 hours
+Patient 8 from Wards requests a critical care bed at 37.51 hours
+Patient 8 from Wards admitted to a critical care bed at 37.51 hours
+Elective Patient 8 arrived at 45.80 hours
+Elective Patient 9 requests a critical care bed at 45.80 hours
+Elective Patient 9 admitted to a critical care bed at 45.80 hours
+Patient 9 arrived from the Wards at 48.02 hours
+Patient 10 from Wards requests a critical care bed at 48.02 hours
+Patient 10 from Wards admitted to a critical care bed at 48.02 hours
+Patient 10 arrived from the Wards at 51.15 hours
+Patient 11 from Wards requests a critical care bed at 51.15 hours
+Patient 11 from Wards admitted to a critical care bed at 51.15 hours
+Patient 1 from Wards discharged from a critical care bed at 54.59 hours
+Patient 11 arrived from Accident and Emergency at 54.62 hours
+Patient 12 from Accident and Emergency requests a critical care bed at 54.62 hours
+Patient 12 from Accident and Emergency admitted to a critical care bed at 54.62 hours
+Intensive cleaning completed for Patient 1 from Wards at 59.59 hours
+Elective Patient 12 arrived at 61.18 hours
+Elective Patient 13 requests a critical care bed at 61.18 hours
+Elective Patient 13 admitted to a critical care bed at 61.18 hours
+Elective Patient 9 discharged from a critical care bed at 61.98 hours
+Patient 13 arrived from the Wards at 65.19 hours
+Patient 14 from Wards requests a critical care bed at 65.19 hours
+Patient 14 from Wards admitted to a critical care bed at 65.19 hours
+Intensive cleaning completed for Elective Patient 9 at 66.98 hours
+Patient 14 arrived from Emergency Surgery at 71.48 hours
+Patient 15 from Emergency Surgery requests a critical care bed at 71.48 hours
+Patient 15 from Emergency Surgery admitted to a critical care bed at 71.48 hours
+Patient 15 arrived from Emergency Surgery at 74.81 hours
+Patient 16 from Emergency Surgery requests a critical care bed at 74.81 hours
+Patient 16 from Emergency Surgery admitted to a critical care bed at 74.81 hours
+Patient 16 arrived from Other Hospitals at 77.00 hours
+Patient 17 from Other Hospitals requests a critical care bed at 77.00 hours
+Patient 17 from Other Hospitals admitted to a critical care bed at 77.00 hours
+Elective Patient 17 arrived at 77.65 hours
+Elective Patient 18 requests a critical care bed at 77.65 hours
+Elective Patient 18 admitted to a critical care bed at 77.65 hours
+Elective Patient 6 discharged from a critical care bed at 80.73 hours
+Elective Patient 13 discharged from a critical care bed at 85.33 hours
+Intensive cleaning completed for Elective Patient 6 at 85.73 hours
+Elective Patient 4 discharged from a critical care bed at 85.84 hours
+Patient 10 from Wards discharged from a critical care bed at 88.40 hours
+Intensive cleaning completed for Elective Patient 13 at 90.33 hours
+Intensive cleaning completed for Elective Patient 4 at 90.84 hours
+Elective Patient 18 arrived at 92.79 hours
+Elective Patient 19 requests a critical care bed at 92.79 hours
+Elective Patient 19 admitted to a critical care bed at 92.79 hours
+Intensive cleaning completed for Patient 10 from Wards at 93.40 hours
+Patient 19 arrived from Other Hospitals at 93.45 hours
+Patient 20 from Other Hospitals requests a critical care bed at 93.45 hours
+Patient 20 from Other Hospitals admitted to a critical care bed at 93.45 hours
+Patient 15 from Emergency Surgery discharged from a critical care bed at 95.97 hours
+Elective Patient 19 discharged from a critical care bed at 96.12 hours
+Intensive cleaning completed for Patient 15 from Emergency Surgery at 100.97 hours
+Intensive cleaning completed for Elective Patient 19 at 101.12 hours
+Patient 20 arrived from Other Hospitals at 102.78 hours
+Patient 21 from Other Hospitals requests a critical care bed at 102.78 hours
+Patient 21 from Other Hospitals admitted to a critical care bed at 102.78 hours
+Patient 21 arrived from Accident and Emergency at 107.70 hours
+Patient 22 from Accident and Emergency requests a critical care bed at 107.70 hours
+Patient 22 from Accident and Emergency admitted to a critical care bed at 107.70 hours
+Patient 22 arrived from Other Hospitals at 108.12 hours
+Patient 23 from Other Hospitals requests a critical care bed at 108.12 hours
+Patient 23 from Other Hospitals admitted to a critical care bed at 108.12 hours
+Patient 22 from Accident and Emergency discharged from a critical care bed at 112.19 hours
+Elective Patient 23 arrived at 112.58 hours
+Elective Patient 24 requests a critical care bed at 112.58 hours
+Elective Patient 24 admitted to a critical care bed at 112.58 hours
+Patient 24 arrived from Accident and Emergency at 114.06 hours
+Patient 25 from Accident and Emergency requests a critical care bed at 114.06 hours
+Patient 25 from Accident and Emergency admitted to a critical care bed at 114.06 hours
+Patient 14 from Wards discharged from a critical care bed at 117.16 hours
+Intensive cleaning completed for Patient 22 from Accident and Emergency at 117.19 hours
+Patient 16 from Emergency Surgery discharged from a critical care bed at 117.76 hours
+Intensive cleaning completed for Patient 14 from Wards at 122.16 hours
+Patient 3 from Emergency Surgery discharged from a critical care bed at 122.59 hours
+Intensive cleaning completed for Patient 16 from Emergency Surgery at 122.76 hours
+Elective Patient 18 discharged from a critical care bed at 123.12 hours
+Intensive cleaning completed for Patient 3 from Emergency Surgery at 127.59 hours
+Intensive cleaning completed for Elective Patient 18 at 128.12 hours
+Patient 21 from Other Hospitals discharged from a critical care bed at 130.59 hours
+Elective Patient 25 arrived at 133.27 hours
+Elective Patient 26 requests a critical care bed at 133.27 hours
+Elective Patient 26 admitted to a critical care bed at 133.27 hours
+Patient 8 from Wards discharged from a critical care bed at 135.54 hours
+Intensive cleaning completed for Patient 21 from Other Hospitals at 135.59 hours
+Intensive cleaning completed for Patient 8 from Wards at 140.54 hours
+Patient 26 arrived from Other Hospitals at 141.94 hours
+Patient 27 from Other Hospitals requests a critical care bed at 141.94 hours
+Patient 27 from Other Hospitals admitted to a critical care bed at 141.94 hours
+Patient 7 from Other Hospitals discharged from a critical care bed at 143.18 hours
+Patient 27 arrived from Emergency Surgery at 144.46 hours
+Patient 28 from Emergency Surgery requests a critical care bed at 144.46 hours
+Patient 28 from Emergency Surgery admitted to a critical care bed at 144.46 hours
+Patient 28 arrived from Accident and Emergency at 147.06 hours
+Patient 29 from Accident and Emergency requests a critical care bed at 147.06 hours
+Patient 29 from Accident and Emergency admitted to a critical care bed at 147.06 hours
+Intensive cleaning completed for Patient 7 from Other Hospitals at 148.18 hours
+Elective Patient 29 arrived at 149.19 hours
+Elective Patient 30 requests a critical care bed at 149.19 hours
+Elective Patient 30 admitted to a critical care bed at 149.19 hours
+Patient 17 from Other Hospitals discharged from a critical care bed at 150.85 hours
+Patient 30 arrived from the Wards at 153.90 hours
+Patient 31 from Wards requests a critical care bed at 153.90 hours
+Patient 31 from Wards admitted to a critical care bed at 153.90 hours
+Intensive cleaning completed for Patient 17 from Other Hospitals at 155.85 hours
+Elective Patient 31 arrived at 163.75 hours
+Elective Patient 32 requests a critical care bed at 163.75 hours
+Elective Patient 32 admitted to a critical care bed at 163.75 hours
+Patient 27 from Other Hospitals discharged from a critical care bed at 178.78 hours
+Patient 25 from Accident and Emergency discharged from a critical care bed at 179.96 hours
+Intensive cleaning completed for Patient 27 from Other Hospitals at 183.78 hours
+Elective Patient 32 arrived at 184.85 hours
+Elective Patient 33 requests a critical care bed at 184.85 hours
+Elective Patient 33 admitted to a critical care bed at 184.85 hours
+Intensive cleaning completed for Patient 25 from Accident and Emergency at 184.96 hours
+Patient 33 arrived from the Wards at 186.34 hours
+Patient 34 from Wards requests a critical care bed at 186.34 hours
+Patient 34 from Wards admitted to a critical care bed at 186.34 hours
+Patient 34 arrived from the Wards at 186.45 hours
+Patient 35 from Wards requests a critical care bed at 186.45 hours
+Patient 35 from Wards admitted to a critical care bed at 186.45 hours
+Patient 31 from Wards discharged from a critical care bed at 193.61 hours
+Patient 23 from Other Hospitals discharged from a critical care bed at 195.81 hours
+Patient 35 arrived from the Wards at 196.33 hours
+Patient 36 from Wards requests a critical care bed at 196.33 hours
+Patient 36 from Wards admitted to a critical care bed at 196.33 hours
+Elective Patient 26 discharged from a critical care bed at 196.78 hours
+Elective Patient 33 discharged from a critical care bed at 198.42 hours
+Intensive cleaning completed for Patient 31 from Wards at 198.61 hours
+Intensive cleaning completed for Patient 23 from Other Hospitals at 200.81 hours
+Patient 29 from Accident and Emergency discharged from a critical care bed at 201.73 hours
+Intensive cleaning completed for Elective Patient 26 at 201.78 hours
+Patient 12 from Accident and Emergency discharged from a critical care bed at 201.99 hours
+Intensive cleaning completed for Elective Patient 33 at 203.42 hours
+Elective Patient 36 arrived at 204.94 hours
+Elective Patient 37 requests a critical care bed at 204.94 hours
+Elective Patient 37 admitted to a critical care bed at 204.94 hours
+Intensive cleaning completed for Patient 29 from Accident and Emergency at 206.73 hours
+Intensive cleaning completed for Patient 12 from Accident and Emergency at 206.99 hours
+Patient 37 arrived from Emergency Surgery at 208.48 hours
+Patient 38 from Emergency Surgery requests a critical care bed at 208.48 hours
+Patient 38 from Emergency Surgery admitted to a critical care bed at 208.48 hours
+Patient 36 from Wards discharged from a critical care bed at 213.26 hours
+Patient 38 arrived from the Wards at 214.07 hours
+Patient 39 from Wards requests a critical care bed at 214.07 hours
+Patient 39 from Wards admitted to a critical care bed at 214.07 hours
+Elective Patient 30 discharged from a critical care bed at 216.21 hours
+Patient 39 arrived from Accident and Emergency at 218.05 hours
+Patient 40 from Accident and Emergency requests a critical care bed at 218.05 hours
+Patient 40 from Accident and Emergency admitted to a critical care bed at 218.05 hours
+Intensive cleaning completed for Patient 36 from Wards at 218.26 hours
+Patient 5 from Emergency Surgery discharged from a critical care bed at 220.69 hours
+Intensive cleaning completed for Elective Patient 30 at 221.21 hours
+Patient 39 from Wards discharged from a critical care bed at 223.69 hours
+Intensive cleaning completed for Patient 5 from Emergency Surgery at 225.69 hours
+Elective Patient 40 arrived at 227.04 hours
+Elective Patient 41 requests a critical care bed at 227.04 hours
+Elective Patient 41 admitted to a critical care bed at 227.04 hours
+Intensive cleaning completed for Patient 39 from Wards at 228.69 hours
+Elective Patient 24 discharged from a critical care bed at 228.83 hours
+Elective Patient 32 discharged from a critical care bed at 229.52 hours
+Intensive cleaning completed for Elective Patient 24 at 233.83 hours
+Intensive cleaning completed for Elective Patient 32 at 234.52 hours
+Patient 41 arrived from Emergency Surgery at 234.74 hours
+Patient 42 from Emergency Surgery requests a critical care bed at 234.74 hours
+Patient 42 from Emergency Surgery admitted to a critical care bed at 234.74 hours
+Patient 34 from Wards discharged from a critical care bed at 234.95 hours
+Patient 42 arrived from the Wards at 237.88 hours
+Patient 43 from Wards requests a critical care bed at 237.88 hours
+Patient 43 from Wards admitted to a critical care bed at 237.88 hours
+Patient 43 arrived from the Wards at 239.42 hours
+Patient 44 from Wards requests a critical care bed at 239.42 hours
+Patient 44 from Wards admitted to a critical care bed at 239.42 hours
+Intensive cleaning completed for Patient 34 from Wards at 239.95 hours
+Patient 28 from Emergency Surgery discharged from a critical care bed at 240.25 hours
+Patient 44 arrived from Accident and Emergency at 241.83 hours
+Patient 45 from Accident and Emergency requests a critical care bed at 241.83 hours
+Patient 45 from Accident and Emergency admitted to a critical care bed at 241.83 hours
+Intensive cleaning completed for Patient 28 from Emergency Surgery at 245.25 hours
+Elective Patient 45 arrived at 247.15 hours
+Elective Patient 46 requests a critical care bed at 247.15 hours
+Elective Patient 46 admitted to a critical care bed at 247.15 hours
+Elective Patient 37 discharged from a critical care bed at 257.73 hours
+Elective Patient 46 arrived at 260.16 hours
+Elective Patient 47 requests a critical care bed at 260.16 hours
+Elective Patient 47 admitted to a critical care bed at 260.16 hours
+Patient 47 arrived from Emergency Surgery at 261.58 hours
+Patient 48 from Emergency Surgery requests a critical care bed at 261.58 hours
+Patient 48 from Emergency Surgery admitted to a critical care bed at 261.58 hours
+Intensive cleaning completed for Elective Patient 37 at 262.73 hours
+Elective Patient 41 discharged from a critical care bed at 265.55 hours
+Patient 48 arrived from Accident and Emergency at 266.57 hours
+Patient 49 from Accident and Emergency requests a critical care bed at 266.57 hours
+Patient 49 from Accident and Emergency admitted to a critical care bed at 266.57 hours
+Intensive cleaning completed for Elective Patient 41 at 270.55 hours
+Patient 20 from Other Hospitals discharged from a critical care bed at 273.98 hours
+Patient 49 arrived from Accident and Emergency at 275.36 hours
+Patient 50 from Accident and Emergency requests a critical care bed at 275.36 hours
+Patient 50 from Accident and Emergency admitted to a critical care bed at 275.36 hours
+Patient 50 arrived from Accident and Emergency at 278.85 hours
+Patient 51 from Accident and Emergency requests a critical care bed at 278.85 hours
+Patient 51 from Accident and Emergency admitted to a critical care bed at 278.85 hours
+Intensive cleaning completed for Patient 20 from Other Hospitals at 278.98 hours
+Elective Patient 51 arrived at 282.86 hours
+Elective Patient 52 requests a critical care bed at 282.86 hours
+Elective Patient 52 admitted to a critical care bed at 282.86 hours
+Elective Patient 46 discharged from a critical care bed at 285.62 hours
+Patient 52 arrived from Accident and Emergency at 286.01 hours
+Patient 53 from Accident and Emergency requests a critical care bed at 286.01 hours
+Patient 53 from Accident and Emergency admitted to a critical care bed at 286.01 hours
+Intensive cleaning completed for Elective Patient 46 at 290.62 hours
+Patient 53 arrived from Other Hospitals at 291.79 hours
+Patient 54 from Other Hospitals requests a critical care bed at 291.79 hours
+Patient 54 from Other Hospitals admitted to a critical care bed at 291.79 hours
+Patient 54 arrived from the Wards at 293.94 hours
+Patient 55 from Wards requests a critical care bed at 293.94 hours
+Patient 55 from Wards admitted to a critical care bed at 293.94 hours
+Patient 55 arrived from Accident and Emergency at 295.40 hours
+Patient 56 from Accident and Emergency requests a critical care bed at 295.40 hours
+Patient 56 from Accident and Emergency admitted to a critical care bed at 295.40 hours
+Elective Patient 56 arrived at 299.09 hours
+Elective Patient 57 requests a critical care bed at 299.09 hours
+Elective Patient 57 admitted to a critical care bed at 299.09 hours
+Patient 57 arrived from Accident and Emergency at 300.48 hours
+Patient 58 from Accident and Emergency requests a critical care bed at 300.48 hours
+Patient 58 from Accident and Emergency admitted to a critical care bed at 300.48 hours
+Patient 45 from Accident and Emergency discharged from a critical care bed at 302.67 hours
+Intensive cleaning completed for Patient 45 from Accident and Emergency at 307.67 hours
+Patient 58 arrived from the Wards at 308.56 hours
+Patient 59 from Wards requests a critical care bed at 308.56 hours
+Patient 59 from Wards admitted to a critical care bed at 308.56 hours
+Patient 38 from Emergency Surgery discharged from a critical care bed at 310.46 hours
+Elective Patient 59 arrived at 315.17 hours
+Elective Patient 60 requests a critical care bed at 315.17 hours
+Elective Patient 60 admitted to a critical care bed at 315.17 hours
+Intensive cleaning completed for Patient 38 from Emergency Surgery at 315.46 hours
+Patient 54 from Other Hospitals discharged from a critical care bed at 316.12 hours
+Elective Patient 47 discharged from a critical care bed at 320.19 hours
+Intensive cleaning completed for Patient 54 from Other Hospitals at 321.12 hours
+Patient 11 from Wards discharged from a critical care bed at 324.93 hours
+Intensive cleaning completed for Elective Patient 47 at 325.19 hours
+Patient 42 from Emergency Surgery discharged from a critical care bed at 327.01 hours
+Patient 60 arrived from Accident and Emergency at 328.35 hours
+Patient 61 from Accident and Emergency requests a critical care bed at 328.35 hours
+Patient 61 from Accident and Emergency admitted to a critical care bed at 328.35 hours
+Elective Patient 60 discharged from a critical care bed at 329.54 hours
+Intensive cleaning completed for Patient 11 from Wards at 329.93 hours
+Patient 53 from Accident and Emergency discharged from a critical care bed at 330.01 hours
+Intensive cleaning completed for Patient 42 from Emergency Surgery at 332.01 hours
+Patient 58 from Accident and Emergency discharged from a critical care bed at 332.59 hours
+Intensive cleaning completed for Elective Patient 60 at 334.54 hours
+Patient 59 from Wards discharged from a critical care bed at 334.81 hours
+Intensive cleaning completed for Patient 53 from Accident and Emergency at 335.01 hours
+Patient 61 arrived from Emergency Surgery at 336.09 hours
+Patient 62 from Emergency Surgery requests a critical care bed at 336.09 hours
+Patient 62 from Emergency Surgery admitted to a critical care bed at 336.09 hours
+Elective Patient 62 arrived at 336.31 hours
+Elective Patient 63 requests a critical care bed at 336.31 hours
+Elective Patient 63 admitted to a critical care bed at 336.31 hours
+Patient 44 from Wards discharged from a critical care bed at 336.65 hours
+Intensive cleaning completed for Patient 58 from Accident and Emergency at 337.59 hours
+Patient 63 arrived from Accident and Emergency at 337.83 hours
+Patient 64 from Accident and Emergency requests a critical care bed at 337.83 hours
+Patient 64 from Accident and Emergency admitted to a critical care bed at 337.83 hours
+Patient 64 arrived from Accident and Emergency at 339.58 hours
+Patient 65 from Accident and Emergency requests a critical care bed at 339.58 hours
+Patient 65 from Accident and Emergency admitted to a critical care bed at 339.58 hours
+Intensive cleaning completed for Patient 59 from Wards at 339.81 hours
+Intensive cleaning completed for Patient 44 from Wards at 341.65 hours
+Patient 65 arrived from the Wards at 349.02 hours
+Patient 66 from Wards requests a critical care bed at 349.02 hours
+Patient 66 from Wards admitted to a critical care bed at 349.02 hours
+Elective Patient 66 arrived at 349.22 hours
+Elective Patient 67 requests a critical care bed at 349.22 hours
+Elective Patient 67 admitted to a critical care bed at 349.22 hours
+Elective Patient 67 discharged from a critical care bed at 350.82 hours
+Patient 67 arrived from Accident and Emergency at 355.15 hours
+Patient 68 from Accident and Emergency requests a critical care bed at 355.15 hours
+Patient 68 from Accident and Emergency admitted to a critical care bed at 355.15 hours
+Intensive cleaning completed for Elective Patient 67 at 355.82 hours
+Patient 48 from Emergency Surgery discharged from a critical care bed at 362.96 hours
+Patient 68 arrived from the Wards at 364.08 hours
+Patient 69 from Wards requests a critical care bed at 364.08 hours
+Patient 69 from Wards admitted to a critical care bed at 364.08 hours
+Patient 50 from Accident and Emergency discharged from a critical care bed at 365.34 hours
+Intensive cleaning completed for Patient 48 from Emergency Surgery at 367.96 hours
+Patient 49 from Accident and Emergency discharged from a critical care bed at 368.80 hours
+Patient 69 arrived from the Wards at 368.80 hours
+Patient 70 from Wards requests a critical care bed at 368.80 hours
+Patient 70 from Wards admitted to a critical care bed at 368.80 hours
+Elective Patient 70 arrived at 369.81 hours
+Elective Patient 71 requests a critical care bed at 369.81 hours
+Elective Patient 71 admitted to a critical care bed at 369.81 hours
+Intensive cleaning completed for Patient 50 from Accident and Emergency at 370.34 hours
+Intensive cleaning completed for Patient 49 from Accident and Emergency at 373.80 hours
+Patient 66 from Wards discharged from a critical care bed at 373.80 hours
+Patient 69 from Wards discharged from a critical care bed at 377.01 hours
+Intensive cleaning completed for Patient 66 from Wards at 378.80 hours
+Intensive cleaning completed for Patient 69 from Wards at 382.01 hours
+Elective Patient 71 discharged from a critical care bed at 382.81 hours
+Patient 71 arrived from Accident and Emergency at 383.88 hours
+Patient 72 from Accident and Emergency requests a critical care bed at 383.88 hours
+Patient 72 from Accident and Emergency admitted to a critical care bed at 383.88 hours
+Patient 68 from Accident and Emergency discharged from a critical care bed at 383.97 hours
+Elective Patient 57 discharged from a critical care bed at 387.51 hours
+Intensive cleaning completed for Elective Patient 71 at 387.81 hours
+Elective Patient 72 arrived at 387.83 hours
+Elective Patient 73 requests a critical care bed at 387.83 hours
+Elective Patient 73 admitted to a critical care bed at 387.83 hours
+Patient 73 arrived from Other Hospitals at 388.51 hours
+Patient 74 from Other Hospitals requests a critical care bed at 388.51 hours
+Patient 74 from Other Hospitals admitted to a critical care bed at 388.51 hours
+Intensive cleaning completed for Patient 68 from Accident and Emergency at 388.97 hours
+Patient 74 arrived from Accident and Emergency at 389.28 hours
+Patient 75 from Accident and Emergency requests a critical care bed at 389.28 hours
+Patient 75 from Accident and Emergency admitted to a critical care bed at 389.28 hours
+Patient 40 from Accident and Emergency discharged from a critical care bed at 392.13 hours
+Elective Patient 73 discharged from a critical care bed at 392.31 hours
+Intensive cleaning completed for Elective Patient 57 at 392.51 hours
+Elective Patient 52 discharged from a critical care bed at 394.01 hours
+Intensive cleaning completed for Patient 40 from Accident and Emergency at 397.13 hours
+Intensive cleaning completed for Elective Patient 73 at 397.31 hours
+Patient 75 arrived from Emergency Surgery at 398.58 hours
+Patient 76 from Emergency Surgery requests a critical care bed at 398.58 hours
+Patient 76 from Emergency Surgery admitted to a critical care bed at 398.58 hours
+Intensive cleaning completed for Elective Patient 52 at 399.01 hours
+Patient 76 arrived from Accident and Emergency at 403.86 hours
+Patient 77 from Accident and Emergency requests a critical care bed at 403.86 hours
+Patient 77 from Accident and Emergency admitted to a critical care bed at 403.86 hours
+Patient 77 arrived from the Wards at 404.65 hours
+Patient 78 from Wards requests a critical care bed at 404.65 hours
+Patient 78 from Wards admitted to a critical care bed at 404.65 hours
+Patient 78 arrived from Emergency Surgery at 406.15 hours
+Patient 79 from Emergency Surgery requests a critical care bed at 406.15 hours
+Patient 79 from Emergency Surgery admitted to a critical care bed at 406.15 hours
+Elective Patient 79 arrived at 406.18 hours
+Elective Patient 80 requests a critical care bed at 406.18 hours
+Elective Patient 80 admitted to a critical care bed at 406.18 hours
+Patient 80 arrived from Emergency Surgery at 410.41 hours
+Patient 81 from Emergency Surgery requests a critical care bed at 410.41 hours
+Patient 81 from Emergency Surgery admitted to a critical care bed at 410.41 hours
+Patient 81 arrived from Accident and Emergency at 411.17 hours
+Patient 82 from Accident and Emergency requests a critical care bed at 411.17 hours
+Patient 82 from Accident and Emergency admitted to a critical care bed at 411.17 hours
+Patient 82 arrived from Accident and Emergency at 417.92 hours
+Patient 83 from Accident and Emergency requests a critical care bed at 417.92 hours
+Patient 83 from Accident and Emergency admitted to a critical care bed at 417.92 hours
+Patient 77 from Accident and Emergency discharged from a critical care bed at 423.10 hours
+Patient 83 arrived from the Wards at 424.34 hours
+Patient 84 from Wards requests a critical care bed at 424.34 hours
+Patient 84 from Wards admitted to a critical care bed at 424.34 hours
+Patient 76 from Emergency Surgery discharged from a critical care bed at 426.26 hours
+Intensive cleaning completed for Patient 77 from Accident and Emergency at 428.10 hours
+Elective Patient 84 arrived at 429.90 hours
+Elective Patient 85 requests a critical care bed at 429.90 hours
+Elective Patient 85 admitted to a critical care bed at 429.90 hours
+Patient 83 from Accident and Emergency discharged from a critical care bed at 430.21 hours
+Patient 85 arrived from Emergency Surgery at 430.33 hours
+Patient 86 from Emergency Surgery requests a critical care bed at 430.33 hours
+Patient 86 from Emergency Surgery admitted to a critical care bed at 430.33 hours
+Intensive cleaning completed for Patient 76 from Emergency Surgery at 431.26 hours
+Patient 64 from Accident and Emergency discharged from a critical care bed at 433.07 hours
+Patient 86 arrived from the Wards at 433.85 hours
+Patient 87 from Wards requests a critical care bed at 433.85 hours
+Patient 87 from Wards admitted to a critical care bed at 433.85 hours
+Intensive cleaning completed for Patient 83 from Accident and Emergency at 435.21 hours
+Patient 87 arrived from the Wards at 435.33 hours
+Patient 88 from Wards requests a critical care bed at 435.33 hours
+Patient 88 from Wards admitted to a critical care bed at 435.33 hours
+Patient 88 arrived from the Wards at 436.43 hours
+Patient 89 from Wards requests a critical care bed at 436.43 hours
+Patient 75 from Accident and Emergency discharged from a critical care bed at 437.50 hours
+Intensive cleaning completed for Patient 64 from Accident and Emergency at 438.07 hours
+Patient 89 from Wards admitted to a critical care bed at 438.07 hours
+Patient 61 from Accident and Emergency discharged from a critical care bed at 439.51 hours
+Intensive cleaning completed for Patient 75 from Accident and Emergency at 442.50 hours
+Intensive cleaning completed for Patient 61 from Accident and Emergency at 444.51 hours
+Elective Patient 89 arrived at 449.02 hours
+Elective Patient 90 requests a critical care bed at 449.02 hours
+Elective Patient 90 admitted to a critical care bed at 449.02 hours
+Patient 90 arrived from Accident and Emergency at 449.52 hours
+Patient 91 from Accident and Emergency requests a critical care bed at 449.52 hours
+Patient 91 from Accident and Emergency admitted to a critical care bed at 449.52 hours
+Patient 91 arrived from Accident and Emergency at 451.18 hours
+Patient 92 from Accident and Emergency requests a critical care bed at 451.18 hours
+Patient 51 from Accident and Emergency discharged from a critical care bed at 452.72 hours
+Intensive cleaning completed for Patient 51 from Accident and Emergency at 457.72 hours
+Patient 92 from Accident and Emergency admitted to a critical care bed at 457.72 hours
+Patient 87 from Wards discharged from a critical care bed at 459.03 hours
+Elective Patient 92 arrived at 463.41 hours
+Elective Patient 93 operation cancelled at 463.41 hours due to lack of available beds (warm-up period)
+Intensive cleaning completed for Patient 87 from Wards at 464.03 hours
+Elective Patient 85 discharged from a critical care bed at 470.84 hours
+Patient 78 from Wards discharged from a critical care bed at 470.86 hours
+Patient 55 from Wards discharged from a critical care bed at 472.04 hours
+Patient 91 from Accident and Emergency discharged from a critical care bed at 473.16 hours
+Intensive cleaning completed for Elective Patient 85 at 475.84 hours
+Intensive cleaning completed for Patient 78 from Wards at 475.86 hours
+Intensive cleaning completed for Patient 55 from Wards at 477.04 hours
+Patient 86 from Emergency Surgery discharged from a critical care bed at 477.80 hours
+Intensive cleaning completed for Patient 91 from Accident and Emergency at 478.16 hours
+Patient 93 arrived from Emergency Surgery at 479.59 hours
+Patient 94 from Emergency Surgery requests a critical care bed at 479.59 hours
+Patient 94 from Emergency Surgery admitted to a critical care bed at 479.59 hours
+Patient 94 arrived from Accident and Emergency at 481.95 hours
+Patient 95 from Accident and Emergency requests a critical care bed at 481.95 hours
+Patient 95 from Accident and Emergency admitted to a critical care bed at 481.95 hours
+Elective Patient 95 arrived at 482.28 hours
+Elective Patient 96 requests a critical care bed at 482.28 hours
+Elective Patient 96 admitted to a critical care bed at 482.28 hours
+Intensive cleaning completed for Patient 86 from Emergency Surgery at 482.80 hours
+Patient 74 from Other Hospitals discharged from a critical care bed at 486.12 hours
+Elective Patient 80 discharged from a critical care bed at 488.28 hours
+Patient 96 arrived from Accident and Emergency at 488.31 hours
+Patient 97 from Accident and Emergency requests a critical care bed at 488.31 hours
+Patient 97 from Accident and Emergency admitted to a critical care bed at 488.31 hours
+Intensive cleaning completed for Patient 74 from Other Hospitals at 491.12 hours
+Patient 97 arrived from Accident and Emergency at 492.08 hours
+Patient 98 from Accident and Emergency requests a critical care bed at 492.08 hours
+Patient 98 from Accident and Emergency admitted to a critical care bed at 492.08 hours
+Patient 98 arrived from Accident and Emergency at 492.56 hours
+Patient 99 from Accident and Emergency requests a critical care bed at 492.56 hours
+Patient 99 from Accident and Emergency admitted to a critical care bed at 492.56 hours
+Intensive cleaning completed for Elective Patient 80 at 493.28 hours
+Patient 99 arrived from the Wards at 496.39 hours
+Patient 100 from Wards requests a critical care bed at 496.39 hours
+Patient 100 from Wards admitted to a critical care bed at 496.39 hours
+Patient 100 arrived from the Wards at 499.27 hours
+Patient 101 from Wards requests a critical care bed at 499.27 hours
+Patient 101 from Wards admitted to a critical care bed at 499.27 hours
+Patient 101 arrived from Other Hospitals at 500.34 hours
+Patient 102 from Other Hospitals requests a critical care bed at 500.34 hours
+Patient 99 from Accident and Emergency discharged from a critical care bed at 501.05 hours
+Elective Patient 102 arrived at 501.82 hours
+Elective Patient 103 operation cancelled at 501.82 hours due to lack of available beds (warm-up period)
+Intensive cleaning completed for Patient 99 from Accident and Emergency at 506.05 hours
+Patient 102 from Other Hospitals admitted to a critical care bed at 506.05 hours
+Patient 103 arrived from Other Hospitals at 507.69 hours
+Patient 104 from Other Hospitals requests a critical care bed at 507.69 hours
+Patient 72 from Accident and Emergency discharged from a critical care bed at 507.73 hours
+Patient 70 from Wards discharged from a critical care bed at 508.76 hours
+Elective Patient 96 discharged from a critical care bed at 509.91 hours
+Intensive cleaning completed for Patient 72 from Accident and Emergency at 512.73 hours
+Patient 104 from Other Hospitals admitted to a critical care bed at 512.73 hours
+Intensive cleaning completed for Patient 70 from Wards at 513.76 hours
+Intensive cleaning completed for Elective Patient 96 at 514.91 hours
+Elective Patient 63 discharged from a critical care bed at 517.38 hours
+Elective Patient 104 arrived at 519.86 hours
+Elective Patient 105 requests a critical care bed at 519.86 hours
+Elective Patient 105 admitted to a critical care bed at 519.86 hours
+Intensive cleaning completed for Elective Patient 63 at 522.38 hours
+Patient 105 arrived from Accident and Emergency at 522.43 hours
+Patient 106 from Accident and Emergency requests a critical care bed at 522.43 hours
+Patient 106 from Accident and Emergency admitted to a critical care bed at 522.43 hours
+Patient 92 from Accident and Emergency discharged from a critical care bed at 522.69 hours
+Patient 106 arrived from Other Hospitals at 523.28 hours
+Patient 107 from Other Hospitals requests a critical care bed at 523.28 hours
+Patient 107 from Other Hospitals admitted to a critical care bed at 523.28 hours
+Elective Patient 90 discharged from a critical care bed at 523.30 hours
+Patient 43 from Wards discharged from a critical care bed at 523.60 hours
+Patient 62 from Emergency Surgery discharged from a critical care bed at 525.13 hours
+Patient 107 arrived from Other Hospitals at 526.70 hours
+Patient 108 from Other Hospitals requests a critical care bed at 526.70 hours
+Intensive cleaning completed for Patient 92 from Accident and Emergency at 527.69 hours
+Patient 108 from Other Hospitals admitted to a critical care bed at 527.69 hours
+Intensive cleaning completed for Elective Patient 90 at 528.30 hours
+Intensive cleaning completed for Patient 43 from Wards at 528.60 hours
+Intensive cleaning completed for Patient 62 from Emergency Surgery at 530.13 hours
+Patient 108 arrived from the Wards at 533.55 hours
+Patient 109 from Wards requests a critical care bed at 533.55 hours
+Patient 109 from Wards admitted to a critical care bed at 533.55 hours
+Elective Patient 105 discharged from a critical care bed at 533.59 hours
+Elective Patient 109 arrived at 533.92 hours
+Elective Patient 110 requests a critical care bed at 533.92 hours
+Elective Patient 110 admitted to a critical care bed at 533.92 hours
+Patient 110 arrived from Accident and Emergency at 535.24 hours
+Patient 111 from Accident and Emergency requests a critical care bed at 535.24 hours
+Patient 111 from Accident and Emergency admitted to a critical care bed at 535.24 hours
+Patient 107 from Other Hospitals discharged from a critical care bed at 535.42 hours
+Patient 111 arrived from the Wards at 537.97 hours
+Patient 112 from Wards requests a critical care bed at 537.97 hours
+Intensive cleaning completed for Elective Patient 105 at 538.59 hours
+Patient 112 from Wards admitted to a critical care bed at 538.59 hours
+Intensive cleaning completed for Patient 107 from Other Hospitals at 540.42 hours
+Patient 112 arrived from Accident and Emergency at 544.28 hours
+Patient 113 from Accident and Emergency requests a critical care bed at 544.28 hours
+Patient 113 from Accident and Emergency admitted to a critical care bed at 544.28 hours
+Patient 113 arrived from Other Hospitals at 544.46 hours
+Patient 114 from Other Hospitals requests a critical care bed at 544.46 hours
+Elective Patient 110 discharged from a critical care bed at 544.66 hours
+Patient 114 arrived from Accident and Emergency at 547.22 hours
+Patient 115 from Accident and Emergency requests a critical care bed at 547.22 hours
+Patient 101 from Wards discharged from a critical care bed at 547.83 hours
+Intensive cleaning completed for Elective Patient 110 at 549.66 hours
+Patient 114 from Other Hospitals admitted to a critical care bed at 549.66 hours
+Patient 100 from Wards discharged from a critical care bed at 549.70 hours
+Patient 94 from Emergency Surgery discharged from a critical care bed at 550.15 hours
+Elective Patient 115 arrived at 551.66 hours
+Elective Patient 116 operation cancelled at 551.66 hours due to lack of available beds (warm-up period)
+Patient 88 from Wards discharged from a critical care bed at 552.50 hours
+Intensive cleaning completed for Patient 101 from Wards at 552.83 hours
+Patient 115 from Accident and Emergency admitted to a critical care bed at 552.83 hours
+Patient 106 from Accident and Emergency discharged from a critical care bed at 552.85 hours
+Patient 79 from Emergency Surgery discharged from a critical care bed at 554.50 hours
+Intensive cleaning completed for Patient 100 from Wards at 554.70 hours
+Intensive cleaning completed for Patient 94 from Emergency Surgery at 555.15 hours
+Patient 82 from Accident and Emergency discharged from a critical care bed at 557.17 hours
+Intensive cleaning completed for Patient 88 from Wards at 557.50 hours
+Intensive cleaning completed for Patient 106 from Accident and Emergency at 557.85 hours
+Patient 114 from Other Hospitals discharged from a critical care bed at 557.91 hours
+Patient 115 from Accident and Emergency discharged from a critical care bed at 559.17 hours
+Intensive cleaning completed for Patient 79 from Emergency Surgery at 559.50 hours
+Intensive cleaning completed for Patient 82 from Accident and Emergency at 562.17 hours
+Patient 113 from Accident and Emergency discharged from a critical care bed at 562.52 hours
+Intensive cleaning completed for Patient 114 from Other Hospitals at 562.91 hours
+Intensive cleaning completed for Patient 115 from Accident and Emergency at 564.17 hours
+Patient 104 from Other Hospitals discharged from a critical care bed at 565.80 hours
+Patient 56 from Accident and Emergency discharged from a critical care bed at 566.65 hours
+Elective Patient 116 arrived at 567.24 hours
+Elective Patient 117 requests a critical care bed at 567.24 hours
+Elective Patient 117 admitted to a critical care bed at 567.24 hours
+Intensive cleaning completed for Patient 113 from Accident and Emergency at 567.52 hours
+Patient 117 arrived from Emergency Surgery at 569.85 hours
+Patient 118 from Emergency Surgery requests a critical care bed at 569.85 hours
+Patient 118 from Emergency Surgery admitted to a critical care bed at 569.85 hours
+Intensive cleaning completed for Patient 104 from Other Hospitals at 570.80 hours
+Patient 102 from Other Hospitals discharged from a critical care bed at 571.44 hours
+Intensive cleaning completed for Patient 56 from Accident and Emergency at 571.65 hours
+Patient 118 arrived from Other Hospitals at 572.60 hours
+Patient 119 from Other Hospitals requests a critical care bed at 572.60 hours
+Patient 119 from Other Hospitals admitted to a critical care bed at 572.60 hours
+Patient 98 from Accident and Emergency discharged from a critical care bed at 573.25 hours
+Patient 111 from Accident and Emergency discharged from a critical care bed at 574.39 hours
+Intensive cleaning completed for Patient 102 from Other Hospitals at 576.44 hours
+Intensive cleaning completed for Patient 98 from Accident and Emergency at 578.25 hours
+Patient 119 arrived from Accident and Emergency at 578.48 hours
+Patient 120 from Accident and Emergency requests a critical care bed at 578.48 hours
+Patient 120 from Accident and Emergency admitted to a critical care bed at 578.48 hours
+Intensive cleaning completed for Patient 111 from Accident and Emergency at 579.39 hours
+Patient 120 arrived from Other Hospitals at 580.27 hours
+Patient 121 from Other Hospitals requests a critical care bed at 580.27 hours
+Patient 121 from Other Hospitals admitted to a critical care bed at 580.27 hours
+Elective Patient 121 arrived at 581.60 hours
+Elective Patient 122 requests a critical care bed at 581.60 hours
+Elective Patient 122 admitted to a critical care bed at 581.60 hours
+Patient 122 arrived from Emergency Surgery at 584.38 hours
+Patient 123 from Emergency Surgery requests a critical care bed at 584.38 hours
+Patient 123 from Emergency Surgery admitted to a critical care bed at 584.38 hours
+Patient 81 from Emergency Surgery discharged from a critical care bed at 589.83 hours
+Elective Patient 122 discharged from a critical care bed at 591.45 hours
+Intensive cleaning completed for Patient 81 from Emergency Surgery at 594.83 hours
+Intensive cleaning completed for Elective Patient 122 at 596.45 hours
+Patient 123 arrived from Other Hospitals at 598.86 hours
+Patient 124 from Other Hospitals requests a critical care bed at 598.86 hours
+Patient 124 from Other Hospitals admitted to a critical care bed at 598.86 hours
+Elective Patient 124 arrived at 601.82 hours
+Elective Patient 125 requests a critical care bed at 601.82 hours
+Elective Patient 125 admitted to a critical care bed at 601.82 hours
+Patient 121 from Other Hospitals discharged from a critical care bed at 618.96 hours
+Patient 109 from Wards discharged from a critical care bed at 620.71 hours
+Elective Patient 125 arrived at 621.59 hours
+Elective Patient 126 requests a critical care bed at 621.59 hours
+Elective Patient 126 admitted to a critical care bed at 621.59 hours
+Patient 123 from Emergency Surgery discharged from a critical care bed at 622.24 hours
+Patient 97 from Accident and Emergency discharged from a critical care bed at 622.66 hours
+Intensive cleaning completed for Patient 121 from Other Hospitals at 623.96 hours
+Intensive cleaning completed for Patient 109 from Wards at 625.71 hours
+Patient 119 from Other Hospitals discharged from a critical care bed at 626.59 hours
+Intensive cleaning completed for Patient 123 from Emergency Surgery at 627.24 hours
+Intensive cleaning completed for Patient 97 from Accident and Emergency at 627.66 hours
+Patient 89 from Wards discharged from a critical care bed at 630.66 hours
+Intensive cleaning completed for Patient 119 from Other Hospitals at 631.59 hours
+Intensive cleaning completed for Patient 89 from Wards at 635.66 hours
+Patient 126 arrived from the Wards at 637.92 hours
+Patient 127 from Wards requests a critical care bed at 637.92 hours
+Patient 127 from Wards admitted to a critical care bed at 637.92 hours
+Elective Patient 127 arrived at 638.47 hours
+Elective Patient 128 requests a critical care bed at 638.47 hours
+Elective Patient 128 admitted to a critical care bed at 638.47 hours
+Patient 120 from Accident and Emergency discharged from a critical care bed at 647.43 hours
+Elective Patient 125 discharged from a critical care bed at 649.48 hours
+Intensive cleaning completed for Patient 120 from Accident and Emergency at 652.43 hours
+Patient 124 from Other Hospitals discharged from a critical care bed at 654.00 hours
+Patient 95 from Accident and Emergency discharged from a critical care bed at 654.25 hours
+Intensive cleaning completed for Elective Patient 125 at 654.48 hours
+Intensive cleaning completed for Patient 124 from Other Hospitals at 659.00 hours
+Elective Patient 128 arrived at 659.00 hours
+Elective Patient 129 requests a critical care bed at 659.00 hours
+Elective Patient 129 admitted to a critical care bed at 659.00 hours
+Intensive cleaning completed for Patient 95 from Accident and Emergency at 659.25 hours
+Elective Patient 117 discharged from a critical care bed at 661.51 hours
+Patient 129 arrived from the Wards at 661.73 hours
+Patient 130 from Wards requests a critical care bed at 661.73 hours
+Patient 130 from Wards admitted to a critical care bed at 661.73 hours
+Intensive cleaning completed for Elective Patient 117 at 666.51 hours
+Patient 84 from Wards discharged from a critical care bed at 669.27 hours
+Patient 118 from Emergency Surgery discharged from a critical care bed at 673.39 hours
+Intensive cleaning completed for Patient 84 from Wards at 674.27 hours
+Patient 130 arrived from Other Hospitals at 675.84 hours
+Patient 131 from Other Hospitals requests a critical care bed at 675.84 hours
+Patient 131 from Other Hospitals admitted to a critical care bed at 675.84 hours
+Elective Patient 131 arrived at 676.60 hours
+Elective Patient 132 requests a critical care bed at 676.60 hours
+Elective Patient 132 admitted to a critical care bed at 676.60 hours
+Elective Patient 132 discharged from a critical care bed at 677.49 hours
+Intensive cleaning completed for Patient 118 from Emergency Surgery at 678.39 hours
+Intensive cleaning completed for Elective Patient 132 at 682.49 hours
+Patient 132 arrived from Emergency Surgery at 688.64 hours
+Patient 133 from Emergency Surgery requests a critical care bed at 688.64 hours
+Patient 133 from Emergency Surgery admitted to a critical care bed at 688.64 hours
+Elective Patient 128 discharged from a critical care bed at 692.13 hours
+Elective Patient 133 arrived at 695.32 hours
+Elective Patient 134 requests a critical care bed at 695.32 hours
+Elective Patient 134 admitted to a critical care bed at 695.32 hours
+Patient 134 arrived from the Wards at 695.38 hours
+Patient 135 from Wards requests a critical care bed at 695.38 hours
+Patient 135 from Wards admitted to a critical care bed at 695.38 hours
+Patient 131 from Other Hospitals discharged from a critical care bed at 695.75 hours
+Intensive cleaning completed for Elective Patient 128 at 697.13 hours
+Elective Patient 134 discharged from a critical care bed at 697.53 hours
+Patient 135 arrived from Accident and Emergency at 699.12 hours
+Patient 136 from Accident and Emergency requests a critical care bed at 699.12 hours
+Patient 136 from Accident and Emergency admitted to a critical care bed at 699.12 hours
+Intensive cleaning completed for Patient 131 from Other Hospitals at 700.75 hours
+Intensive cleaning completed for Elective Patient 134 at 702.53 hours
+Elective Patient 136 arrived at 712.43 hours
+Elective Patient 137 requests a critical care bed at 712.43 hours
+Elective Patient 137 admitted to a critical care bed at 712.43 hours
+Patient 35 from Wards discharged from a critical care bed at 715.35 hours
+Patient 137 arrived from Emergency Surgery at 718.22 hours
+Patient 138 from Emergency Surgery requests a critical care bed at 718.22 hours
+Patient 138 from Emergency Surgery admitted to a critical care bed at 718.22 hours
+Intensive cleaning completed for Patient 35 from Wards at 720.35 hours
+Elective Patient 138 arrived at 732.20 hours
+Elective Patient 139 requests a critical care bed at 732.20 hours
+Elective Patient 139 admitted to a critical care bed at 732.20 hours
+Patient 139 arrived from Accident and Emergency at 736.49 hours
+Patient 140 from Accident and Emergency requests a critical care bed at 736.49 hours
+Patient 140 from Accident and Emergency admitted to a critical care bed at 736.49 hours
+Patient 140 arrived from the Wards at 737.68 hours
+Patient 141 from Wards requests a critical care bed at 737.68 hours
+Patient 141 from Wards admitted to a critical care bed at 737.68 hours
+Patient 141 arrived from the Wards at 738.96 hours
+Patient 142 from Wards requests a critical care bed at 738.96 hours
+Patient 142 from Wards admitted to a critical care bed at 738.96 hours
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[1], line 134[0m, in [0;36mCCU.unplanned_admissions_process[0;34m(self, source)[0m
+[1;32m    133[0m     [38;5;28mself[39m[38;5;241m.[39mtotal_unplanned_admissions [38;5;241m+[39m[38;5;241m=[39m [38;5;241m1[39m
+[0;32m--> 134[0m     [38;5;28mself[39m[38;5;241m.[39mtotal_treatment_time [38;5;241m+[39m[38;5;241m=[39m length_of_stay
+[1;32m    136[0m [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mPatient [39m[38;5;132;01m{[39;00mpatient_id[38;5;132;01m}[39;00m[38;5;124m from [39m[38;5;132;01m{[39;00msource[38;5;132;01m}[39;00m[38;5;124m discharged from a critical care bed at [39m[38;5;132;01m{[39;00m[38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mnow[38;5;132;01m:[39;00m[38;5;124m.2f[39m[38;5;132;01m}[39;00m[38;5;124m hours[39m[38;5;124m"[39m)
+
+[0;31mAttributeError[0m: 'CCU' object has no attribute 'total_treatment_time'
+
+The above exception was the direct cause of the following exception:
+
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[1], line 188[0m
+[1;32m    186[0m env [38;5;241m=[39m simpy[38;5;241m.[39mEnvironment()
+[1;32m    187[0m ccu [38;5;241m=[39m CCU(env, experiment)
+[0;32m--> 188[0m [43mccu[49m[38;5;241;43m.[39;49m[43mrun[49m[43m([49m[43m)[49m
+
+Cell [0;32mIn[1], line 172[0m, in [0;36mCCU.run[0;34m(self)[0m
+[1;32m    169[0m xray_department_process [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mprocess([38;5;28mself[39m[38;5;241m.[39mxray_department_arrivals())
+[1;32m    170[0m elective_surgery_process [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mprocess([38;5;28mself[39m[38;5;241m.[39melective_surgery_arrivals())
+[0;32m--> 172[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43menv[49m[38;5;241;43m.[39;49m[43mrun[49m[43m([49m[43muntil[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mexperiment[49m[38;5;241;43m.[39;49m[43mtotal_run_length[49m[43m)[49m
+[1;32m    174[0m [38;5;66;03m# Calculate performance measures[39;00m
+[1;32m    175[0m performance_measures [38;5;241m=[39m {
+[1;32m    176[0m     [38;5;124m"[39m[38;5;124mTotal Cancelled Elective Operations[39m[38;5;124m"[39m: [38;5;28mself[39m[38;5;241m.[39mcancelled_operations,
+[1;32m    177[0m     [38;5;124m"[39m[38;5;124mMean Unplanned Admission Waiting Time (hours)[39m[38;5;124m"[39m: [38;5;28mself[39m[38;5;241m.[39mtotal_unplanned_waiting_time [38;5;241m/[39m [38;5;28mself[39m[38;5;241m.[39mtotal_unplanned_admissions [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mtotal_unplanned_admissions [38;5;241m>[39m [38;5;241m0[39m [38;5;28;01melse[39;00m [38;5;241m0[39m
+[1;32m    178[0m }
+
+File [0;32m~/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/simpy/core.py:246[0m, in [0;36mEnvironment.run[0;34m(self, until)[0m
+[1;32m    244[0m [38;5;28;01mtry[39;00m:
+[1;32m    245[0m     [38;5;28;01mwhile[39;00m [38;5;28;01mTrue[39;00m:
+[0;32m--> 246[0m         [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mstep[49m[43m([49m[43m)[49m
+[1;32m    247[0m [38;5;28;01mexcept[39;00m StopSimulation [38;5;28;01mas[39;00m exc:
+[1;32m    248[0m     [38;5;28;01mreturn[39;00m exc[38;5;241m.[39margs[[38;5;241m0[39m]  [38;5;66;03m# == until.value[39;00m
+
+File [0;32m~/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/simpy/core.py:204[0m, in [0;36mEnvironment.step[0;34m(self)[0m
+[1;32m    202[0m exc [38;5;241m=[39m [38;5;28mtype[39m(event[38;5;241m.[39m_value)([38;5;241m*[39mevent[38;5;241m.[39m_value[38;5;241m.[39margs)
+[1;32m    203[0m exc[38;5;241m.[39m__cause__ [38;5;241m=[39m event[38;5;241m.[39m_value
+[0;32m--> 204[0m [38;5;28;01mraise[39;00m exc
+
+[0;31mAttributeError[0m: 'CCU' object has no attribute 'total_treatment_time'
+

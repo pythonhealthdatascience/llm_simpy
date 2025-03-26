@@ -1,0 +1,1660 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Full model code &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03_stroke/02_model_stage2/01_asu_rehab_model';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Automated Model Testing" href="02_auto_testing_stage2.html" />
+    <link rel="prev" title="Model Stage 2" href="../02_model_stage2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/01_primary.html">Primary aims</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/02_literature.html">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/04_design.html">Model design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/05_prompt_engineering.html">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../02_CCU/03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/05_prompts_stage2.html">Prompts Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/20_iteration_s2.html">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../02_model_stage2.html">Model Stage 2</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/pythonhealthdatascience/llm_simpy/main?urlpath=lab/tree/notebooks/03_stroke/02_model_stage2/01_asu_rehab_model.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03_stroke/02_model_stage2/01_asu_rehab_model.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/03_stroke/02_model_stage2/01_asu_rehab_model.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Full model code</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-stored-in-s2-stroke-rehab-model-py">Code stored in <code class="docutils literal notranslate"><span class="pre">s2_stroke_rehab_model.py</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="full-model-code">
+<h1>Full model code<a class="headerlink" href="#full-model-code" title="Link to this heading">#</a></h1>
+<p>This notebook contains the <strong>final</strong> model code and docstrings generated by <a class="reference external" href="http://Perplexity.AI">Perplexity.AI</a> between June and end of July 2024.</p>
+<p>The code is stored in a module called <code class="docutils literal notranslate"><span class="pre">s2_stroke_rehab_model.py</span></code>. It has been autoformatted using the tool <code class="docutils literal notranslate"><span class="pre">black</span></code>. This was used to aid PEP8 compliance of the code and help with line wrapping.   The module level docstring was added manually by the modeller (copied and modified from stage 1) and is included for archival purposes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Code</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="code-stored-in-s2-stroke-rehab-model-py">
+<h2>Code stored in <code class="docutils literal notranslate"><span class="pre">s2_stroke_rehab_model.py</span></code><a class="headerlink" href="#code-stored-in-s2-stroke-rehab-model-py" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Code</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;s2_stroke_rehab_model.py&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.output_html .hll { background-color: #ffffcc }
+.output_html { background: #f8f8f8; }
+.output_html .c { color: #3D7B7B; font-style: italic } /* Comment */
+.output_html .err { border: 1px solid #FF0000 } /* Error */
+.output_html .k { color: #008000; font-weight: bold } /* Keyword */
+.output_html .o { color: #666666 } /* Operator */
+.output_html .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.output_html .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.output_html .cp { color: #9C6500 } /* Comment.Preproc */
+.output_html .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.output_html .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.output_html .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.output_html .gd { color: #A00000 } /* Generic.Deleted */
+.output_html .ge { font-style: italic } /* Generic.Emph */
+.output_html .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.output_html .gr { color: #E40000 } /* Generic.Error */
+.output_html .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.output_html .gi { color: #008400 } /* Generic.Inserted */
+.output_html .go { color: #717171 } /* Generic.Output */
+.output_html .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.output_html .gs { font-weight: bold } /* Generic.Strong */
+.output_html .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.output_html .gt { color: #0044DD } /* Generic.Traceback */
+.output_html .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.output_html .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.output_html .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.output_html .kp { color: #008000 } /* Keyword.Pseudo */
+.output_html .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.output_html .kt { color: #B00040 } /* Keyword.Type */
+.output_html .m { color: #666666 } /* Literal.Number */
+.output_html .s { color: #BA2121 } /* Literal.String */
+.output_html .na { color: #687822 } /* Name.Attribute */
+.output_html .nb { color: #008000 } /* Name.Builtin */
+.output_html .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.output_html .no { color: #880000 } /* Name.Constant */
+.output_html .nd { color: #AA22FF } /* Name.Decorator */
+.output_html .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.output_html .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.output_html .nf { color: #0000FF } /* Name.Function */
+.output_html .nl { color: #767600 } /* Name.Label */
+.output_html .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.output_html .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.output_html .nv { color: #19177C } /* Name.Variable */
+.output_html .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.output_html .w { color: #bbbbbb } /* Text.Whitespace */
+.output_html .mb { color: #666666 } /* Literal.Number.Bin */
+.output_html .mf { color: #666666 } /* Literal.Number.Float */
+.output_html .mh { color: #666666 } /* Literal.Number.Hex */
+.output_html .mi { color: #666666 } /* Literal.Number.Integer */
+.output_html .mo { color: #666666 } /* Literal.Number.Oct */
+.output_html .sa { color: #BA2121 } /* Literal.String.Affix */
+.output_html .sb { color: #BA2121 } /* Literal.String.Backtick */
+.output_html .sc { color: #BA2121 } /* Literal.String.Char */
+.output_html .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.output_html .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.output_html .s2 { color: #BA2121 } /* Literal.String.Double */
+.output_html .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.output_html .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.output_html .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.output_html .sx { color: #008000 } /* Literal.String.Other */
+.output_html .sr { color: #A45A77 } /* Literal.String.Regex */
+.output_html .s1 { color: #BA2121 } /* Literal.String.Single */
+.output_html .ss { color: #19177C } /* Literal.String.Symbol */
+.output_html .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.output_html .fm { color: #0000FF } /* Name.Function.Magic */
+.output_html .vc { color: #19177C } /* Name.Variable.Class */
+.output_html .vg { color: #19177C } /* Name.Variable.Global */
+.output_html .vi { color: #19177C } /* Name.Variable.Instance */
+.output_html .vm { color: #19177C } /* Name.Variable.Magic */
+.output_html .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;A SimPy-based simulation model for analyzing patient flow in stroke care units.</span>
+<span class="sd">INTERNAL REPRODUCTION RUN - STAGE 2</span>
+
+<span class="sd">This module simulates the patient flow through an Acute Stroke Unit (ASU) and a connected</span>
+<span class="sd">Rehabilitation Unit to assist in capacity planning for acute and community stroke services.</span>
+<span class="sd">It models patient arrivals, treatment durations, and transitions between units using</span>
+<span class="sd">statistical distributions to provide insights into occupancy levels and potential delays.</span>
+
+<span class="sd">Authors: LLM implemented by Perplexity.AI</span>
+<span class="sd">Auto-formatted with `black` for PEP8 compliance.</span>
+
+<span class="sd">Based on:</span>
+<span class="sd">---------</span>
+<span class="sd">Monks et al. A modelling tool for capacity planning in acute </span>
+<span class="sd">and community stroke services</span>
+<span class="sd">https://link.springer.com/article/10.1186/s12913-016-1789-4</span>
+
+<span class="sd">All functions and classes included in this module have been </span>
+<span class="sd">generated between Jun-Jul 2024 by the LLM implemented by Perplexity.AI </span>
+<span class="sd">https://www.perplexity.ai/</span>
+
+<span class="sd">Auto-formatting:</span>
+<span class="sd">----------------</span>
+<span class="sd">After generation was complete We used `black` to autoformat the code</span>
+<span class="sd">to PEP8 standards</span>
+
+<span class="sd">Prompts used:</span>
+<span class="sd">-----------</span>
+<span class="sd">The prompts were taken from stage 1 model creation. Additional prompts</span>
+<span class="sd">were used when needed i.e. if the original prompt did not provide the </span>
+<span class="sd">desired output in stage 2.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">import</span> <span class="nn">simpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="c1"># lognormal function</span>
+
+
+<span class="k">def</span> <span class="nf">lognormal_to_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert lognormal moments to normal moments.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    mean (float): Mean of the lognormal distribution.</span>
+<span class="sd">    std (float): Standard deviation of the lognormal distribution.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tuple: (mean, std) of the corresponding normal distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">normal_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mean</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">mean</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">normal_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">std</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">mean</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span>
+
+
+<span class="c1"># Experiment class</span>
+
+
+<span class="k">class</span> <span class="nc">Experiment</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_number_set</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">default_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;results_collection_period&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">365</span><span class="p">,</span>
+            <span class="s2">&quot;warm_up&quot;</span><span class="p">:</span> <span class="mi">1095</span><span class="p">,</span>
+            <span class="s2">&quot;trace&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;acute_audit_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_audit_interval&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_iat&quot;</span><span class="p">:</span> <span class="mf">21.8</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_neuro_iat&quot;</span><span class="p">:</span> <span class="mf">31.7</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_other_iat&quot;</span><span class="p">:</span> <span class="mf">28.6</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_esd_los_mean&quot;</span><span class="p">:</span> <span class="mf">30.3</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_esd_los_std&quot;</span><span class="p">:</span> <span class="mf">23.1</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_other_los_mean&quot;</span><span class="p">:</span> <span class="mf">28.4</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_other_los_std&quot;</span><span class="p">:</span> <span class="mf">27.2</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_complex_neuro_los_mean&quot;</span><span class="p">:</span> <span class="mf">27.6</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_complex_neuro_los_std&quot;</span><span class="p">:</span> <span class="mf">28.4</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_other_los_mean&quot;</span><span class="p">:</span> <span class="mf">16.1</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_other_los_std&quot;</span><span class="p">:</span> <span class="mf">14.1</span><span class="p">,</span>
+            <span class="s2">&quot;rehab_stroke_post_destination_probs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span>
+            <span class="s2">&quot;rehab_complex_neuro_post_destination_probs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">],</span>
+            <span class="s2">&quot;rehab_other_post_destination_probs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">],</span>
+            <span class="s2">&quot;patient_types&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;interarrival_time&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+                    <span class="s2">&quot;post_asu_probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.13</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">],</span>
+                    <span class="s2">&quot;los_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">7.4</span><span class="p">,</span> <span class="mf">8.6</span><span class="p">),</span>
+                        <span class="s2">&quot;ESD&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">4.6</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">),</span>
+                        <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">),</span>
+                    <span class="p">},</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;TIA&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;interarrival_time&quot;</span><span class="p">:</span> <span class="mf">9.3</span><span class="p">,</span>
+                    <span class="s2">&quot;post_asu_probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">],</span>
+                    <span class="s2">&quot;los_params&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;Complex Neurological&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;interarrival_time&quot;</span><span class="p">:</span> <span class="mf">3.6</span><span class="p">,</span>
+                    <span class="s2">&quot;post_asu_probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">],</span>
+                    <span class="s2">&quot;los_params&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;interarrival_time&quot;</span><span class="p">:</span> <span class="mf">3.2</span><span class="p">,</span>
+                    <span class="s2">&quot;post_asu_probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">],</span>
+                    <span class="s2">&quot;los_params&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">3.8</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">),</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">default_params</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_params</span><span class="p">(</span><span class="n">default_params</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">asu_occupancy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rehab_occupancy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warm_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;warm_up&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_streams</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">merge_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">merged</span><span class="p">:</span>
+                <span class="n">merged</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_params</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">merged</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">merged</span>
+
+    <span class="k">def</span> <span class="nf">audit_acute_occupancy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">first_interval</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">asu</span><span class="p">,</span> <span class="n">experiment</span>
+    <span class="p">):</span>
+        <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">first_interval</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asu</span><span class="o">.</span><span class="n">occupancy</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">audit_interval</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">audit_rehab_occupancy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">first_interval</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">,</span> <span class="n">experiment</span>
+    <span class="p">):</span>
+        <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">first_interval</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">audit_interval</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_kpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asu_occupancy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rehab_occupancy</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">setup_streams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_number_set</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">))</span>
+
+
+<span class="c1"># ### ASU Patient type class</span>
+
+
+<span class="k">class</span> <span class="nc">PatientType</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">interarrival_time</span><span class="p">,</span> <span class="n">post_asu_probabilities</span><span class="p">,</span> <span class="n">los_params</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interarrival_time</span> <span class="o">=</span> <span class="n">interarrival_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will be set in the patient_generator method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_asu_probabilities</span> <span class="o">=</span> <span class="n">post_asu_probabilities</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">los_params</span> <span class="o">=</span> <span class="n">los_params</span>
+
+    <span class="k">def</span> <span class="nf">generate_interarrival_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interarrival_time</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sample_post_asu_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RNG not set for PatientType&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;Rehab&quot;</span><span class="p">,</span> <span class="s2">&quot;ESD&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">post_asu_probabilities</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normal_moments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span>
+            <span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">los_params</span><span class="p">[</span><span class="n">destination</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">los_params</span>
+
+        <span class="n">normal_mean</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mean</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">mean</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">normal_std</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">std</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">mean</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span>
+
+
+<span class="c1"># Acute stroke unit class</span>
+
+
+<span class="k">class</span> <span class="nc">AcuteStrokeUnit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">rehab_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;patient_types&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">PatientType</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;interarrival_time&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;post_asu_probabilities&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;los_params&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">patient_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">patient_types</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_generator</span><span class="p">(</span><span class="n">patient_type</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">patient_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">):</span>
+        <span class="c1"># Assign specific streams for each patient type</span>
+        <span class="k">if</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span>
+            <span class="n">arrival_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">post_asu_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;TIA&quot;</span><span class="p">:</span>
+            <span class="n">arrival_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+            <span class="n">post_asu_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Complex Neurological&quot;</span><span class="p">:</span>
+            <span class="n">arrival_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+            <span class="n">post_asu_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Other</span>
+            <span class="n">arrival_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+            <span class="n">post_asu_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+
+        <span class="c1"># Replace the RNG in the PatientType instance</span>
+        <span class="n">patient_type</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">post_asu_stream</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">interarrival_time</span> <span class="o">=</span> <span class="n">arrival_stream</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span>
+                <span class="n">patient_type</span><span class="o">.</span><span class="n">interarrival_time</span>
+            <span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">interarrival_time</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">patient_type</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">patient_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">post_asu_destination</span> <span class="o">=</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">sample_post_asu_destination</span><span class="p">()</span>
+
+            <span class="c1"># Assign different seeds based on post-ASU destination for stroke patients</span>
+            <span class="k">if</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span>
+                    <span class="n">los_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;ESD&quot;</span><span class="p">:</span>
+                    <span class="n">los_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># Other</span>
+                    <span class="n">los_stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">los_stream</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Placeholder for non-stroke patients</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) arrived&quot;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Total arrivals: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrivals: </span><span class="si">{</span><span class="n">patient_type</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Post-ASU destination: </span><span class="si">{</span><span class="n">post_asu_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; Next </span><span class="si">{</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrival in </span><span class="si">{</span><span class="n">interarrival_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Current occupancy: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">acute_treatment</span><span class="p">(</span>
+                    <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">acute_treatment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_acute_treatment</span><span class="p">(</span>
+                <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;TIA&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">tia_acute_treatment</span><span class="p">(</span>
+                <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Complex Neurological&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex_neurological_acute_treatment</span><span class="p">(</span>
+                <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Other</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">other_acute_treatment</span><span class="p">(</span>
+                <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) left ASU&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Current occupancy: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stroke_acute_treatment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+    <span class="p">):</span>
+        <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patient_types</span><span class="p">[</span><span class="s2">&quot;Stroke&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">normal_moments</span><span class="p">(</span>
+            <span class="n">post_asu_destination</span>
+        <span class="p">)</span>
+        <span class="n">los</span> <span class="o">=</span> <span class="n">los_stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">normal_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">normal_std</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Stroke) starting acute treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">los</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">los</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Stroke) finished acute treatment&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">arrivals_from_asu</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">rehab_treatment</span><span class="p">(</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; Post-ASU destination (stroke to stroke rehab): </span><span class="si">{</span><span class="n">post_asu_destination</span><span class="p">,</span><span class="w"> </span><span class="n">patient_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tia_acute_treatment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+    <span class="p">):</span>
+        <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span> <span class="o">=</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">normal_moments</span><span class="p">()</span>
+        <span class="n">los</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">normal_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">normal_std</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (TIA) starting acute treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">los</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">los</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (TIA) finished acute treatment&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">arrivals_from_asu</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">rehab_treatment</span><span class="p">(</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; Post-ASU destination (tia to tia rehab): </span><span class="si">{</span><span class="n">post_asu_destination</span><span class="p">,</span><span class="w"> </span><span class="n">patient_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">complex_neurological_acute_treatment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+    <span class="p">):</span>
+        <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span> <span class="o">=</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">normal_moments</span><span class="p">()</span>
+        <span class="n">los</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">normal_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">normal_std</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Complex Neurological) starting acute treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">los</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">los</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Complex Neurological) finished acute treatment&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">arrivals_from_asu</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">rehab_treatment</span><span class="p">(</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; Post-ASU destination (complex to complex rehab): </span><span class="si">{</span><span class="n">post_asu_destination</span><span class="p">,</span><span class="w"> </span><span class="n">patient_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">other_acute_treatment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">post_asu_destination</span><span class="p">,</span> <span class="n">los_stream</span>
+    <span class="p">):</span>
+        <span class="n">normal_mean</span><span class="p">,</span> <span class="n">normal_std</span> <span class="o">=</span> <span class="n">patient_type</span><span class="o">.</span><span class="n">normal_moments</span><span class="p">()</span>
+        <span class="n">los</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">normal_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">normal_std</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Other) starting acute treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">los</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">los</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Other) finished acute treatment&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">post_asu_destination</span> <span class="o">==</span> <span class="s2">&quot;Rehab&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">arrivals_from_asu</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">rehab_treatment</span><span class="p">(</span><span class="n">patient_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; Post-ASU destination (other to other rehab): </span><span class="si">{</span><span class="n">post_asu_destination</span><span class="p">,</span><span class="w"> </span><span class="n">patient_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+
+<span class="c1"># Rehabilitation Unit class</span>
+
+
+<span class="k">class</span> <span class="nc">RehabilitationUnit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arrivals_from_asu</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_counts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;Complex Neurological&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;TIA&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stroke_iat_external</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_iat&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_iat_external</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_neuro_iat&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_iat_external</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_other_iat&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Convert lognormal moments to normal moments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stroke_esd_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_esd_std</span> <span class="o">=</span> <span class="n">lognormal_to_normal</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_esd_los_mean&quot;</span><span class="p">],</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_esd_los_std&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stroke_other_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_other_std</span> <span class="o">=</span> <span class="n">lognormal_to_normal</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_other_los_mean&quot;</span><span class="p">],</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_other_los_std&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_std</span> <span class="o">=</span> <span class="n">lognormal_to_normal</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_complex_neuro_los_mean&quot;</span><span class="p">],</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_complex_neuro_los_std&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">other_std</span> <span class="o">=</span> <span class="n">lognormal_to_normal</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_other_los_mean&quot;</span><span class="p">],</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_other_los_std&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tia_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tia_std</span> <span class="o">=</span> <span class="n">lognormal_to_normal</span><span class="p">(</span><span class="mf">18.7</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>  <span class="c1"># TIA parameters</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stroke_generator</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_generator</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">other_generator</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">stroke_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stroke_iat_external</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_arrival</span><span class="p">(</span><span class="s2">&quot;Stroke&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">complex_neuro_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_iat_external</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_arrival</span><span class="p">(</span><span class="s2">&quot;Complex Neurological&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">other_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">other_iat_external</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">patient_arrival</span><span class="p">(</span><span class="s2">&quot;Other&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">patient_arrival</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">):</span>
+        <span class="n">patient_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_counts</span><span class="p">[</span><span class="n">patient_type</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">patient_type</span><span class="si">}</span><span class="s2">) arrived at RU&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Total arrivals: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_arrivals</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">patient_type</span><span class="si">}</span><span class="s2"> arrivals: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_counts</span><span class="p">[</span><span class="n">patient_type</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Current patient counts: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patient_counts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Current occupancy: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rehab_treatment</span><span class="p">(</span><span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">rehab_treatment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_type</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">patient_type</span> <span class="o">==</span> <span class="s2">&quot;Stroke&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_rehab_treatment</span><span class="p">(</span><span class="n">patient_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">patient_type</span> <span class="o">==</span> <span class="s2">&quot;Complex Neurological&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex_neurological_rehab_treatment</span><span class="p">(</span><span class="n">patient_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">patient_type</span> <span class="o">==</span> <span class="s2">&quot;TIA&quot;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">tia_rehab_treatment</span><span class="p">(</span><span class="n">patient_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">other_rehab_treatment</span><span class="p">(</span><span class="n">patient_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">patient_type</span><span class="si">}</span><span class="s2">) left RU&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Current occupancy: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">occupancy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stroke_rehab_treatment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+        <span class="n">post_rehab_destination</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;ESD&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">],</span>
+            <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_stroke_post_destination_probs&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">post_rehab_destination</span> <span class="o">==</span> <span class="s2">&quot;ESD&quot;</span><span class="p">:</span>
+            <span class="n">length_of_stay</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stroke_esd_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_esd_std</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">length_of_stay</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stroke_other_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stroke_other_std</span>
+            <span class="p">)</span>
+
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Stroke) completed rehab treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Post-rehab destination: </span><span class="si">{</span><span class="n">post_rehab_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">length_of_stay</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">complex_neurological_rehab_treatment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">22</span><span class="p">]</span>
+        <span class="n">post_rehab_destination</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;ESD&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">],</span>
+            <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_complex_neuro_post_destination_probs&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">length_of_stay</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex_neuro_std</span>
+        <span class="p">)</span>
+
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Complex Neurological) completed rehab treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Post-rehab destination: </span><span class="si">{</span><span class="n">post_rehab_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">length_of_stay</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">other_rehab_treatment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span>
+        <span class="n">post_rehab_destination</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;ESD&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">],</span>
+            <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_other_post_destination_probs&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">length_of_stay</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">other_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">other_std</span><span class="p">)</span>
+
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (Other) completed rehab treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Post-rehab destination: </span><span class="si">{</span><span class="n">post_rehab_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">length_of_stay</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tia_rehab_treatment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
+        <span class="n">post_rehab_destination</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;ESD&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># Always &#39;Other&#39; for TIA patients</span>
+
+        <span class="n">length_of_stay</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tia_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tia_std</span><span class="p">)</span>
+
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">length_of_stay</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Time </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: Patient </span><span class="si">{</span><span class="n">patient_id</span><span class="si">}</span><span class="s2"> (TIA) completed rehab treatment&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Post-rehab destination: </span><span class="si">{</span><span class="n">post_rehab_destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Length of stay: </span><span class="si">{</span><span class="n">length_of_stay</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> days&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Occupancy post-processing code</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_occupancy_frequencies</span><span class="p">(</span><span class="n">occupancy_list</span><span class="p">):</span>
+    <span class="n">unique_values</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">occupancy_list</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">relative_freq</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">occupancy_list</span><span class="p">)</span>
+    <span class="n">cumulative_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">relative_freq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">relative_freq</span><span class="p">,</span> <span class="n">cumulative_freq</span><span class="p">,</span> <span class="n">unique_values</span>
+
+
+<span class="k">def</span> <span class="nf">occupancy_plot</span><span class="p">(</span>
+    <span class="n">relative_freq</span><span class="p">,</span> <span class="n">unique_values</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;No. people in ward&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">unique_values</span><span class="p">,</span> <span class="n">relative_freq</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Relative Frequency&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Occupancy Distribution&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Set x-axis ticks and limits based on the data</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">unique_values</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">//</span> <span class="mi">10</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+
+<span class="c1"># Probability of deplay post-processing code</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_prob_delay</span><span class="p">(</span><span class="n">relative_freq</span><span class="p">,</span> <span class="n">cumulative_freq</span><span class="p">):</span>
+    <span class="n">rel_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">relative_freq</span><span class="p">)</span>
+    <span class="n">cum_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cumulative_freq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rel_freq</span> <span class="o">/</span> <span class="n">cum_freq</span>
+
+
+<span class="k">def</span> <span class="nf">prob_delay_plot</span><span class="p">(</span>
+    <span class="n">prob_delay</span><span class="p">,</span> <span class="n">unique_values</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;No. acute beds available&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">unique_values</span><span class="p">,</span> <span class="n">prob_delay</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Probability of Delay&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Probability of Delay vs. Number of Beds Available&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Set x-axis ticks and limits based on the data</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">unique_values</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">//</span> <span class="mi">10</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+
+<span class="c1"># Function to perform a single run of ASU+REHAB</span>
+
+
+<span class="k">def</span> <span class="nf">single_run</span><span class="p">(</span><span class="n">experiment</span><span class="p">):</span>
+    <span class="n">experiment</span><span class="o">.</span><span class="n">reset_kpi</span><span class="p">()</span>
+
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+
+    <span class="c1"># Create models</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">)</span>
+    <span class="n">asu</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+
+    <span class="c1"># Run models</span>
+    <span class="n">rehab_unit</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">asu</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="c1"># Start the audit processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">audit_acute_occupancy</span><span class="p">(</span>
+            <span class="n">env</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">warm_up</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;acute_audit_interval&quot;</span><span class="p">],</span>
+            <span class="n">asu</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">audit_rehab_occupancy</span><span class="p">(</span>
+            <span class="n">env</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">warm_up</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;rehab_audit_interval&quot;</span><span class="p">],</span>
+            <span class="n">rehab_unit</span><span class="p">,</span>
+            <span class="n">experiment</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Run the simulation</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">experiment</span><span class="o">.</span><span class="n">warm_up</span> <span class="o">+</span> <span class="n">experiment</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;results_collection_period&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Calculate occupancy frequencies and probabilities of delay</span>
+    <span class="n">rel_freq_a</span><span class="p">,</span> <span class="n">cum_freq_a</span><span class="p">,</span> <span class="n">unique_vals_a</span> <span class="o">=</span> <span class="n">calculate_occupancy_frequencies</span><span class="p">(</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span>
+    <span class="p">)</span>
+    <span class="n">prob_delay_a</span> <span class="o">=</span> <span class="n">calculate_prob_delay</span><span class="p">(</span><span class="n">rel_freq_a</span><span class="p">,</span> <span class="n">cum_freq_a</span><span class="p">)</span>
+
+    <span class="n">rel_freq_r</span><span class="p">,</span> <span class="n">cum_freq_r</span><span class="p">,</span> <span class="n">unique_vals_r</span> <span class="o">=</span> <span class="n">calculate_occupancy_frequencies</span><span class="p">(</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">rehab_occupancy</span>
+    <span class="p">)</span>
+    <span class="n">prob_delay_r</span> <span class="o">=</span> <span class="n">calculate_prob_delay</span><span class="p">(</span><span class="n">rel_freq_r</span><span class="p">,</span> <span class="n">cum_freq_r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;relative_freq_asu&quot;</span><span class="p">:</span> <span class="n">rel_freq_a</span><span class="p">,</span>
+        <span class="s2">&quot;prob_delay_asu&quot;</span><span class="p">:</span> <span class="n">prob_delay_a</span><span class="p">,</span>
+        <span class="s2">&quot;unique_vals_asu&quot;</span><span class="p">:</span> <span class="n">unique_vals_a</span><span class="p">,</span>
+        <span class="s2">&quot;relative_freq_rehab&quot;</span><span class="p">:</span> <span class="n">rel_freq_r</span><span class="p">,</span>
+        <span class="s2">&quot;prob_delay_rehab&quot;</span><span class="p">:</span> <span class="n">prob_delay_r</span><span class="p">,</span>
+        <span class="s2">&quot;unique_vals_rehab&quot;</span><span class="p">:</span> <span class="n">unique_vals_r</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="c1"># Multiple Replication function</span>
+
+
+<span class="k">def</span> <span class="nf">multiple_replications</span><span class="p">(</span><span class="n">experiment_instance</span><span class="p">,</span> <span class="n">num_replications</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">rep_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_replications</span><span class="p">):</span>
+        <span class="c1"># Call setup_streams with the current replication number</span>
+        <span class="n">experiment_instance</span><span class="o">.</span><span class="n">setup_streams</span><span class="p">(</span><span class="n">rep</span><span class="p">)</span>
+
+        <span class="c1"># Run the simulation for this replication</span>
+        <span class="n">rep_result</span> <span class="o">=</span> <span class="n">single_run</span><span class="p">(</span><span class="n">experiment_instance</span><span class="p">)</span>
+
+        <span class="c1"># Append the results of this replication</span>
+        <span class="n">rep_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rep_result</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rep_results</span>
+
+
+<span class="c1"># Functions to combine replication results</span>
+
+
+<span class="k">def</span> <span class="nf">combine_pdelay_results</span><span class="p">(</span><span class="n">rep_results</span><span class="p">):</span>
+    <span class="n">asu_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rehab_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Determine the maximum occupancy value across all results</span>
+    <span class="n">max_occupancy</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_asu&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_rehab&quot;</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">rep_results</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Use max_occupancy + 1 to ensure we include the maximum value</span>
+    <span class="n">array_size</span> <span class="o">=</span> <span class="n">max_occupancy</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">rep_results</span><span class="p">:</span>
+        <span class="n">prob_delay_asu</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;prob_delay_asu&quot;</span><span class="p">]</span>
+        <span class="n">unique_vals_asu</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_asu&quot;</span><span class="p">]</span>
+        <span class="n">min_occupancy_asu</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">unique_vals_asu</span><span class="p">)</span>
+
+        <span class="n">asu_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">)</span>
+        <span class="n">asu_array</span><span class="p">[</span><span class="n">unique_vals_asu</span><span class="p">]</span> <span class="o">=</span> <span class="n">prob_delay_asu</span>
+        <span class="n">asu_array</span><span class="p">[:</span><span class="n">min_occupancy_asu</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">asu_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asu_array</span><span class="p">)</span>
+
+        <span class="n">prob_delay_rehab</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;prob_delay_rehab&quot;</span><span class="p">]</span>
+        <span class="n">unique_vals_rehab</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_rehab&quot;</span><span class="p">]</span>
+        <span class="n">min_occupancy_rehab</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">unique_vals_rehab</span><span class="p">)</span>
+
+        <span class="n">rehab_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">)</span>
+        <span class="n">rehab_array</span><span class="p">[</span><span class="n">unique_vals_rehab</span><span class="p">]</span> <span class="o">=</span> <span class="n">prob_delay_rehab</span>
+        <span class="n">rehab_array</span><span class="p">[:</span><span class="n">min_occupancy_rehab</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">rehab_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rehab_array</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">asu_results</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rehab_results</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">combine_occup_results</span><span class="p">(</span><span class="n">rep_results</span><span class="p">):</span>
+    <span class="n">asu_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rehab_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Determine the maximum occupancy value across all results</span>
+    <span class="n">max_occupancy</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_asu&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_rehab&quot;</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">rep_results</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Use max_occupancy + 1 to ensure we include the maximum value</span>
+    <span class="n">array_size</span> <span class="o">=</span> <span class="n">max_occupancy</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">rep_results</span><span class="p">:</span>
+        <span class="n">relative_freq_asu</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;relative_freq_asu&quot;</span><span class="p">]</span>
+        <span class="n">unique_vals_asu</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_asu&quot;</span><span class="p">]</span>
+
+        <span class="n">asu_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">)</span>
+        <span class="n">asu_array</span><span class="p">[</span><span class="n">unique_vals_asu</span><span class="p">]</span> <span class="o">=</span> <span class="n">relative_freq_asu</span>
+        <span class="n">asu_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asu_array</span><span class="p">)</span>
+
+        <span class="n">relative_freq_rehab</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;relative_freq_rehab&quot;</span><span class="p">]</span>
+        <span class="n">unique_vals_rehab</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;unique_vals_rehab&quot;</span><span class="p">]</span>
+
+        <span class="n">rehab_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">)</span>
+        <span class="n">rehab_array</span><span class="p">[</span><span class="n">unique_vals_rehab</span><span class="p">]</span> <span class="o">=</span> <span class="n">relative_freq_rehab</span>
+        <span class="n">rehab_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rehab_array</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">asu_results</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rehab_results</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mean_results</span><span class="p">(</span><span class="n">rep_results</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rep_results</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="c1"># Tabular results for p(delay)</span>
+
+
+<span class="k">def</span> <span class="nf">summary_table</span><span class="p">(</span><span class="n">prob_delay</span><span class="p">,</span> <span class="n">min_beds</span><span class="p">,</span> <span class="n">max_beds</span><span class="p">,</span> <span class="n">bed_type</span><span class="o">=</span><span class="s2">&quot;ASU&quot;</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sa">f</span><span class="s2">&quot;No. </span><span class="si">{</span><span class="n">bed_type</span><span class="si">}</span><span class="s2"> beds&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;Probability of delay&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;% patients delayed&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;1 in every n patients delayed&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">beds</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_beds</span><span class="p">,</span> <span class="n">max_beds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">beds</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">prob_delay</span><span class="p">):</span>
+            <span class="n">pdelay</span> <span class="o">=</span> <span class="n">prob_delay</span><span class="p">[</span><span class="n">beds</span><span class="p">]</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;No. </span><span class="si">{</span><span class="n">bed_type</span><span class="si">}</span><span class="s2"> beds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beds</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Probability of delay&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdelay</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;% patients delayed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdelay</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pdelay</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;1 in every n patients delayed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">pdelay</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;1 in every n patients delayed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If we&#39;ve run out of data, fill with N/A</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;No. </span><span class="si">{</span><span class="n">bed_type</span><span class="si">}</span><span class="s2"> beds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beds</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Probability of delay&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;% patients delayed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;1 in every n patients delayed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No. </span><span class="si">{</span><span class="n">bed_type</span><span class="si">}</span><span class="s2"> beds&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/03_stroke/02_model_stage2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_model_stage2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model Stage 2</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_auto_testing_stage2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Automated Model Testing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-stored-in-s2-stroke-rehab-model-py">Code stored in <code class="docutils literal notranslate"><span class="pre">s2_stroke_rehab_model.py</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

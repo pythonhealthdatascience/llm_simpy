@@ -1,0 +1,259 @@
+Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import simpy
+import numpy as np
+import pandas as pd
+from scipy.stats import lognorm
+
+class Experiment:
+    def __init__(self, accident_emergency_arrival_rate=22.72, wards_arrival_rate=26.0, emergency_surgery_arrival_rate=37.0, other_hospitals_arrival_rate=47.2, xray_department_arrival_rate=575.0, elective_surgery_arrival_rate=17.91, elective_surgery_arrival_std_dev=3.16, accident_emergency_lognormal_mu=128.79, accident_emergency_lognormal_sigma=267.51, wards_lognormal_mu=177.89, wards_lognormal_sigma=276.54, emergency_surgery_lognormal_mu=140.15, emergency_surgery_lognormal_sigma=218.02, other_hospitals_lognormal_mu=212.86, other_hospitals_lognormal_sigma=457.67, xray_department_lognormal_mu=87.53, xray_department_lognormal_sigma=108.67, elective_surgery_treatment_rate=57.34, num_critical_care_beds=24, intensive_cleaning_duration=5, results_collection_period=12 * 30 * 24, warm_up_period=30 * 24, trace=False):
+        self.accident_emergency_arrival_rate = accident_emergency_arrival_rate
+        self.wards_arrival_rate = wards_arrival_rate
+        self.emergency_surgery_arrival_rate = emergency_surgery_arrival_rate
+        self.other_hospitals_arrival_rate = other_hospitals_arrival_rate
+        self.xray_department_arrival_rate = xray_department_arrival_rate
+        self.elective_surgery_arrival_rate = elective_surgery_arrival_rate
+        self.elective_surgery_arrival_std_dev = elective_surgery_arrival_std_dev
+        self.accident_emergency_lognormal_mu = accident_emergency_lognormal_mu
+        self.accident_emergency_lognormal_sigma = accident_emergency_lognormal_sigma
+        self.wards_lognormal_mu = wards_lognormal_mu
+        self.wards_lognormal_sigma = wards_lognormal_sigma
+        self.emergency_surgery_lognormal_mu = emergency_surgery_lognormal_mu
+        self.emergency_surgery_lognormal_sigma = emergency_surgery_lognormal_sigma
+        self.other_hospitals_lognormal_mu = other_hospitals_lognormal_mu
+        self.other_hospitals_lognormal_sigma = other_hospitals_lognormal_sigma
+        self.xray_department_lognormal_mu = xray_department_lognormal_mu
+        self.xray_department_lognormal_sigma = xray_department_lognormal_sigma
+        self.elective_surgery_treatment_rate = elective_surgery_treatment_rate
+        self.num_critical_care_beds = num_critical_care_beds
+        self.intensive_cleaning_duration = intensive_cleaning_duration
+        self.results_collection_period = results_collection_period
+        self.warm_up_period = warm_up_period
+        self.total_run_length = self.warm_up_period + self.results_collection_period
+        self.trace = trace
+
+class CCU:
+    def __init__(self, env, experiment):
+        self.env = env
+        self.experiment = experiment
+        self.patient_id_counter = 0
+        self.cancelled_operations = 0
+        self.warmup_end_time = self.experiment.warm_up_period
+        self.total_unplanned_waiting_time = 0
+        self.total_unplanned_admissions = 0
+        self.total_treatment_time = 0
+        self.rng_accident_emergency = np.random.default_rng(seed=42)
+        self.rng_wards = np.random.default_rng(seed=43)
+        self.rng_emergency_surgery = np.random.default_rng(seed=44)
+        self.rng_other_hospitals = np.random.default_rng(seed=45)
+        self.rng_xray_department = np.random.default_rng(seed=46)
+        self.rng_elective_surgery = np.random.default_rng(seed=47)
+        self.critical_care_beds = simpy.Resource(env, capacity=self.experiment.num_critical_care_beds)
+
+    def lognormal_to_normal(self, mu, sigma):
+        zeta = np.log(mu**2 / np.sqrt(sigma**2 + mu**2))
+        sigma_norm = np.sqrt(np.log(sigma**2 / mu**2 + 1))
+        mu_norm = zeta
+        return mu_norm, sigma_norm
+
+    def warmup_complete(self):
+        self.patient_id_counter = 0
+        if self.experiment.trace:
+            print("Warm-up complete")
+
+    def accident_emergency_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_accident_emergency.exponential(self.experiment.accident_emergency_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Accident and Emergency at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Accident and Emergency"))
+
+    def wards_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_wards.exponential(self.experiment.wards_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from the Wards at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Wards"))
+
+    def emergency_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_emergency_surgery.exponential(self.experiment.emergency_surgery_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Emergency Surgery at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Emergency Surgery"))
+
+    def other_hospitals_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_other_hospitals.exponential(self.experiment.other_hospitals_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from Other Hospitals at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("Other Hospitals"))
+
+    def xray_department_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_xray_department.exponential(self.experiment.xray_department_arrival_rate))
+            if self.experiment.trace:
+                print(f"Patient {self.patient_id_counter} arrived from the X-Ray Department at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.unplanned_admissions_process("X-Ray Department"))
+
+    def elective_surgery_arrivals(self):
+        while True:
+            yield self.env.timeout(self.rng_elective_surgery.normal(self.experiment.elective_surgery_arrival_rate, self.experiment.elective_surgery_arrival_std_dev))
+            if self.experiment.trace:
+                print(f"Elective Patient {self.patient_id_counter} arrived at {self.env.now:.2f} hours")
+            self.patient_id_counter += 1
+            self.env.process(self.elective_admissions_process())
+
+    def unplanned_admissions_process(self, source):
+        patient_id = self.patient_id_counter
+        if self.experiment.trace:
+            print(f"Patient {patient_id} from {source} requests a critical care bed at {self.env.now:.2f} hours")
+        waiting_time = self.env.now
+        with self.critical_care_beds.request() as req:
+            yield req
+            waiting_time = self.env.now - waiting_time
+            if self.experiment.trace:
+                print(f"Patient {patient_id} from {source} waited {waiting_time:.2f} hours")
+                print(f"Patient {patient_id} from {source} admitted to a critical care bed at {self.env.now:.2f} hours")
+
+            if source == "Accident and Emergency":
+                mu, sigma = self.lognormal_to_normal(self.experiment.accident_emergency_lognormal_mu, self.experiment.accident_emergency_lognormal_sigma)
+                length_of_stay = self.rng_accident_emergency.lognormal(mu, sigma)
+            elif source == "Wards":
+                mu, sigma = self.lognormal_to_normal(self.experiment.wards_lognormal_mu, self.experiment.wards_lognormal_sigma)
+                length_of_stay = self.rng_wards.lognormal(mu, sigma)
+            elif source == "Emergency Surgery":
+                mu, sigma = self.lognormal_to_normal(self.experiment.emergency_surgery_lognormal_mu, self.experiment.emergency_surgery_lognormal_sigma)
+                length_of_stay = self.rng_emergency_surgery.lognormal(mu, sigma)
+            elif source == "Other Hospitals":
+                mu, sigma = self.lognormal_to_normal(self.experiment.other_hospitals_lognormal_mu, self.experiment.other_hospitals_lognormal_sigma)
+                length_of_stay = self.rng_other_hospitals.lognormal(mu, sigma)
+            else:
+                mu, sigma = self.lognormal_to_normal(self.experiment.xray_department_lognormal_mu, self.experiment.xray_department_lognormal_sigma)
+                length_of_stay = self.rng_xray_department.lognormal(mu, sigma)
+
+            yield self.env.timeout(length_of_stay)
+
+            if self.env.now >= self.warmup_end_time:
+                self.total_treatment_time += length_of_stay
+                self.total_unplanned_waiting_time += waiting_time
+                self.total_unplanned_admissions += 1
+
+            if self.experiment.trace:
+                print(f"Patient {patient_id} from {source} discharged from a critical care bed at {self.env.now:.2f} hours")
+
+            yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+            if self.experiment.trace:
+                print(f"Intensive cleaning completed for Patient {patient_id} from {source} at {self.env.now:.2f} hours")
+
+    def elective_admissions_process(self):
+        patient_id = self.patient_id_counter
+        if self.critical_care_beds.count == self.critical_care_beds.capacity:
+            if self.env.now >= self.warmup_end_time:
+                if self.experiment.trace:
+                    print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds")
+                self.cancelled_operations += 1
+            else:
+                if self.experiment.trace:
+                    print(f"Elective Patient {patient_id} operation cancelled at {self.env.now:.2f} hours due to lack of available beds (warm-up period)")
+        else:
+            if self.experiment.trace:
+                print(f"Elective Patient {patient_id} requests a critical care bed at {self.env.now:.2f} hours")
+            with self.critical_care_beds.request() as req:
+                yield req
+                if self.experiment.trace:
+                    print(f"Elective Patient {patient_id} admitted to a critical care bed at {self.env.now:.2f} hours")
+                length_of_stay = self.rng_elective_surgery.exponential(self.experiment.elective_surgery_treatment_rate)
+                yield self.env.timeout(length_of_stay)
+                if self.env.now >= self.warmup_end_time:
+                    self.total_treatment_time += length_of_stay
+                if self.experiment.trace:
+                    print(f"Elective Patient {patient_id} discharged from a critical care bed at {self.env.now:.2f} hours")
+                yield self.env.timeout(self.experiment.intensive_cleaning_duration)
+                if self.experiment.trace:
+                    print(f"Intensive cleaning completed for Elective Patient {patient_id} at {self.env.now:.2f} hours")
+
+    def run(self):
+        accident_emergency_process = self.env.process(self.accident_emergency_arrivals())
+        wards_process = self.env.process(self.wards_arrivals())
+        emergency_surgery_process = self.env.process(self.emergency_surgery_arrivals())
+        other_hospitals_process = self.env.process(self.other_hospitals_arrivals())
+        xray_department_process = self.env.process(self.xray_department_arrivals())
+        elective_surgery_process = self.env.process(self.elective_surgery_arrivals())
+        warmup_complete_process = self.env.process(self.warmup_complete())
+        self.env.run(until=self.experiment.total_run_length)
+
+        bed_utilization = self.total_treatment_time / (self.experiment.num_critical_care_beds * self.experiment.results_collection_period)
+        bed_occupancy = bed_utilization * self.experiment.num_critical_care_beds
+
+        performance_measures = {
+            "Total Cancelled Elective Operations": self.cancelled_operations,
+            "Mean Unplanned Admission Waiting Time (hours)": self.total_unplanned_waiting_time / self.total_unplanned_admissions if self.total_unplanned_admissions > 0 else 0,
+            "Bed Utilization": bed_utilization,
+            "Bed Occupancy": bed_occupancy,
+            "Patient Count": self.patient_id_counter
+        }
+
+        results_df = pd.DataFrame.from_dict(performance_measures, orient='index', columns=['Value'])
+        print(results_df)
+
+experiment = Experiment(trace=True)
+env = simpy.Environment()
+ccu = CCU(env, experiment)
+ccu.run()
+
+------------------
+
+----- stdout -----
+Warm-up complete
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[1], line 206[0m
+[1;32m    204[0m env [38;5;241m=[39m simpy[38;5;241m.[39mEnvironment()
+[1;32m    205[0m ccu [38;5;241m=[39m CCU(env, experiment)
+[0;32m--> 206[0m [43mccu[49m[38;5;241;43m.[39;49m[43mrun[49m[43m([49m[43m)[49m
+
+Cell [0;32mIn[1], line 186[0m, in [0;36mCCU.run[0;34m(self)[0m
+[1;32m    184[0m xray_department_process [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mprocess([38;5;28mself[39m[38;5;241m.[39mxray_department_arrivals())
+[1;32m    185[0m elective_surgery_process [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mprocess([38;5;28mself[39m[38;5;241m.[39melective_surgery_arrivals())
+[0;32m--> 186[0m warmup_complete_process [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43menv[49m[38;5;241;43m.[39;49m[43mprocess[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mwarmup_complete[49m[43m([49m[43m)[49m[43m)[49m
+[1;32m    187[0m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mrun(until[38;5;241m=[39m[38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mtotal_run_length)
+[1;32m    189[0m bed_utilization [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mtotal_treatment_time [38;5;241m/[39m ([38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mnum_critical_care_beds [38;5;241m*[39m [38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mresults_collection_period)
+
+File [0;32m~/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/simpy/events.py:341[0m, in [0;36mProcess.__init__[0;34m(self, env, generator)[0m
+[1;32m    332[0m [38;5;28;01mdef[39;00m [38;5;21m__init__[39m([38;5;28mself[39m, env: Environment, generator: ProcessGenerator):
+[1;32m    333[0m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28mhasattr[39m(generator, [38;5;124m'[39m[38;5;124mthrow[39m[38;5;124m'[39m):
+[1;32m    334[0m         [38;5;66;03m# Implementation note: Python implementations differ in the[39;00m
+[1;32m    335[0m         [38;5;66;03m# generator types they provide. Cython adds its own generator type[39;00m
+[0;32m   (...)[0m
+[1;32m    339[0m         [38;5;66;03m# with a ``throw`` attribute are generators.[39;00m
+[1;32m    340[0m         [38;5;66;03m# Remove this workaround if it causes issues in production![39;00m
+[0;32m--> 341[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m'[39m[38;5;132;01m{[39;00mgenerator[38;5;132;01m}[39;00m[38;5;124m is not a generator.[39m[38;5;124m'[39m)
+[1;32m    343[0m     [38;5;66;03m# NOTE: The following initialization code is inlined from[39;00m
+[1;32m    344[0m     [38;5;66;03m# Event.__init__() for performance reasons.[39;00m
+[1;32m    345[0m     [38;5;28mself[39m[38;5;241m.[39menv [38;5;241m=[39m env
+
+[0;31mValueError[0m: None is not a generator.
+

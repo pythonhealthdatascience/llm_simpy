@@ -1,0 +1,2006 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Automated Model Testing &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03_stroke/01_model_stage1/02_auto_testing';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Manual model testing" href="03_manual_testing.html" />
+    <link rel="prev" title="Full model code" href="01_asu_rehab_model.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/01_primary.html">Primary aims</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../00_introduction/02_literature.html">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/04_design.html">Model design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/05_prompt_engineering.html">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01_methods/06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../02_CCU/03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/05_prompts_stage2.html">Prompts Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/20_iteration_s2.html">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/05_prompts_stage2/21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../01_model_stage1.html">Model Stage 1</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_model_stage2/04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/pythonhealthdatascience/llm_simpy/main?urlpath=lab/tree/notebooks/03_stroke/01_model_stage1/02_auto_testing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03_stroke/01_model_stage1/02_auto_testing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/03_stroke/01_model_stage1/02_auto_testing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Automated Model Testing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-code-imports">Model Code Imports</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-processing">Results processing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-collection-tests">Results collection tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-run-tests">Mode run tests</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-number-set-test-asu-only">Random number set test (ASU only)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lognormal-test">Lognormal test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extreme-value-tests">Extreme value tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-all-automated-tests">Run all automated tests</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="automated-model-testing">
+<h1>Automated Model Testing<a class="headerlink" href="#automated-model-testing" title="Link to this heading">#</a></h1>
+<p>This notebook contains a set of automated tests for the Stroke+Rehab model.  These tests are either pass or fail and no interpretation is needed. A summary of test results is provided at the end of the notebook.</p>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">from</span> <span class="nn">sim_tools.distributions</span> <span class="kn">import</span> <span class="n">Lognormal</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">ipytest</span>
+<span class="n">ipytest</span><span class="o">.</span><span class="n">autoconfig</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-code-imports">
+<h2>Model Code Imports<a class="headerlink" href="#model-code-imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stroke_rehab_model</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="results-processing">
+<h3>Results processing<a class="headerlink" href="#results-processing" title="Link to this heading">#</a></h3>
+<p>A set of tests to check that the results of a simulated run are processed correctly for the user.</p>
+<p>We test the processing of:</p>
+<ul class="simple">
+<li><p>occupancy frequencies</p></li>
+<li><p>probability of delay</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;values, rel_expected, cum_expected&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+                           <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_result_processing_1</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">rel_expected</span><span class="p">,</span> <span class="n">cum_expected</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the `calculate_occupancy_frequencies` function works</span>
+<span class="sd">    as expected.</span>
+
+<span class="sd">    Expected result: relative frequencies and cumulative freqs</span>
+<span class="sd">    are the same as expected values.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    values: list</span>
+<span class="sd">        list of values to test</span>
+
+<span class="sd">    rel_expected: list</span>
+<span class="sd">        list of floats - expected relative freqs</span>
+
+<span class="sd">    cum_expected: list</span>
+<span class="sd">        list of floats - expected cumulative freqs</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">rel</span><span class="p">,</span> <span class="n">cum</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="n">calculate_occupancy_frequencies</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># use all close to allow for minor floating point differences.</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">rel_expected</span><span class="p">))</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cum_expected</span><span class="p">),</span> <span class="n">cum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;relative, cum, p_delay_expected&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> 
+                           <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="o">/</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="o">/</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">/</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_result_processing_2</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">cum</span><span class="p">,</span> <span class="n">p_delay_expected</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the probability of delay is calculated correctly</span>
+<span class="sd">    using the `calculate_prob_delay` function.</span>
+<span class="sd">    </span>
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    relative: list</span>
+<span class="sd">        list of floats - relative freqs</span>
+
+<span class="sd">    cum: list</span>
+<span class="sd">        list of floats - cumulative freqs</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the function pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p_delay</span> <span class="o">=</span> <span class="n">calculate_prob_delay</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">cum</span><span class="p">)</span>
+    <span class="c1"># use all close to allow for minor floating point differences.</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p_delay_expected</span><span class="p">),</span> <span class="n">p_delay</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results-collection-tests">
+<h3>Results collection tests<a class="headerlink" href="#results-collection-tests" title="Link to this heading">#</a></h3>
+<p>Test that the optional results collection processes for the ASU and REHAB models work correctly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_results_collection_1</span><span class="p">(</span><span class="n">audit_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the model collects acute stroke occupancy every day</span>
+
+<span class="sd">    Expected result: len(experiment.occupancy) == env.now - 1</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    audit_interval: 1</span>
+<span class="sd">        duration of audit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+    <span class="c1"># set ASU arr~ival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+
+    <span class="c1"># modified iteration 19. </span>
+    <span class="c1"># add RU, but do not run the model</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+
+    <span class="c1"># optional results collection</span>
+    <span class="c1"># Start the audit_acute_occupancy generator function to record ASU occupancy at intervals</span>
+    <span class="c1"># MODIFIED iter 21</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_acute_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">acu_experiment</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 21</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_results_collection_2</span><span class="p">(</span><span class="n">audit_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the model collects rehab occupancy every day</span>
+
+<span class="sd">    Expected result: len(experiment.rehab_occupancy) == env.now - 1</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    audit_interval: 1</span>
+<span class="sd">        duration of audit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+
+    <span class="c1"># create experiment</span>
+    <span class="n">default_experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+    
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment</span><span class="p">)</span>
+
+    <span class="c1"># Initialise the patient generators as simpy processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+    
+    <span class="c1"># Initialise the audit of rehab occupancy as a simpy process with an interval of 1 day</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_rehab_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">,</span> <span class="n">default_experiment</span><span class="p">))</span>
+    
+    <span class="c1"># Run the model for the default run length in the experiment</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_results_collection_system</span><span class="p">(</span><span class="n">audit_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    SYSTEM TEST</span>
+<span class="sd">    </span>
+<span class="sd">    Test REHAB ward occupancy data collected is in a sensible range</span>
+<span class="sd">    when it is connected to the ASU model.</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: The type collected is int. The values are in </span>
+<span class="sd">    the range in the range 1 to [10-15] with sensible moments.</span>
+
+<span class="sd">    Expected result: </span>
+<span class="sd">        len(experiment.asu_occupancy) == env.now - 1 AND</span>
+<span class="sd">        len(experiment.rehab_occupancy) == env.now - 1</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    audit_interval: 1</span>
+<span class="sd">        duration of audit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># a default experiment</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+
+    <span class="c1"># create models</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the ASU patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+
+    <span class="c1"># Initialize the pREHAB atient generators as simpy processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>  
+
+    <span class="c1"># optional results collection</span>
+    <span class="c1"># Start the audit_acute_occupancy generator function to record ASU occupancy at intervals</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_acute_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">acu_experiment</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+
+    <span class="c1"># Initialize the audit of rehab occupancy as a simpy process with an interval of 1 day</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_rehab_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="c1"># print info for debug</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> \
+        <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="mode-run-tests">
+<h2>Mode run tests<a class="headerlink" href="#mode-run-tests" title="Link to this heading">#</a></h2>
+<p>Here we test that various modes of running the model work correctly.  These include</p>
+<ul class="simple">
+<li><p>results collection period</p></li>
+<li><p>warm-up</p></li>
+<li><p>single run mode</p></li>
+<li><p>repeatable results using random number sets.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_results_collection_system</span><span class="p">(</span><span class="n">audit_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    SYSTEM TEST</span>
+<span class="sd">    </span>
+<span class="sd">    Test REHAB ward occupancy data collected is in a sensible range</span>
+<span class="sd">    when it is connected to the ASU model.</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: The type collected is int. The values are in </span>
+<span class="sd">    the range in the range 1 to [10-15] with sensible moments.</span>
+
+<span class="sd">    Expected result: </span>
+<span class="sd">        len(experiment.asu_occupancy) == env.now - 1 AND</span>
+<span class="sd">        len(experiment.rehab_occupancy) == env.now - 1</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    audit_interval: 1</span>
+<span class="sd">        duration of audit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># a default experiment</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+
+    <span class="c1"># create models</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the ASU patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+
+    <span class="c1"># Initialize the pREHAB atient generators as simpy processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>  
+
+    <span class="c1"># optional results collection</span>
+    <span class="c1"># Start the audit_acute_occupancy generator function to record ASU occupancy at intervals</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_acute_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">acu_experiment</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+
+    <span class="c1"># Initialize the audit of rehab occupancy as a simpy process with an interval of 1 day</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_rehab_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="c1"># print info for debug</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> \
+        <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;warm_up, audit_interval&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">(</span><span class="mi">365</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_warm_up</span><span class="p">(</span><span class="n">warm_up</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test warm-up works correctly for ASU+REHAB ward occupancy</span>
+
+<span class="sd">    Expected result: </span>
+<span class="sd">        len(experiment.asu_occupancy) == experiment.results_collection_period </span>
+<span class="sd">        AND len(experiment.rehab_occupancy) == experiment.results_collection_period </span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    audit_interval: 1</span>
+<span class="sd">        duration of audit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># a default experiment</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">warm_up</span><span class="o">=</span><span class="n">warm_up</span><span class="p">)</span>
+
+    <span class="c1"># create models</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the ASU patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+
+    <span class="c1"># Initialize the pREHAB atient generators as simpy processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>  
+
+    <span class="c1"># optional results collection</span>
+    <span class="c1"># Start the audit_acute_occupancy generator function to record ASU occupancy at intervals</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_acute_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">warm_up</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">acu_experiment</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+
+    <span class="c1"># Initialize the audit of rehab occupancy as a simpy process with an interval of 1 day</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_rehab_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">warm_up</span><span class="p">,</span> <span class="n">audit_interval</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">))</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">warm_up</span> <span class="o">+</span> <span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="c1"># print info for debug</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">warm_up</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span> <span class="ow">and</span> \
+        <span class="nb">len</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">rehab_occupancy</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_single_run</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the the single_run function returns a dictionary of </span>
+<span class="sd">    results.</span>
+
+<span class="sd">    The results dictionary contains the following keys:</span>
+
+<span class="sd">    &#39;relative_freq_asu&#39;</span>
+<span class="sd">    &#39;prob_delay_asu&#39;</span>
+<span class="sd">    &#39;unique_vals_asu&#39;</span>
+<span class="sd">    &#39;relative_freq_rehab&#39;</span>
+<span class="sd">    &#39;prob_delay_rehab&#39;</span>
+<span class="sd">    &#39;unique_vals_rehab&#39;</span>
+
+<span class="sd">    Expected result: </span>
+<span class="sd">        len(run_results) == 6 and type(run_results) == dict</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># a default experiment</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
+
+    <span class="c1"># run the model</span>
+    <span class="n">run_results</span> <span class="o">=</span> <span class="n">single_run</span><span class="p">(</span><span class="n">default_experiment_params</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_results</span><span class="p">[</span><span class="s1">&#39;relative_freq_asu&#39;</span><span class="p">]</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">run_results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">run_results</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="random-number-set-test-asu-only">
+<h3>Random number set test (ASU only)<a class="headerlink" href="#random-number-set-test-asu-only" title="Link to this heading">#</a></h3>
+<p>Test that ASU results are repeated each time the same random number set is used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;random_number_set, print_output&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_random_number_set_1</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">,</span> <span class="n">print_output</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the the ASU model produces repeatable results. </span>
+
+<span class="sd">    Compares</span>
+<span class="sd">    min, max, mean of occupancy.</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: </span>
+<span class="sd">        set(run1) == set(run2)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        
+        <span class="c1"># Create the simulation environment</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+        
+        <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+        <span class="c1"># set ASU arr~ival rates</span>
+        <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">random_number_set</span><span class="o">=</span><span class="n">random_number_set</span><span class="p">)</span>
+    
+        <span class="c1"># modified iteration 19. </span>
+        <span class="c1"># add RU, but do not run the model</span>
+        <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">)</span>
+        
+        <span class="n">asu</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+        
+        <span class="c1"># Start the patient generators for each type of patient</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">asu</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">asu</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">asu</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">asu</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+    
+        <span class="c1"># optional results collection</span>
+        <span class="c1"># Start the audit_acute_occupancy generator function to record ASU occupancy at intervals</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">audit_acute_occupancy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">asu</span><span class="p">,</span> <span class="n">experiment</span><span class="p">))</span>
+        
+        <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">experiment</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">print_output</span><span class="p">:</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Run </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> results:&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">statistics</span><span class="o">.</span><span class="n">quantiles</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)])</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">),</span> 
+                            <span class="nb">max</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">),</span>
+                            <span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">))))</span>
+    
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;random_number_set, print_output&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_random_number_set_2</span><span class="p">(</span><span class="n">random_number_set</span><span class="p">,</span> <span class="n">print_output</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test the the single_run function returns a dictionary of </span>
+<span class="sd">    results.</span>
+
+<span class="sd">    The results dictionary contains the following keys:</span>
+
+<span class="sd">    &#39;relative_freq_asu&#39;</span>
+<span class="sd">    &#39;prob_delay_asu&#39;</span>
+<span class="sd">    &#39;unique_vals_asu&#39;</span>
+<span class="sd">    &#39;relative_freq_rehab&#39;</span>
+<span class="sd">    &#39;prob_delay_rehab&#39;</span>
+<span class="sd">    &#39;unique_vals_rehab&#39;</span>
+
+<span class="sd">    Expected result: </span>
+<span class="sd">        len(run_results) == 6 and type(run_results) == dict</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool: does the model pass the test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    
+        <span class="c1"># set a random number set for streams</span>
+        <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">random_number_set</span><span class="o">=</span><span class="n">random_number_set</span><span class="p">)</span>
+    
+        <span class="c1"># run the model</span>
+        <span class="n">run_results</span> <span class="o">=</span> <span class="n">single_run</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">print_output</span><span class="p">:</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Run </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> results:&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">statistics</span><span class="o">.</span><span class="n">quantiles</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)])</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">),</span> 
+                            <span class="nb">max</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">),</span>
+                            <span class="n">statistics</span><span class="o">.</span><span class="n">fmean</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">asu_occupancy</span><span class="p">))))</span>
+    
+    <span class="c1"># test</span>
+    <span class="k">assert</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lognormal-test">
+<h3>Lognormal test<a class="headerlink" href="#lognormal-test" title="Link to this heading">#</a></h3>
+<p>Test that lognomal function correctly calculates the moments of the underlying normal dist.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;mean, std&#39;</span><span class="p">,</span> <span class="p">[</span>
+                          <span class="p">(</span><span class="mf">128.79</span><span class="p">,</span> <span class="mf">267.51</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+                          <span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_lognormal_moments</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test that lognomal function correctly calculates </span>
+<span class="sd">    the moments of the underlying normal dist.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    ------</span>
+<span class="sd">    mean: float</span>
+<span class="sd">        mean of the lognormal distribution</span>
+
+<span class="sd">    std: float</span>
+<span class="sd">        st dev of the lognormal distribution</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+   
+    <span class="c1"># Lognormal class from sim-tools.</span>
+    <span class="n">expected_moments</span> <span class="o">=</span> <span class="n">Lognormal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">expected_moments</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">expected_moments</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span>
+    
+    <span class="c1">## llm code</span>
+    <span class="n">llm_mu</span><span class="p">,</span> <span class="n">llm_sigma</span> <span class="o">=</span> <span class="n">normal_moments_from_lognormal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">llm_mu</span><span class="p">,</span> <span class="n">llm_sigma</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="p">(</span><span class="n">llm_mu</span><span class="p">,</span> <span class="n">llm_sigma</span><span class="p">)</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">((</span><span class="n">expected_moments</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">expected_moments</span><span class="o">.</span><span class="n">sigma</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extreme-value-tests">
+<h3>Extreme value tests<a class="headerlink" href="#extreme-value-tests" title="Link to this heading">#</a></h3>
+<p>Extreme value tests are used pragmatically to block of routes/arrivals/activites in the simulation model and check the results.</p>
+<p>The most simple way to modify the model for these tests is to set parameters to <span class="math notranslate nohighlight">\(M\)</span> a very large number.</p>
+<p>We test</p>
+<ul class="simple">
+<li><p>Block all arrivals</p></li>
+<li><p>Acute LoS is infinite</p></li>
+<li><p>Block all but stroke-&gt;rehab patient arrivals in the ASU.</p></li>
+<li><p>Block all rehab arrivals apart from stroke.</p></li>
+<li><p>Block all external rehab arrivals</p></li>
+<li><p>Rehab LoS is infinite (Rehab model only)</p></li>
+<li><p>Block all arrivals to the ASU and Rehab models</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="mi">10_000_000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_2</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types have have their inter-arrival time is </span>
+<span class="sd">    set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: No patients arrive to the model.</span>
+<span class="sd">    </span>
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    int: the number of patients that arrived to the model.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+    <span class="c1"># set ASU arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">stroke_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">tia_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">neuro_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">other_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># modified iteration 19. </span>
+    <span class="c1"># add RU, but do not run the model</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 12</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_3</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types have have their mean length </span>
+<span class="sd">    of stay time set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: No patients depart the model </span>
+<span class="sd">    The number of arrivals = the occupancy of the model.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+    <span class="c1"># set ASU arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">rehab_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>  <span class="c1"># stroke-&gt;rehab</span>
+        <span class="n">esd_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>    <span class="c1"># stroke-&gt; ESD</span>
+        <span class="n">other_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># stroke-&gt;other</span>
+        <span class="n">tia_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>   <span class="c1"># TIA patients</span>
+        <span class="n">neuro_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># complex neuro patients</span>
+        <span class="n">other_dest_mean_2</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># other (med outlier) patients</span>
+        <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># modified iteration 19. </span>
+    <span class="c1"># add RU, but do not run the model</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 21</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">occupancy</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">==</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">occupancy</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_4</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types apart from stroke-rehab patients</span>
+<span class="sd">    have have their mean length </span>
+<span class="sd">    of stay time set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: Only stroke patients depart the</span>
+<span class="sd">    model.</span>
+<span class="sd">    (assessed crudely with patient_count &gt; occupancy),</span>
+<span class="sd">    and also from log - see manual testing notebook.</span>
+<span class="sd">    </span>
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+    <span class="c1"># set ASU arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">rehab_mean</span><span class="o">=</span><span class="mf">7.4</span><span class="p">,</span>  <span class="c1"># stroke-&gt;rehab</span>
+        <span class="n">esd_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>    <span class="c1"># stroke-&gt; ESD</span>
+        <span class="n">other_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># stroke-&gt;other</span>
+        <span class="n">tia_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span>   <span class="c1"># TIA patients</span>
+        <span class="n">neuro_dest_mean</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># complex neuro patients</span>
+        <span class="n">other_dest_mean_2</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="c1"># other (med outlier) patients</span>
+        <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># modified iteration 19. </span>
+    <span class="c1"># add RU, but do not run the model</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 21</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">occupancy</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">&gt;</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">occupancy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_5</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Complex Neuro, Other, have their rehab inter-arrival </span>
+<span class="sd">    time is set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: The only type of patient to arrive to the rehab model </span>
+<span class="sd">    is &quot;Stroke&quot;. This is verified by the patient counts variables in the model.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">    ------</span>
+<span class="sd">    This test will need to be modified when the hardcoded parameters</span>
+<span class="sd">    are migrated to the Experiment class. </span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    bool: rehab_unit.stroke_count == rehab_unit.patient_count</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># set Rehab arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">rehab_neuro_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_other_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># this will be need to be modified in subsequent iterations</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+        
+    <span class="c1"># Start the patient generators for each type of patient in the RehabilitationUnit instance</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+        
+    <span class="c1"># Run the simulation until the specified run length</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="mi">1825</span><span class="p">)</span>
+
+    <span class="c1"># print out stats collected</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_count</span> <span class="o">==</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_6</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types have their REHAB inter-arrival </span>
+<span class="sd">    time is set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: No patients arrive to the model</span>
+<span class="sd">    This is verified by the patient count variables in the model.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    bool:rehab_unit.patient_count == 0</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># set Rehab arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">rehab_stroke_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_neuro_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_other_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># this will be need to be modified in subsequent iterations</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient in the RehabilitationUnit instance</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+        
+    <span class="c1"># Run the simulation until the specified run length</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="mi">1825</span><span class="p">)</span>
+
+    <span class="c1"># print out stats collected</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_7</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types have have their mean length </span>
+<span class="sd">    of stay time in REHAB set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: No patients depart the rehab model </span>
+<span class="sd">    The occupancy of the model is equal to the no. patient arrivals</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">    -----</span>
+<span class="sd">    This test will also need to be modified when TIA treatment is added</span>
+<span class="sd">    and tested when working in connection with the ASU.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># Initialize the Acute Stroke Unit model#</span>
+    <span class="c1"># set ASU arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">rehab_stroke_esd_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span> <span class="c1"># stroke-&gt;ESD</span>
+        <span class="n">rehab_stroke_other_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span> <span class="c1"># stroke-&gt;other</span>
+        <span class="n">rehab_neuro_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span> <span class="c1"># complex neuro</span>
+        <span class="n">rehab_other_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span> <span class="c1"># other patients.</span>
+        <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>   
+    <span class="p">)</span>
+
+    <span class="c1"># this will be need to be modified in subsequent iterations</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    
+    <span class="c1"># Start the patient generators for each type of patient in the instance</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+        
+    <span class="c1"># Run the simulation until the specified run length</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># print out stats collected</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">==</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_ev_8</span><span class="p">(</span><span class="n">large_number</span><span class="o">=</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    All patient types have their AUS and REHAB inter-arrival </span>
+<span class="sd">    time is set to $M$ a very large number</span>
+<span class="sd">    </span>
+<span class="sd">    Expected result: No patients arrive to the model</span>
+<span class="sd">    This is verified by the patient count variables in the model.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">    -------</span>
+<span class="sd">    large_number: int</span>
+<span class="sd">        M a very large number </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    bool:rehab_unit.patient_count == 0 and asu.patient_count == 0</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create the simulation environment</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+    
+    <span class="c1"># set Rehab arrival rates</span>
+    <span class="n">default_experiment_params</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">stroke_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">tia_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">neuro_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">other_mean</span><span class="o">=</span><span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_stroke_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_neuro_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+        <span class="n">rehab_other_iat</span> <span class="o">=</span> <span class="n">large_number</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># create models</span>
+    <span class="n">rehab_unit</span> <span class="o">=</span> <span class="n">RehabilitationUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">)</span>
+    <span class="n">acu_experiment</span> <span class="o">=</span> <span class="n">AcuteStrokeUnit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">default_experiment_params</span><span class="p">,</span> <span class="n">rehab_unit</span><span class="p">)</span>
+    
+    <span class="c1"># Start the ASU patient generators for each type of patient</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">tia_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>
+
+    <span class="c1"># Initialize the pREHAB atient generators as simpy processes</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_patient_generator</span><span class="p">())</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_patient_generator</span><span class="p">())</span>  
+
+    <span class="c1"># no optional data collection needed in this test</span>
+    
+    <span class="c1"># Run the simulation until the specified run length in the Experiment parameters</span>
+    <span class="c1"># MODIFIED iter 21</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">default_experiment_params</span><span class="o">.</span><span class="n">results_collection_period</span><span class="p">)</span>
+
+    <span class="c1"># print out stats collected</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">stroke_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">neuro_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">other_count</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rehab_unit</span><span class="o">.</span><span class="n">occupancy</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">rehab_unit</span><span class="o">.</span><span class="n">patient_count</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">acu_experiment</span><span class="o">.</span><span class="n">patient_count</span><span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="run-all-automated-tests">
+<h2>Run all automated tests<a class="headerlink" href="#run-all-automated-tests" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ipytest</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;-vv&quot;</span><span class="p">,</span> <span class="s2">&quot;--no-header&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">======================================= test session starts ========================================</span>
+<span class=" -Color -Color-Bold">collecting ... </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>collected 28 items
+
+t_83aa59589fd04fcab6e98b3639a0378b.py::test_result_processing_1[values0-rel_expected0-cum_expected0] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED [  3%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_result_processing_2[relative0-cum0-p_delay_expected0] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED [  7%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_results_collection_1 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                      [ 10%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_results_collection_2 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                      [ 14%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_results_collection_system 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                 [ 17%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_warm_up[365-1] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                            [ 21%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_warm_up[1000-1] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                           [ 25%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_single_run 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                [ 28%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_1[0-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 32%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_1[1-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 35%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_1[2-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 39%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_1[101-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED            [ 42%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_1[42-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED             [ 46%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_2[0-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 50%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_2[1-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 53%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_2[2-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED              [ 57%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_2[101-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED            [ 60%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_random_number_set_2[42-False] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED             [ 64%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_lognormal_moments[128.79-267.51] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED          [ 67%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_lognormal_moments[50.0-2.0] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED               [ 71%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_lognormal_moments[10.5-1.0] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED               [ 75%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_2 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 78%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_3 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 82%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_4 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 85%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_5 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 89%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_6 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 92%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_7 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [ 96%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_83aa59589fd04fcab6e98b3639a0378b.py::test_ev_8 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">PASSED                                      [100%]</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">======================================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">28 passed</span><span class=" -Color -Color-Green"> in 3.06s ========================================</span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ExitCode.OK: 0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/03_stroke/01_model_stage1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_asu_rehab_model.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Full model code</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_manual_testing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Manual model testing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-code-imports">Model Code Imports</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-processing">Results processing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-collection-tests">Results collection tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-run-tests">Mode run tests</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-number-set-test-asu-only">Random number set test (ASU only)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lognormal-test">Lognormal test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extreme-value-tests">Extreme value tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-all-automated-tests">Run all automated tests</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

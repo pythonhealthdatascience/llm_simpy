@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Related literature &#8212; Using Generative AI to Reconstruct Healthcare Simulation Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/00_introduction/02_literature';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Procedure overview" href="../01_methods/01_overview.html" />
+    <link rel="prev" title="Primary aims" href="01_primary.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../front_page.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using Generative AI to Reconstruct Healthcare Simulation Models</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../front_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aims</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_primary.html">Primary aims</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Related literature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/01_overview.html">Procedure overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/02_recreation.html">Model recreation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/03_case_studies.html">Case study selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/04_design.html">Model design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/05_prompt_engineering.html">Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_methods/06_testing.html">Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Critical Care Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/01_ccu_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/01_ccu_model_stage2.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_CCU/03_comparison.html">Model output comparison</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/04_prompts_stage1.html">Prompts Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/00_iteration.html">Iteration 0: unplanned arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/01_iteration.html">Iteration 1: treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/02_iteration.html">Iteration 2: elective patients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/03_iteration.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/04_iteration.html">Iteration 4: warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/05_iteration.html">Iteration 5: cancelled electives (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/06_iteration.html">Iteration 6: bed utilisation (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/07_iteration.html">Iteration 7: waiting time (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/08_iteration.html">Iteration 8: bed occupancy (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/09_iteration.html">Iteration 9: patient count (KPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/10_iteration.html">Iteration 10: multiple reps (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/11_iteration.html">Iteration 11: multiple reps (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/12_iteration.html">Iteration 12: multiple reps (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/13_iteration.html">Iteration 13: multiple reps (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/14_iteration.html">Iteration 14: random number streams (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/15_iteration.html">Iteration 15: random number streams (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/16_iteration.html">Iteration 16: random number streams (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/17_iteration.html">Iteration 17: random number streams (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/18_iteration.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/19_iteration.html">Iteration 19: streamlit (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/20_iteration.html">Iteration 20: streamlit (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/21_iteration.html">Iteration 21: streamlit (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/04_prompts_stage1/22_iteration.html">Iteration 22: bug fix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_CCU/05_prompts_stage2.html">Prompts Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/00_iteration_s2.html">Iteration 0: unplanned arrivals - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/01_iteration_s2.html">Iteration 1: treatment - stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/02_iteration_s2.html">Iteration 2: elective patients - stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/03_iteration_s2.html">Iteration 3: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/04_iteration_s2.html">Iteration 4: warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/05_iteration_s2.html">Iteration 5: cancelled electives (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/06_iteration_s2.html">Iteration 6: bed utilisation (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/07_iteration_s2.html">Iteration 7: waiting time (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/08_iteration_s2.html">Iteration 8: bed occupancy (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/09_iteration_s2.html">Iteration 9: patient count (KPI) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/10_iteration_s2.html">Iteration 10: multiple reps (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/11_iteration_s2.html">Iteration 11: multiple reps (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/12_iteration_s2.html">Iteration 12: multiple reps (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/13_iteration_s2.html">Iteration 13: multiple reps stage 2 (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/14_iteration_s2.html">Iteration 14: random number streams (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/15_iteration_s2.html">Iteration 15: random number streams (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/16_iteration_s2.html">Iteration 16: random number streams (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/17_iteration_s2.html">Iteration 17: random number streams (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/18_iteration_s2.html">Iteration 18: batching experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/19_iteration_s2.html">Iteration 19: streamlit (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/20_iteration_s2.html">Iteration 20: streamlit (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_CCU/05_prompts_stage2/21_iteration_s2.html">Iteration 21: streamlit (3) stage 2</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Stroke + Rehab model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/00_stress_report.html">STRESS report</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/01_objectives.html">1. Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/02_logic.html">2. Model logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/03_data.html">3. Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/04_experimentation.html">4. Experimentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/05_implementation.html">5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/00_stress/06_code_access.html">6. Code access</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/01_model_stage1.html">Model Stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/02_auto_testing.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/04_run_script.html">Run script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/01_asu_rehab_model.html">Full model code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/02_auto_testing_stage2.html">Automated Model Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/03_manual_testing_stage2.html">Manual model testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/02_model_stage2/04_run_script_stage2.html">Run script</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_stroke/03_comparison.html">Model output comparison</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/03_iteration.html">Iteration 3: Sample length of stay on the ASU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/04_iteration.html">Iteration 4: Fix the sampling from lognormal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/05_iteration.html">Iteration 5: organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/06_iteration.html">Iteration 6: add in a count of occupancy.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/07_iteration.html">Iteration 7: a trace function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/08_iteration.html">Iteration 8: auditing ASU occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/09_iteration.html">Iteration 9: ASU occupancy plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/10_iteration.html">Iteration 10: Blocking probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/11_iteration.html">Iteration 11: Return missing code</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/12_iteration.html">Iteration 12: External Rehab arrivals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/13_iteration.html">Iteration 13: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/14_iteration.html">Iteration 14: Rehab treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/15_iteration.html">Iteration 15: Organise parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/16_iteration.html">Iteration 16: TIA rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/17_iteration.html">Iteration 17: Count occupancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/18_iteration.html">Iteration 18: Audit Rehab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/19_iteration.html">Iteration 19: Link models (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/20_iteration.html">Iteration 20: Link models (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/21_iteration.html">Iteration 21: Warm-up period</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/22_iteration.html">Iteration 22: Multiple Replications (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/23_iteration.html">Iteration 23: Multiple Replications (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/24_iteration.html">Iteration 24: Common Random Numbers (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/25_iteration.html">Iteration 25: Common Random Numbers (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/26_iteration.html">Iteration 26: Common Random Numbers (3)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/27_iteration.html">Iteration 27: Common Random Numbers (4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/28_iteration.html">Iteration 28: streamlit (1)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/29_iteration.html">Iteration 29: streamlit (2)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/30_iteration.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/04_prompts_stage1/31_iteration.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_stroke/05_asu_rehab_prompts_stage2.html">Prompts stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/01_iteration_s2.html">Iteration 1: Acute Stroke Unit Arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/02_iteration_s2.html">Iteration 2: Post stroke unit destination stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/03_iteration_s2.html">Iteration 3: Sample length of stay on the ASU stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/04_iteration_s2.html">Iteration 4: Check the sampling from lognormal distributions stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/05_iteration_s2.html">Iteration 5: organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/06_iteration_s2.html">Iteration 6: add in a count of occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/07_iteration_s2.html">Iteration 7: a trace function stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/08_iteration_s2.html">Iteration 8: auditing ASU occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/09_iteration_s2.html">Iteration 9: ASU occupancy plot stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/10_iteration_s2.html">Iteration 10: Blocking probability stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/11_iteration_s2.html">Iteration 11: Return missing code stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/12_iteration_s2.html">Iteration 12: External Rehab arrivals stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/13_iteration_s2.html">Iteration 13: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/14_iteration_s2.html">Iteration 14: Rehab treatment stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/15_iteration_s2.html">Iteration 15: Organise parameters stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/16_iteration_s2.html">Iteration 16: TIA rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/17_iteration_s2.html">Iteration 17: Count occupancy stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/18_iteration_s2.html">Iteration 18: Audit Rehab stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/19_iteration_s2.html">Iteration 19: Link models (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/20_iteration_s2.html">Iteration 20: Link models (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/21_iteration_s2.html">Iteration 21: Warm-up period stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/22_iteration_s2.html">Iteration 22: Multiple Replications (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/23_iteration_s2.html">Iteration 23: Multiple Replications (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/24_iteration_s2.html">Iteration 24: Common Random Numbers (1) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/25_iteration_s2.html">Iteration 25: Common Random Numbers (2) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/26_iteration_s2.html">Iteration 26: Common Random Numbers (3) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/27_iteration_s2.html">Iteration 27: Common Random Numbers (4) stage 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/28_iteration_s2.html">Iteration 28: streamlit (1) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/29_iteration_s2.html">Iteration 29: streamlit (2) stage 2</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/30_iteration_s2.html">Iteration 30: streamlit (3)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_stroke/05_prompts_stage2/31_iteration_s2.html">Iteration 30: Bug fix</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_results/01_CCU/00_model_comparison.html">CCU models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_results/02_stroke/00_model_comparison.html">Stroke+Rehab models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pythonhealthdatascience/llm_simpy/issues/new?title=Issue%20on%20page%20%2Fnotebooks/00_introduction/02_literature.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/00_introduction/02_literature.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Related literature</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-ai-llms-and-chatbot-ai">Generative AI, LLMs, and Chatbot AI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-novel-content-using-llms">Generating novel content using LLMs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-learning-and-model-scaling">Zero-shot learning and model scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-and-limitations-data-contamination-and-hallucination">Challenges and limitations: data contamination and hallucination</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomness-and-prompt-engineering">Randomness and prompt engineering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-chatbots-and-alignment">AI Chatbots and alignment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-ai-and-computer-simulation">Generative AI and computer simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-code-generation">Automated code generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceputal-modelling">Conceputal modelling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="related-literature">
+<h1>Related literature<a class="headerlink" href="#related-literature" title="Link to this heading">#</a></h1>
+<section id="generative-ai-llms-and-chatbot-ai">
+<h2>Generative AI, LLMs, and Chatbot AI<a class="headerlink" href="#generative-ai-llms-and-chatbot-ai" title="Link to this heading">#</a></h2>
+<p>Before reviewing relevant generative AI research for simulation, we briefly define generative AI and describe popular LLMs and human interaction with them via Chatbot AI tools.  <a class="reference internal" href="#key-concepts"><span class="std std-numref">Table 1</span></a> summarises the key concepts.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="key-concepts">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Key Concepts in Generative AI</span><a class="headerlink" href="#key-concepts" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
+<th class="head"><p>Summary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Generative AI</strong></p></td>
+<td><p>AI models designed to create novel digital content such as text, images, music, or code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Large Language Models (LLMs)</strong></p></td>
+<td><p>A subset of generative AI specializing in processing and generating human-like text.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Transformer Architecture</strong></p></td>
+<td><p>Neural network design using self-attention mechanisms to process and generate text.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Zero-Shot Learning</strong></p></td>
+<td><p>The ability of a model to perform tasks or make predictions on categories it hasn’t explicitly seen during training.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Model Scaling</strong></p></td>
+<td><p>The process of increasing model size (number of parameters) to improve performance and capabilities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Hallucination</strong></p></td>
+<td><p>The tendency of LLMs to generate plausible-sounding but factually incorrect or logically flawed content.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Data Contamination</strong></p></td>
+<td><p>The overlap of training data with test data, potentially leading to overestimated model performance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Temperature</strong></p></td>
+<td><p>A parameter controlling the randomness and creativity in LLM outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Prompt Engineering</strong></p></td>
+<td><p>The process of crafting effective inputs to elicit desired outputs from LLMs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Chatbot AI</strong></p></td>
+<td><p>AI-powered conversational interfaces that use LLMs to understand and generate human-like responses in real-time interactions.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Context Window</strong></p></td>
+<td><p>The amount of previous conversation an LLM can consider when generating responses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>RLHF (Reinforcement Learning from Human Feedback)</strong></p></td>
+<td><p>A technique used to fine-tune LLMs based on human ratings of model outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Alignment Problem</strong></p></td>
+<td><p>The challenge of ensuring AI outputs align with human values and intentions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="generating-novel-content-using-llms">
+<h3>Generating novel content using LLMs<a class="headerlink" href="#generating-novel-content-using-llms" title="Link to this heading">#</a></h3>
+<p>Traditional Machine Learning (ML) paradigms, such as classification, train a model to learn patterns within historical labelled data in order to classify new unseen instances. For example, classifying if a brain scan indicates Parkinson’s Disease or is healthy. Generative AI models are trained on unlabelled data, and rather than predict or classify their aim is to <em>create novel digital content</em> such as text, images, music, or code. For example the generation of a simple simulation model in Python code <span id="id1">[<a class="reference internal" href="#id49" title="Ilya Jackson, Maria Jesus Saenz, and Dmitry Ivanov. From natural language to simulations: applying ai to automate simulation modelling of logistics systems. International Journal of Production Research, 62(4):1434–1457, 2024. URL: https://doi.org/10.1080/00207543.2023.2276811, arXiv:https://doi.org/10.1080/00207543.2023.2276811, doi:10.1080/00207543.2023.2276811.">Jackson <em>et al.</em>, 2024</a>]</span>. LLMs are a subset of generative AI that specialize in natural language communication between humans and computers. The Generative Pre-trained Transformer (GPT) architecture, that underpins AI Chatbot tools like ChatGPT, is perhaps the most well known example of an LLM. GPT models are built on transformer-based neural network architectures, which use self-attention mechanisms to process and generate text <span id="id2">[<a class="reference internal" href="#id46" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. 2020. URL: https://arxiv.org/abs/2005.14165, arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>, <a class="reference internal" href="#id39" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. 2023. URL: https://arxiv.org/abs/1706.03762, arXiv:1706.03762.">Vaswani <em>et al.</em>, 2023</a>]</span>. In simple terms, GPT models are sequence predictors, trained to predict the next token (e.g. a word) in a sequence based on the context of previous tokens.</p>
+</section>
+<section id="zero-shot-learning-and-model-scaling">
+<h3>Zero-shot learning and model scaling<a class="headerlink" href="#zero-shot-learning-and-model-scaling" title="Link to this heading">#</a></h3>
+<p>A key advancement that distinguishes LLMs from traditional ML approaches is their capacity for zero-shot learning - the ability to perform tasks on previously unseen categories without explicit training <span id="id3">[<a class="reference internal" href="#id46" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. 2020. URL: https://arxiv.org/abs/2005.14165, arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span>. This capability enables LLMs to adapt to novel contexts and tasks, such as generating code based on user specifications, without additional training. The evolution of zero-shot learning has been closely tied to the increasing scale of language models. When GPT-1 was introduced in 2018, it contained 117 million parameters <span id="id4">[<a class="reference internal" href="#id47">Radford and Narasimhan, 2018</a>]</span>. Subsequent iterations have seen substantial growth in model size, with GPT-3 including 175 billion parameters <span id="id5">[<a class="reference internal" href="#id46" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. 2020. URL: https://arxiv.org/abs/2005.14165, arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span>. The exact specifications of GPT-4 have not been officially confirmed by OpenAI, but it is speculated to contain up to a trillion parameters <span id="id6">[<a class="reference internal" href="#id42" title="Philippe J. Giabbanelli. Gpt-based models meet simulation: how to efficiently use large-scale pre-trained language models across simulation tasks. In Proceedings of the Winter Simulation Conference, WSC '23, 2920–2931. IEEE Press, 2024.">Giabbanelli, 2024</a>]</span>.</p>
+</section>
+<section id="challenges-and-limitations-data-contamination-and-hallucination">
+<h3>Challenges and limitations: data contamination and hallucination<a class="headerlink" href="#challenges-and-limitations-data-contamination-and-hallucination" title="Link to this heading">#</a></h3>
+<p>Evaluating the zero-shot capabilities of LLMs is challenging due to the potential contamination of test data <span id="id7">[<a class="reference internal" href="#id38" title="Cheng Xu, Shuhao Guan, Derek Greene, and M-Tahar Kechadi. Benchmark data contamination of large language models: a survey. 2024. URL: https://arxiv.org/abs/2406.04244, arXiv:2406.04244.">Xu <em>et al.</em>, 2024</a>]</span>. The concept of contamination is analogous to leakage in traditional supervised machine learning <span id="id8">[<a class="reference internal" href="#id37">Kaufman <em>et al.</em>, 2012</a>]</span>, i.e., the training data overlaps with test data, accuracy measures are overstated, and the model is simply outputting data it has memorised in training. In the case of LLMs, it is difficult to determine if the training data overlaps with test data and careful evaluations must be designed.</p>
+<p>A key challenge in the use of LLMs is mitigating the risk of <em>hallucination</em>. LLMs are sequence prediction models that prioritize generating the most probable next word in a sequence, even if it is inaccurate. Simply put, given an input, a model will always produce an output, whether it is correct or not. As a result, an LLM may “hallucinate”: confidently present content that is factually incorrect, logically flawed, or at odds with the provided training data <span id="id9">[<a class="reference internal" href="#id35" title="Lei Huang, Weijiang Yu, Weitao Ma, Weihong Zhong, Zhangyin Feng, Haotian Wang, Qianglong Chen, Weihua Peng, Xiaocheng Feng, Bing Qin, and Ting Liu. A survey on hallucination in large language models: principles, taxonomy, challenges, and open questions. 2023. URL: https://arxiv.org/abs/2311.05232, arXiv:2311.05232.">Huang <em>et al.</em>, 2023</a>, <a class="reference internal" href="#id32" title="Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Ye Jin Bang, Andrea Madotto, and Pascale Fung. Survey of hallucination in natural language generation. ACM Comput. Surv., mar 2023. URL: https://doi.org/10.1145/3571730, doi:10.1145/3571730.">Ji <em>et al.</em>, 2023</a>]</span>.</p>
+<p>For example, an LLM might generate plausible-sounding but fabricated references in an academic essay or produce code that appears functional but contains logical errors. These errors may go unnoticed by users, and have consequences that vary from minor (e.g. wasted time from debugging nonsensical code) to severe (e.g. incorrect decisions based on the results of a flawed simulation model). The causes of hallucination are complex and varied. In coding, for instance, it might stem from pre-training the LLM on code that contains both obvious and subtle bugs.</p>
+<p>Hallucination is a major limitation of generative AI and hence is an active area of research <span id="id10">[<a class="reference internal" href="#id32" title="Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Ye Jin Bang, Andrea Madotto, and Pascale Fung. Survey of hallucination in natural language generation. ACM Comput. Surv., mar 2023. URL: https://doi.org/10.1145/3571730, doi:10.1145/3571730.">Ji <em>et al.</em>, 2023</a>]</span>. Promising approaches include variations on the theme of iterative retrieval of information <span id="id11">[<a class="reference internal" href="#id34" title="Tushar Khot, Harsh Trivedi, Matthew Finlayson, Yao Fu, Kyle Richardson, Peter Clark, and Ashish Sabharwal. Decomposed prompting: a modular approach for solving complex tasks. 2023. URL: https://arxiv.org/abs/2210.02406, arXiv:2210.02406.">Khot <em>et al.</em>, 2023</a>, <a class="reference internal" href="#id33" title="Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. React: synergizing reasoning and acting in language models. 2023. URL: https://arxiv.org/abs/2210.03629, arXiv:2210.03629.">Yao <em>et al.</em>, 2023</a>]</span>, that can involve refining outputs through multiple iterations each providing more context or fact checking. Another approach is to estimate model uncertainty statistics that can highlight LLM knowledge deficiencies <span id="id12">[<a class="reference internal" href="#id31" title="Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, and Yarin Gal. Detecting hallucinations in large language models using semantic entropy. Nature, 630(8017):625–630, 2024. URL: https://doi.org/10.1038/s41586-024-07421-0, doi:10.1038/s41586-024-07421-0.">Farquhar <em>et al.</em>, 2024</a>]</span>. For the immediate future it seems likely that hallucination will continue to be a major challenge for safe and productive use of generative AI with some arguing it cannot be fully eliminated <span id="id13">[<a class="reference internal" href="#id30" title="Ziwei Xu, Sanjay Jain, and Mohan Kankanhalli. Hallucination is inevitable: an innate limitation of large language models. 2024. URL: https://arxiv.org/abs/2401.11817, arXiv:2401.11817.">Xu <em>et al.</em>, 2024</a>]</span>. As such it is crucial to incorporate some form of fact-checking or testing mechanisms in any work that relies on content generated by an LLM.</p>
+</section>
+<section id="randomness-and-prompt-engineering">
+<h3>Randomness and prompt engineering<a class="headerlink" href="#randomness-and-prompt-engineering" title="Link to this heading">#</a></h3>
+<p>LLMs include an element of randomness in the generation of responses.  This randomness is typically controlled by a “temperature” parameter, where higher values increase variability in outputs (and increase hallucinations), while lower values produce more deterministic results. The use of randomness allows LLMs to generate diverse and creative solutions, but it also means that given the same prompt, an LLM may produce different code outputs across multiple runs. This variability poses challenges for reproducibility in contexts such as code generation for simulation models, where consistent and replicable results are important. By default Chatbot AI tools may not offer direct user control over temperature.</p>
+<p>Given the randomness used in generative AI, and a LLMs tendency to hallucinate, another important concept to define is the formation of prompts. This has given rise to the discipline of <em>prompt engineering</em>: the process of writing a prompt that results in the most effective LLM performance <span id="id14">[<a class="reference internal" href="#id44" title="Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig. Pre-train, prompt, and predict: a systematic survey of prompting methods in natural language processing. 2021. URL: https://arxiv.org/abs/2107.13586, arXiv:2107.13586.">Liu <em>et al.</em>, 2021</a>]</span>. This is is very recent area of research and there is not yet a consensus on the most effective approaches although various patterns are available <span id="id15">[<a class="reference internal" href="#id45" title="Jules White, Quchen Fu, Sam Hays, Michael Sandborn, Carlos Olea, Henry Gilbert, Ashraf Elnashar, Jesse Spencer-Smith, and Douglas C. Schmidt. A prompt pattern catalog to enhance prompt engineering with chatgpt. 2023. URL: https://arxiv.org/abs/2302.11382, arXiv:2302.11382.">White <em>et al.</em>, 2023</a>]</span>. For example, <em>1-shot</em> or <em>few-shot</em> learning where the prompt includes 1 or more simple examples of the task to clarify the context for the LLM.</p>
+</section>
+<section id="ai-chatbots-and-alignment">
+<h3>AI Chatbots and alignment<a class="headerlink" href="#ai-chatbots-and-alignment" title="Link to this heading">#</a></h3>
+<p>Since 2022, and at the time of writing, wide scale public access to LLMs has been made possible by general purpose Chatbot AI tools such as ChatGPT, <a class="reference external" href="http://Perplexity.AI">Perplexity.AI</a>, and Google’s Gemini. The underlying LLMs are trained on large amounts of curated web data (including code from sources such as StackOverFlow and GitHub) and fine tuned for chat based human interaction. In general, the tools have been show to understand and generate human-like text (and code) across a wide range of tasks. The overall architecture and training of these models is complex and is not fully known given the commercial nature of the companies that create and operate them (at huge cost). As a general rule, however, LLMs such as GPT-3.5 or 4 are not used as is, instead the models are combined with reinforcement learning from human feedback (RLHF) where a workforce reviews and rates responses output by the model <span id="id16">[<a class="reference internal" href="#id36" title="Stephen Casper, Xander Davies, Claudia Shi, Thomas Krendl Gilbert, Jérémy Scheurer, Javier Rando, Rachel Freedman, Tomasz Korbak, David Lindner, Pedro Freire, Tony Wang, Samuel Marks, Charbel-Raphaël Segerie, Micah Carroll, Andi Peng, Phillip Christoffersen, Mehul Damani, Stewart Slocum, Usman Anwar, Anand Siththaranjan, Max Nadeau, Eric J. Michaud, Jacob Pfau, Dmitrii Krasheninnikov, Xin Chen, Lauro Langosco, Peter Hase, Erdem Bıyık, Anca Dragan, David Krueger, Dorsa Sadigh, and Dylan Hadfield-Menell. Open problems and fundamental limitations of reinforcement learning from human feedback. 2023. URL: https://arxiv.org/abs/2307.15217, arXiv:2307.15217.">Casper <em>et al.</em>, 2023</a>]</span>. RLHF aims to help Chatbot AI’s tools align responses with the human values and the intentions of their prompts (the so called alignment problem). This process attempts to filter out inappropriate or offensive content while enhancing the models’ ability to provide a relevant response.</p>
+<p>Human interaction with these models is via a user-friendly chat interface. The underpinning LLM in use varies by free and paid tiers (e.g. at the time of writing ChatGPT offers a free GPT-3.5 or paid GPT-4 tier). While the LLM architectures have no memory of prior prompts a chatbot AI tool has a context window allowing a user to interact <em>iteratively</em> with an LLM within a larger history/context of prompts and responses. There are size restrictions on these context windows that varies with each chatbot AI tool and underlying model.</p>
+</section>
+</section>
+<section id="generative-ai-and-computer-simulation">
+<h2>Generative AI and computer simulation<a class="headerlink" href="#generative-ai-and-computer-simulation" title="Link to this heading">#</a></h2>
+</section>
+<section id="automated-code-generation">
+<h2>Automated code generation<a class="headerlink" href="#automated-code-generation" title="Link to this heading">#</a></h2>
+<p>Recent research has begun to investigate hybrid modelling where generative AI is combined with computer simulation. Several pioneering studies have examined small scale applications and conceptual frameworks <span id="id17">[<a class="reference internal" href="#id42" title="Philippe J. Giabbanelli. Gpt-based models meet simulation: how to efficiently use large-scale pre-trained language models across simulation tasks. In Proceedings of the Winter Simulation Conference, WSC '23, 2920–2931. IEEE Press, 2024.">Giabbanelli, 2024</a>, <a class="reference internal" href="#id48" title="Ali Akhavan and Mohammad S. Jalali. Generative ai and simulation modeling: how should you (not) use large language models like chatgpt. System Dynamics Review, n/a(n/a):, 2024. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/sdr.1773, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/sdr.1773, doi:https://doi.org/10.1002/sdr.1773.">Akhavan and Jalali, 2024</a>, <a class="reference internal" href="#id49" title="Ilya Jackson, Maria Jesus Saenz, and Dmitry Ivanov. From natural language to simulations: applying ai to automate simulation modelling of logistics systems. International Journal of Production Research, 62(4):1434–1457, 2024. URL: https://doi.org/10.1080/00207543.2023.2276811, arXiv:https://doi.org/10.1080/00207543.2023.2276811, doi:10.1080/00207543.2023.2276811.">Jackson <em>et al.</em>, 2024</a>, <a class="reference internal" href="#id40" title="Corne du Plooy and Rudolph Oosthuizen. AI USEFULNESS IN SYSTEMS MODELLING AND SIMULATION: GPT-4 APPLICATION. The South African Journal of Industrial Engineering, 34(3):286–303, November 2023. URL: https://sajie.journals.ac.za/pub/article/view/2944 (visited on 2023-12-26), doi:10.7166/34-3-2944.">Plooy and Oosthuizen, 2023</a>, <a class="reference internal" href="#id41" title="Anish Shrestha, Kyle Mielke, Tuong Anh Nguyen, and Philippe J. Giabbanelli. Automatically explaining a model: using deep neural networks to generate text from causal maps. In 2022 Winter Simulation Conference (WSC), 2629-2640. 2022. doi:10.1109/WSC57314.2022.10015446.">Shrestha <em>et al.</em>, 2022</a>]</span>. These studies have spanned discrete-event simulation, system dynamics, conceptual modelling, and model documentation and demonstrate the broad potential of generative AI to computer simulation.</p>
+<p><span id="id18">Jackson <em>et al.</em> [<a class="reference internal" href="#id49" title="Ilya Jackson, Maria Jesus Saenz, and Dmitry Ivanov. From natural language to simulations: applying ai to automate simulation modelling of logistics systems. International Journal of Production Research, 62(4):1434–1457, 2024. URL: https://doi.org/10.1080/00207543.2023.2276811, arXiv:https://doi.org/10.1080/00207543.2023.2276811, doi:10.1080/00207543.2023.2276811.">2024</a>]</span> explored the potential of using GPT-based models to produce simulation models for inventory and process control in logistics systems. Their research focused on the concept of an “NLP shortcut,” which aims to bypass traditional conceptual modelling and coding steps for discrete-event simulation. The study used the OpenAI Davinci Codex (a code based API to the GPT-3 model) to successfully generate simple Python based simulations of logistics systems (e.g. a single-product inventory-control system). The LLM outputs consists of 20-30 lines of Python code implementing simple DES model logic and code to plot model output.  Use of the Codex is incorporated into a framework that included dynamic execution of the generated code and review by a human expert.</p>
+<p><span id="id19">Akhavan and Jalali [<a class="reference internal" href="#id48" title="Ali Akhavan and Mohammad S. Jalali. Generative ai and simulation modeling: how should you (not) use large language models like chatgpt. System Dynamics Review, n/a(n/a):, 2024. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/sdr.1773, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/sdr.1773, doi:https://doi.org/10.1002/sdr.1773.">2024</a>]</span> and <span id="id20">Plooy and Oosthuizen [<a class="reference internal" href="#id40" title="Corne du Plooy and Rudolph Oosthuizen. AI USEFULNESS IN SYSTEMS MODELLING AND SIMULATION: GPT-4 APPLICATION. The South African Journal of Industrial Engineering, 34(3):286–303, November 2023. URL: https://sajie.journals.ac.za/pub/article/view/2944 (visited on 2023-12-26), doi:10.7166/34-3-2944.">2023</a>]</span> investigated the application of ChatGPT in System Dynamics modelling. Both studies take the position that generative AI should not replace a modeller but rather serve as a tool to facilitate the research process, review content, and enhance idea implementation in simulation modelling. <span id="id21">Akhavan and Jalali [<a class="reference internal" href="#id48" title="Ali Akhavan and Mohammad S. Jalali. Generative ai and simulation modeling: how should you (not) use large language models like chatgpt. System Dynamics Review, n/a(n/a):, 2024. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/sdr.1773, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/sdr.1773, doi:https://doi.org/10.1002/sdr.1773.">2024</a>]</span> develop a simple System Dynamics model of Covid-19’s impact on economic growth. Their approach first prompts ChatGPT (GPT-4) in an iterative manner to support conceptual modelling and decisions about methods. The authors <strong>manually code</strong> a small Python model (40 lines of code) and provide this along with prompts to ChatGPT to generation suggestions for code optimisations, additional plotting code, and improvements to model documentation.</p>
+<p><span id="id22">Plooy and Oosthuizen [<a class="reference internal" href="#id40" title="Corne du Plooy and Rudolph Oosthuizen. AI USEFULNESS IN SYSTEMS MODELLING AND SIMULATION: GPT-4 APPLICATION. The South African Journal of Industrial Engineering, 34(3):286–303, November 2023. URL: https://sajie.journals.ac.za/pub/article/view/2944 (visited on 2023-12-26), doi:10.7166/34-3-2944.">2023</a>]</span> focussed on using ChatGPT (GPT-4) to generate Python code implementing a simple System Dynamics model of a resource bound population in equilibrium. They outline a six step approach to iterative generate a model with ChatGPTs help. Early steps focus on textual information describing equations for stocks and flows that are first manually implemented in the commercial simulation package <a class="reference external" href="https://iseesystems.com/">iSee Stella Architect</a>. The final step converts the generated equations into 32 lines of Python code with outputs verified by comparing the manually created and generated models.</p>
+<section id="conceputal-modelling">
+<h3>Conceputal modelling<a class="headerlink" href="#conceputal-modelling" title="Link to this heading">#</a></h3>
+<p><span id="id23">Giabbanelli [<a class="reference internal" href="#id42" title="Philippe J. Giabbanelli. Gpt-based models meet simulation: how to efficiently use large-scale pre-trained language models across simulation tasks. In Proceedings of the Winter Simulation Conference, WSC '23, 2920–2931. IEEE Press, 2024.">2024</a>]</span> is a conceptual study that hypothesised about the potential of LLM application across common simulation tasks. The study focused on four key areas: structuring conceptual models, summarizing simulation outputs, improving accessibility to simulation platforms, and explaining simulation errors with guidance for resolution. For example, the potential to use the emerging capability of LLMs to convert images to text to provide automated explanations of charts of simulation output could benefit both non-experts and people with visual impaired.</p>
+<p><span id="id24">Shrestha <em>et al.</em> [<a class="reference internal" href="#id41" title="Anish Shrestha, Kyle Mielke, Tuong Anh Nguyen, and Philippe J. Giabbanelli. Automatically explaining a model: using deep neural networks to generate text from causal maps. In 2022 Winter Simulation Conference (WSC), 2629-2640. 2022. doi:10.1109/WSC57314.2022.10015446.">2022</a>]</span> proposed a process to automatically explain simulation models by generative AI to create version a simplified conceptual model text from more complex causal maps. Their approach involved decomposing large conceptual models into smaller parts and then performing Natural Language Generation (NLG) using a fine-tuned GPT-3 model.</p>
+</section>
+<section id="conclusions">
+<h3>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading">#</a></h3>
+<p>Despite the limited body of research, these initial investigations suggest a potential role for generative AI in the future of computer simulation.</p>
+<ul class="simple">
+<li><p>Role of modeller still vital in planning and verification:</p></li>
+<li><p>Iterative role</p></li>
+<li><p>Not explored issues with hallucination</p></li>
+<li><p>Not explore more complex models.</p></li>
+</ul>
+<p>Further research is needed to explore the integration of generative AI across a wider range of simulation paradigms and to develop robust frameworks for human-AI collaboration in the simulation development process.</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id25">
+<div role="list" class="citation-list">
+<div class="citation" id="id48" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id17">1</a>,<a role="doc-backlink" href="#id19">2</a>,<a role="doc-backlink" href="#id21">3</a>)</span>
+<p>Ali Akhavan and Mohammad S. Jalali. Generative ai and simulation modeling: how should you (not) use large language models like chatgpt. <em>System Dynamics Review</em>, n/a(n/a):, 2024. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/sdr.1773">https://onlinelibrary.wiley.com/doi/abs/10.1002/sdr.1773</a>, <a class="reference external" href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/sdr.1773">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/sdr.1773</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1002/sdr.1773">doi:https://doi.org/10.1002/sdr.1773</a>.</p>
+</div>
+<div class="citation" id="id46" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
+<p>Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. 2020. URL: <a class="reference external" href="https://arxiv.org/abs/2005.14165">https://arxiv.org/abs/2005.14165</a>, <a class="reference external" href="https://arxiv.org/abs/2005.14165">arXiv:2005.14165</a>.</p>
+</div>
+<div class="citation" id="id36" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">3</a><span class="fn-bracket">]</span></span>
+<p>Stephen Casper, Xander Davies, Claudia Shi, Thomas Krendl Gilbert, Jérémy Scheurer, Javier Rando, Rachel Freedman, Tomasz Korbak, David Lindner, Pedro Freire, Tony Wang, Samuel Marks, Charbel-Raphaël Segerie, Micah Carroll, Andi Peng, Phillip Christoffersen, Mehul Damani, Stewart Slocum, Usman Anwar, Anand Siththaranjan, Max Nadeau, Eric J. Michaud, Jacob Pfau, Dmitrii Krasheninnikov, Xin Chen, Lauro Langosco, Peter Hase, Erdem Bıyık, Anca Dragan, David Krueger, Dorsa Sadigh, and Dylan Hadfield-Menell. Open problems and fundamental limitations of reinforcement learning from human feedback. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2307.15217">https://arxiv.org/abs/2307.15217</a>, <a class="reference external" href="https://arxiv.org/abs/2307.15217">arXiv:2307.15217</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">4</a><span class="fn-bracket">]</span></span>
+<p>Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, and Yarin Gal. Detecting hallucinations in large language models using semantic entropy. <em>Nature</em>, 630(8017):625–630, 2024. URL: <a class="reference external" href="https://doi.org/10.1038/s41586-024-07421-0">https://doi.org/10.1038/s41586-024-07421-0</a>, <a class="reference external" href="https://doi.org/10.1038/s41586-024-07421-0">doi:10.1038/s41586-024-07421-0</a>.</p>
+</div>
+<div class="citation" id="id42" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id17">2</a>,<a role="doc-backlink" href="#id23">3</a>)</span>
+<p>Philippe J. Giabbanelli. Gpt-based models meet simulation: how to efficiently use large-scale pre-trained language models across simulation tasks. In <em>Proceedings of the Winter Simulation Conference</em>, WSC '23, 2920–2931. IEEE Press, 2024.</p>
+</div>
+<div class="citation" id="id35" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">6</a><span class="fn-bracket">]</span></span>
+<p>Lei Huang, Weijiang Yu, Weitao Ma, Weihong Zhong, Zhangyin Feng, Haotian Wang, Qianglong Chen, Weihua Peng, Xiaocheng Feng, Bing Qin, and Ting Liu. A survey on hallucination in large language models: principles, taxonomy, challenges, and open questions. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2311.05232">https://arxiv.org/abs/2311.05232</a>, <a class="reference external" href="https://arxiv.org/abs/2311.05232">arXiv:2311.05232</a>.</p>
+</div>
+<div class="citation" id="id49" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id17">2</a>,<a role="doc-backlink" href="#id18">3</a>)</span>
+<p>Ilya Jackson, Maria Jesus Saenz, and Dmitry Ivanov. From natural language to simulations: applying ai to automate simulation modelling of logistics systems. <em>International Journal of Production Research</em>, 62(4):1434–1457, 2024. URL: <a class="reference external" href="https://doi.org/10.1080/00207543.2023.2276811">https://doi.org/10.1080/00207543.2023.2276811</a>, <a class="reference external" href="https://arxiv.org/abs/https://doi.org/10.1080/00207543.2023.2276811">arXiv:https://doi.org/10.1080/00207543.2023.2276811</a>, <a class="reference external" href="https://doi.org/10.1080/00207543.2023.2276811">doi:10.1080/00207543.2023.2276811</a>.</p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id9">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
+<p>Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Ye Jin Bang, Andrea Madotto, and Pascale Fung. Survey of hallucination in natural language generation. <em>ACM Comput. Surv.</em>, mar 2023. URL: <a class="reference external" href="https://doi.org/10.1145/3571730">https://doi.org/10.1145/3571730</a>, <a class="reference external" href="https://doi.org/10.1145/3571730">doi:10.1145/3571730</a>.</p>
+</div>
+<div class="citation" id="id37" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">9</a><span class="fn-bracket">]</span></span>
+<p><strong>missing journal in leakage_reference</strong></p>
+</div>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">10</a><span class="fn-bracket">]</span></span>
+<p>Tushar Khot, Harsh Trivedi, Matthew Finlayson, Yao Fu, Kyle Richardson, Peter Clark, and Ashish Sabharwal. Decomposed prompting: a modular approach for solving complex tasks. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2210.02406">https://arxiv.org/abs/2210.02406</a>, <a class="reference external" href="https://arxiv.org/abs/2210.02406">arXiv:2210.02406</a>.</p>
+</div>
+<div class="citation" id="id44" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">11</a><span class="fn-bracket">]</span></span>
+<p>Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig. Pre-train, prompt, and predict: a systematic survey of prompting methods in natural language processing. 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2107.13586">https://arxiv.org/abs/2107.13586</a>, <a class="reference external" href="https://arxiv.org/abs/2107.13586">arXiv:2107.13586</a>.</p>
+</div>
+<div class="citation" id="id40" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id17">1</a>,<a role="doc-backlink" href="#id20">2</a>,<a role="doc-backlink" href="#id22">3</a>)</span>
+<p>Corne du Plooy and Rudolph Oosthuizen. AI USEFULNESS IN SYSTEMS MODELLING AND SIMULATION: GPT-4 APPLICATION. <em>The South African Journal of Industrial Engineering</em>, 34(3):286–303, November 2023. URL: <a class="reference external" href="https://sajie.journals.ac.za/pub/article/view/2944">https://sajie.journals.ac.za/pub/article/view/2944</a> (visited on 2023-12-26), <a class="reference external" href="https://doi.org/10.7166/34-3-2944">doi:10.7166/34-3-2944</a>.</p>
+</div>
+<div class="citation" id="id47" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">13</a><span class="fn-bracket">]</span></span>
+<p><strong>missing booktitle in Radford2018ImprovingLU</strong></p>
+</div>
+<div class="citation" id="id41" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id17">1</a>,<a role="doc-backlink" href="#id24">2</a>)</span>
+<p>Anish Shrestha, Kyle Mielke, Tuong Anh Nguyen, and Philippe J. Giabbanelli. Automatically explaining a model: using deep neural networks to generate text from causal maps. In <em>2022 Winter Simulation Conference (WSC)</em>, 2629–2640. 2022. <a class="reference external" href="https://doi.org/10.1109/WSC57314.2022.10015446">doi:10.1109/WSC57314.2022.10015446</a>.</p>
+</div>
+<div class="citation" id="id39" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">15</a><span class="fn-bracket">]</span></span>
+<p>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>, <a class="reference external" href="https://arxiv.org/abs/1706.03762">arXiv:1706.03762</a>.</p>
+</div>
+<div class="citation" id="id45" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">16</a><span class="fn-bracket">]</span></span>
+<p>Jules White, Quchen Fu, Sam Hays, Michael Sandborn, Carlos Olea, Henry Gilbert, Ashraf Elnashar, Jesse Spencer-Smith, and Douglas C. Schmidt. A prompt pattern catalog to enhance prompt engineering with chatgpt. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2302.11382">https://arxiv.org/abs/2302.11382</a>, <a class="reference external" href="https://arxiv.org/abs/2302.11382">arXiv:2302.11382</a>.</p>
+</div>
+<div class="citation" id="id38" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">17</a><span class="fn-bracket">]</span></span>
+<p>Cheng Xu, Shuhao Guan, Derek Greene, and M-Tahar Kechadi. Benchmark data contamination of large language models: a survey. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2406.04244">https://arxiv.org/abs/2406.04244</a>, <a class="reference external" href="https://arxiv.org/abs/2406.04244">arXiv:2406.04244</a>.</p>
+</div>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">18</a><span class="fn-bracket">]</span></span>
+<p>Ziwei Xu, Sanjay Jain, and Mohan Kankanhalli. Hallucination is inevitable: an innate limitation of large language models. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2401.11817">https://arxiv.org/abs/2401.11817</a>, <a class="reference external" href="https://arxiv.org/abs/2401.11817">arXiv:2401.11817</a>.</p>
+</div>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">19</a><span class="fn-bracket">]</span></span>
+<p>Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. React: synergizing reasoning and acting in language models. 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a>, <a class="reference external" href="https://arxiv.org/abs/2210.03629">arXiv:2210.03629</a>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "pythonhealthdatascience/llm_simpy",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/00_introduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_primary.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Primary aims</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../01_methods/01_overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Procedure overview</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-ai-llms-and-chatbot-ai">Generative AI, LLMs, and Chatbot AI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-novel-content-using-llms">Generating novel content using LLMs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-learning-and-model-scaling">Zero-shot learning and model scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-and-limitations-data-contamination-and-hallucination">Challenges and limitations: data contamination and hallucination</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomness-and-prompt-engineering">Randomness and prompt engineering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-chatbots-and-alignment">AI Chatbots and alignment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-ai-and-computer-simulation">Generative AI and computer simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-code-generation">Automated code generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceputal-modelling">Conceputal modelling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Monks
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
