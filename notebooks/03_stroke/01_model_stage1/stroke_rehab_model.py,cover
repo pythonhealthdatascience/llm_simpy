@@ -248,9 +248,9 @@
 >         self.occupancy += 1  # Increment occupancy when a patient arrives
 >         yield self.env.timeout(length_of_stay)
 >         if self.experiment.trace:
-!             print(
-!                 f"Stroke patient {self.patient_count} finished treatment at {self.env.now} days"
-!             )
+>             print(
+>                 f"Stroke patient {self.patient_count} finished treatment at {self.env.now} days"
+>             )
 >         self.occupancy -= 1  # Decrement occupancy at the end of treatment
 >         if post_asu_destination == "Rehab":
 >             self.rehab_unit.occupancy += 1
@@ -265,9 +265,9 @@
 >         self.occupancy += 1  # Increment occupancy when a patient arrives
 >         yield self.env.timeout(length_of_stay)
 >         if self.experiment.trace:
-!             print(
-!                 f"TIA patient {self.patient_count} finished treatment at {self.env.now} days"
-!             )
+>             print(
+>                 f"TIA patient {self.patient_count} finished treatment at {self.env.now} days"
+>             )
 >         self.occupancy -= 1  # Decrement occupancy at the end of treatment
 >         if post_asu_destination == "Rehab":
 >             self.rehab_unit.occupancy += 1
@@ -282,9 +282,9 @@
 >         self.occupancy += 1  # Increment occupancy when a patient arrives
 >         yield self.env.timeout(length_of_stay)
 >         if self.experiment.trace:
-!             print(
-!                 f"Complex Neuro patient {self.patient_count} finished treatment at {self.env.now} days"
-!             )
+>             print(
+>                 f"Complex Neuro patient {self.patient_count} finished treatment at {self.env.now} days"
+>             )
 >         self.occupancy -= 1  # Decrement occupancy at the end of treatment
 >         if post_asu_destination == "Rehab":
 >             self.rehab_unit.occupancy += 1
@@ -299,9 +299,9 @@
 >         self.occupancy += 1  # Increment occupancy when a patient arrives
 >         yield self.env.timeout(length_of_stay)
 >         if self.experiment.trace:
-!             print(
-!                 f"Other patient {self.patient_count} finished treatment at {self.env.now} days"
-!             )
+>             print(
+>                 f"Other patient {self.patient_count} finished treatment at {self.env.now} days"
+>             )
 >         self.occupancy -= 1  # Decrement occupancy at the end of treatment
 >         if post_asu_destination == "Rehab":
 >             self.rehab_unit.occupancy += 1
@@ -318,9 +318,9 @@
 >                 ["Rehab", "ESD", "Other"], p=[0.24, 0.13, 0.63]
 >             )
 >             if self.experiment.trace:
-!                 print(
-!                     f"Stroke patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
-!                 )
+>                 print(
+>                     f"Stroke patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
+>                 )
 >             self.env.process(self.stroke_acute_treatment(post_asu_destination))
   
 !     def tia_patient_generator(self):
@@ -334,9 +334,9 @@
 >                 ["Rehab", "ESD", "Other"], p=[0.01, 0.01, 0.98]
 >             )
 >             if self.experiment.trace:
-!                 print(
-!                     f"TIA patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
-!                 )
+>                 print(
+>                     f"TIA patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
+>                 )
 >             self.env.process(self.tia_acute_treatment(post_asu_destination))
   
 !     def neuro_patient_generator(self):
@@ -350,9 +350,9 @@
 >                 ["Rehab", "ESD", "Other"], p=[0.11, 0.05, 0.84]
 >             )
 >             if self.experiment.trace:
-!                 print(
-!                     f"Complex Neuro patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
-!                 )
+>                 print(
+>                     f"Complex Neuro patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
+>                 )
 >             self.env.process(self.neuro_acute_treatment(post_asu_destination))
   
 !     def other_patient_generator(self):
@@ -366,9 +366,9 @@
 >                 ["Rehab", "ESD", "Other"], p=[0.05, 0.10, 0.85]
 >             )
 >             if self.experiment.trace:
-!                 print(
-!                     f"Other patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
-!                 )
+>                 print(
+>                     f"Other patient {self.patient_count} arrived at {self.env.now} days and will go to {post_asu_destination}"
+>                 )
 >             self.env.process(self.other_acute_treatment(post_asu_destination))
   
   
@@ -399,9 +399,9 @@
 >             self.patient_count += 1
 >             self.stroke_count += 1
 >             if self.experiment.trace:
-!                 print(
-!                     f"Stroke patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
-!                 )
+>                 print(
+>                     f"Stroke patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
+>                 )
 >             self.occupancy += 1
 >             self.env.process(self.stroke_rehab_treatment())
   
@@ -414,9 +414,9 @@
 >             self.patient_count += 1
 >             self.neuro_count += 1
 >             if self.experiment.trace:
-!                 print(
-!                     f"Complex Neurological patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
-!                 )
+>                 print(
+>                     f"Complex Neurological patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
+>                 )
 >             self.occupancy += 1
 >             self.env.process(self.neuro_rehab_treatment())
   
@@ -429,9 +429,9 @@
 >             self.patient_count += 1
 >             self.other_count += 1
 >             if self.experiment.trace:
-!                 print(
-!                     f"Other patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
-!                 )
+>                 print(
+>                     f"Other patient {self.patient_count} arrived at Rehabilitation Unit at {self.env.now} days"
+>                 )
 >             self.occupancy += 1
 >             self.env.process(self.other_rehab_treatment())
   
@@ -444,9 +444,9 @@
 >         yield self.env.timeout(length_of_stay)
   
 >         if self.experiment.trace:
-!             print(
-!                 f"TIA patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
-!             )
+>             print(
+>                 f"TIA patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
+>             )
   
 >         self.occupancy -= 1
   
@@ -470,9 +470,9 @@
 >         yield self.env.timeout(length_of_stay)
   
 >         if self.experiment.trace:
-!             print(
-!                 f"Stroke patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
-!             )
+>             print(
+>                 f"Stroke patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
+>             )
   
 >         self.occupancy -= 1
   
@@ -489,9 +489,9 @@
 >         yield self.env.timeout(length_of_stay)
   
 >         if self.experiment.trace:
-!             print(
-!                 f"Complex Neurological patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
-!             )
+>             print(
+>                 f"Complex Neurological patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
+>             )
   
 >         self.occupancy -= 1
   
@@ -508,9 +508,9 @@
 >         yield self.env.timeout(length_of_stay)
   
 >         if self.experiment.trace:
-!             print(
-!                 f"Other patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
-!             )
+>             print(
+>                 f"Other patient {self.patient_count} finished treatment at Rehabilitation Unit at {self.env.now} days"
+>             )
   
 >         self.occupancy -= 1
   
@@ -558,20 +558,20 @@
 !     Returns:
 !     - matplotlib.figure.Figure, matplotlib.axes.Axes: The figure and axes of the plot.
 !     """
-!     fig, ax = plt.subplots(figsize=fig_size)
-!     ax.bar(unique_values, relative_frequency, align='center', alpha=0.7)
+>     fig, ax = plt.subplots(figsize=fig_size)
+>     ax.bar(unique_values, relative_frequency, align='center', alpha=0.7)
       
       # Dynamically set x-axis ticks based on the range of unique values
-!     max_value = max(unique_values)
-!     tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
-!     ax.set_xticks(np.arange(0, max_value + 1, tick_step))
+>     max_value = max(unique_values)
+>     tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
+>     ax.set_xticks(np.arange(0, max_value + 1, tick_step))
       
-!     ax.set_xlabel(x_label)
-!     ax.set_ylabel('Relative Frequency')
-!     plt.grid(axis='y', linestyle='--', alpha=0.6)
-!     plt.title('Occupancy Relative Frequency Distribution')
-!     plt.tight_layout()
-!     return fig, ax
+>     ax.set_xlabel(x_label)
+>     ax.set_ylabel('Relative Frequency')
+>     plt.grid(axis='y', linestyle='--', alpha=0.6)
+>     plt.title('Occupancy Relative Frequency Distribution')
+>     plt.tight_layout()
+>     return fig, ax
   
   
 ! def calculate_prob_delay(relative_frequencies, cumulative_frequencies):
@@ -580,20 +580,20 @@
   
   
 ! def prob_delay_plot(prob_delay, unique_values, x_label="No. acute beds available", fig_size=(12, 5)):
-!     fig, ax = plt.subplots(figsize=fig_size)
-!     ax.step(unique_values, prob_delay, where='post')
+>     fig, ax = plt.subplots(figsize=fig_size)
+>     ax.step(unique_values, prob_delay, where='post')
       
       # Dynamically set x-axis ticks based on the range of unique values
-!     max_value = max(unique_values)
-!     tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
-!     ax.set_xticks(np.arange(0, max_value + 1, tick_step))
+>     max_value = max(unique_values)
+>     tick_step = max(1, max_value // 10)  # Ensure at least 10 ticks, but not more than the number of unique values
+>     ax.set_xticks(np.arange(0, max_value + 1, tick_step))
       
-!     ax.set_xlabel(x_label)
-!     ax.set_ylabel('Probability of Delay')
-!     plt.grid(axis='y', linestyle='--', alpha=0.6)
-!     plt.title('Probability of Delay Distribution')
-!     plt.tight_layout()
-!     return fig, ax
+>     ax.set_xlabel(x_label)
+>     ax.set_ylabel('Probability of Delay')
+>     plt.grid(axis='y', linestyle='--', alpha=0.6)
+>     plt.title('Probability of Delay Distribution')
+>     plt.tight_layout()
+>     return fig, ax
   
 ! def single_run(experiment):
 !     """Run a single simulation with the provided experiment configuration.
@@ -674,12 +674,12 @@
 !     frequencies and probability of delay for both the Acute Stroke Unit
 !     and the Rehabilitation Unit from a single simulation run.
 !     """
-!     rep_results = []
-!     for replication_number in range(num_replications):
-!         experiment_instance.setup_streams(replication_number)
+>     rep_results = []
+>     for replication_number in range(num_replications):
+>         experiment_instance.setup_streams(replication_number)
   
-!         rep_results.append(single_run(experiment_instance))
-!     return rep_results
+>         rep_results.append(single_run(experiment_instance))
+>     return rep_results
   
   
 ! def combine_pdelay_results(rep_results):
@@ -690,40 +690,40 @@
 !     frequencies and probability of delay for both the Acute Stroke Unit and
 !     the Rehabilitation Unit from a single simulation run.
 !     """
-!     result_list_asu = []
-!     result_list_rehab = []
+>     result_list_asu = []
+>     result_list_rehab = []
       
-!     max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
-!     max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
+>     max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
+>     max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
       
-!     for rep_result in rep_results:
-!         prob_delay_asu = rep_result['prob_delay_asu']
-!         unique_vals_asu = rep_result['unique_vals_asu']
+>     for rep_result in rep_results:
+>         prob_delay_asu = rep_result['prob_delay_asu']
+>         unique_vals_asu = rep_result['unique_vals_asu']
           
-!         min_occupancy_asu = min(unique_vals_asu)
+>         min_occupancy_asu = min(unique_vals_asu)
           
-!         new_array_asu = np.zeros(max_occupancy_asu + 1)
-!         for i, val in zip(unique_vals_asu, prob_delay_asu):
-!             new_array_asu[i] = val
+>         new_array_asu = np.zeros(max_occupancy_asu + 1)
+>         for i, val in zip(unique_vals_asu, prob_delay_asu):
+>             new_array_asu[i] = val
           
-!         new_array_asu[:min_occupancy_asu] = 1.0
+>         new_array_asu[:min_occupancy_asu] = 1.0
           
-!         result_list_asu.append(new_array_asu)
+>         result_list_asu.append(new_array_asu)
           
-!         prob_delay_rehab = rep_result['prob_delay_rehab']
-!         unique_vals_rehab = rep_result['unique_vals_rehab']
+>         prob_delay_rehab = rep_result['prob_delay_rehab']
+>         unique_vals_rehab = rep_result['unique_vals_rehab']
           
-!         min_occupancy_rehab = min(unique_vals_rehab)
+>         min_occupancy_rehab = min(unique_vals_rehab)
           
-!         new_array_rehab = np.zeros(max_occupancy_rehab + 1)
-!         for i, val in zip(unique_vals_rehab, prob_delay_rehab):
-!             new_array_rehab[i] = val
+>         new_array_rehab = np.zeros(max_occupancy_rehab + 1)
+>         for i, val in zip(unique_vals_rehab, prob_delay_rehab):
+>             new_array_rehab[i] = val
           
-!         new_array_rehab[:min_occupancy_rehab] = 1.0
+>         new_array_rehab[:min_occupancy_rehab] = 1.0
           
-!         result_list_rehab.append(new_array_rehab)
+>         result_list_rehab.append(new_array_rehab)
       
-!     return np.array(result_list_asu), np.array(result_list_rehab)
+>     return np.array(result_list_asu), np.array(result_list_rehab)
   
 ! def combine_occup_results(rep_results):
 !     """Combine the occupancy frequency results from multiple simulation runs.
@@ -733,36 +733,36 @@
 !     frequencies and probability of delay for both the Acute Stroke Unit
 !     and the Rehabilitation Unit from a single simulation run.
 !     """
-!     result_list_asu = []
-!     result_list_rehab = []
+>     result_list_asu = []
+>     result_list_rehab = []
       
-!     max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
-!     max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
+>     max_occupancy_asu = max(max(rep['unique_vals_asu']) for rep in rep_results)
+>     max_occupancy_rehab = max(max(rep['unique_vals_rehab']) for rep in rep_results)
       
-!     for rep_result in rep_results:
-!         relative_freq_asu = rep_result['relative_freq_asu']
-!         unique_vals_asu = rep_result['unique_vals_asu']
+>     for rep_result in rep_results:
+>         relative_freq_asu = rep_result['relative_freq_asu']
+>         unique_vals_asu = rep_result['unique_vals_asu']
           
-!         new_array_asu = np.zeros(max_occupancy_asu + 1)
-!         for i, val in zip(unique_vals_asu, relative_freq_asu):
-!             new_array_asu[i] = val
+>         new_array_asu = np.zeros(max_occupancy_asu + 1)
+>         for i, val in zip(unique_vals_asu, relative_freq_asu):
+>             new_array_asu[i] = val
           
-!         result_list_asu.append(new_array_asu)
+>         result_list_asu.append(new_array_asu)
           
-!         relative_freq_rehab = rep_result['relative_freq_rehab']
-!         unique_vals_rehab = rep_result['unique_vals_rehab']
+>         relative_freq_rehab = rep_result['relative_freq_rehab']
+>         unique_vals_rehab = rep_result['unique_vals_rehab']
           
-!         new_array_rehab = np.zeros(max_occupancy_rehab + 1)
-!         for i, val in zip(unique_vals_rehab, relative_freq_rehab):
-!             new_array_rehab[i] = val
+>         new_array_rehab = np.zeros(max_occupancy_rehab + 1)
+>         for i, val in zip(unique_vals_rehab, relative_freq_rehab):
+>             new_array_rehab[i] = val
           
-!         result_list_rehab.append(new_array_rehab)
+>         result_list_rehab.append(new_array_rehab)
       
-!     return np.array(result_list_asu), np.array(result_list_rehab)
+>     return np.array(result_list_asu), np.array(result_list_rehab)
   
   
 ! def mean_results(rep_results):
-!     return np.mean(rep_results, axis=0)
+>     return np.mean(rep_results, axis=0)
   
   
 ! def summary_table(mean_pdelay, min_beds, max_beds, bed_type):
@@ -775,16 +775,16 @@
 !     and the Rehabilitation Unit.
   
 !     """
-!     sliced_mean_pdelay = mean_pdelay[min_beds : max_beds + 1]
-!     inv_mean_pdelay = 1 / sliced_mean_pdelay
-!     inv_mean_pdelay_rounded = np.floor(inv_mean_pdelay).astype(int)
+>     sliced_mean_pdelay = mean_pdelay[min_beds : max_beds + 1]
+>     inv_mean_pdelay = 1 / sliced_mean_pdelay
+>     inv_mean_pdelay_rounded = np.floor(inv_mean_pdelay).astype(int)
   
-!     df_summary_table = pd.DataFrame(
-!         {
-!             "p(delay)": sliced_mean_pdelay.round(2),
-!             "1 in every n patients delayed": inv_mean_pdelay_rounded,
-!         },
-!         index=pd.Index(range(min_beds, max_beds + 1), name="No. " + bed_type + " beds"),
-!     )
+>     df_summary_table = pd.DataFrame(
+>         {
+>             "p(delay)": sliced_mean_pdelay.round(2),
+>             "1 in every n patients delayed": inv_mean_pdelay_rounded,
+>         },
+>         index=pd.Index(range(min_beds, max_beds + 1), name="No. " + bed_type + " beds"),
+>     )
   
-!     return df_summary_table
+>     return df_summary_table
