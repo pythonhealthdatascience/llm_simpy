@@ -31,28 +31,28 @@
 > desired output in stage 2.
 > """
   
-! import math
-! import statistics
-! import simpy
-! import numpy as np
-! import pandas as pd
-! import matplotlib.pyplot as plt
+> import math
+> import statistics
+> import simpy
+> import numpy as np
+> import pandas as pd
+> import matplotlib.pyplot as plt
   
   
   # lognormal function
   
   
-! def lognormal_to_normal(mean, std):
-!     """
-!     Convert lognormal moments to normal moments.
+> def lognormal_to_normal(mean, std):
+>     """
+>     Convert lognormal moments to normal moments.
   
-!     Parameters:
-!     mean (float): Mean of the lognormal distribution.
-!     std (float): Standard deviation of the lognormal distribution.
+>     Parameters:
+>     mean (float): Mean of the lognormal distribution.
+>     std (float): Standard deviation of the lognormal distribution.
   
-!     Returns:
-!     tuple: (mean, std) of the corresponding normal distribution.
-!     """
+>     Returns:
+>     tuple: (mean, std) of the corresponding normal distribution.
+>     """
 >     normal_mean = np.log(mean**2 / np.sqrt(std**2 + mean**2))
 >     normal_std = np.sqrt(np.log(std**2 / mean**2 + 1))
 >     return normal_mean, normal_std
@@ -61,8 +61,8 @@
   # Experiment class
   
   
-! class Experiment:
-!     def __init__(self, params=None, random_number_set=0):
+> class Experiment:
+>     def __init__(self, params=None, random_number_set=0):
 >         default_params = {
 >             "results_collection_period": 5 * 365,
 >             "warm_up": 1095,
@@ -122,7 +122,7 @@
   
 >         self.setup_streams(random_number_set)
   
-!     def merge_params(self, default, new):
+>     def merge_params(self, default, new):
 >         merged = default.copy()
 >         for key, value in new.items():
 >             if isinstance(value, dict) and key in merged:
@@ -131,27 +131,27 @@
 >                 merged[key] = value
 >         return merged
   
-!     def audit_acute_occupancy(
-!         self, env, first_interval, audit_interval, asu, experiment
-!     ):
+>     def audit_acute_occupancy(
+>         self, env, first_interval, audit_interval, asu, experiment
+>     ):
 >         yield env.timeout(first_interval)
 >         while True:
 >             experiment.asu_occupancy.append(asu.occupancy)
 >             yield env.timeout(audit_interval)
   
-!     def audit_rehab_occupancy(
-!         self, env, first_interval, audit_interval, rehab_unit, experiment
-!     ):
+>     def audit_rehab_occupancy(
+>         self, env, first_interval, audit_interval, rehab_unit, experiment
+>     ):
 >         yield env.timeout(first_interval)
 >         while True:
 >             experiment.rehab_occupancy.append(rehab_unit.occupancy)
 >             yield env.timeout(audit_interval)
   
-!     def reset_kpi(self):
+>     def reset_kpi(self):
 >         self.asu_occupancy = []
 >         self.rehab_occupancy = []
   
-!     def setup_streams(self, random_number_set):
+>     def setup_streams(self, random_number_set):
 >         self.streams = []
 >         generator = np.random.default_rng(random_number_set)
 >         seeds = generator.integers(0, np.iinfo(np.int64).max, size=25)
@@ -162,8 +162,8 @@
   # ### ASU Patient type class
   
   
-! class PatientType:
-!     def __init__(self, name, interarrival_time, post_asu_probabilities, los_params):
+> class PatientType:
+>     def __init__(self, name, interarrival_time, post_asu_probabilities, los_params):
 >         self.name = name
 >         self.interarrival_time = interarrival_time
 >         self.count = 0
@@ -171,15 +171,15 @@
 >         self.post_asu_probabilities = post_asu_probabilities
 >         self.los_params = los_params
   
-!     def generate_interarrival_time(self):
+>     def generate_interarrival_time(self):
 >         return self.exponential(self.interarrival_time)
   
-!     def sample_post_asu_destination(self):
+>     def sample_post_asu_destination(self):
 >         if self.rng is None:
 >             raise ValueError("RNG not set for PatientType")
 >         return self.rng.choice(["Rehab", "ESD", "Other"], p=self.post_asu_probabilities)
   
-!     def normal_moments(self, destination=None):
+>     def normal_moments(self, destination=None):
 >         if self.name == "Stroke":
 >             mean, std = self.los_params[destination]
 >         else:
@@ -194,8 +194,8 @@
   # Acute stroke unit class
   
   
-! class AcuteStrokeUnit:
-!     def __init__(self, env, experiment, rehab_unit):
+> class AcuteStrokeUnit:
+>     def __init__(self, env, experiment, rehab_unit):
 >         self.env = env
 >         self.experiment = experiment
 >         self.rehab_unit = rehab_unit
@@ -212,11 +212,11 @@
 >                 params["los_params"],
 >             )
   
-!     def run(self):
+>     def run(self):
 >         for patient_type in self.patient_types.values():
 >             self.env.process(self.patient_generator(patient_type))
   
-!     def patient_generator(self, patient_type):
+>     def patient_generator(self, patient_type):
           # Assign specific streams for each patient type
 >         if patient_type.name == "Stroke":
 >             arrival_stream = self.experiment.streams[6]
@@ -274,9 +274,9 @@
 >                 )
 >             )
   
-!     def acute_treatment(
-!         self, patient_type, patient_id, post_asu_destination, los_stream
-!     ):
+>     def acute_treatment(
+>         self, patient_type, patient_id, post_asu_destination, los_stream
+>     ):
 >         if patient_type.name == "Stroke":
 >             yield from self.stroke_acute_treatment(
 >                 patient_type, patient_id, post_asu_destination, los_stream
@@ -300,9 +300,9 @@
 >             )
 >             print(f" Current occupancy: {self.occupancy}")
   
-!     def stroke_acute_treatment(
-!         self, patient_type, patient_id, post_asu_destination, los_stream
-!     ):
+>     def stroke_acute_treatment(
+>         self, patient_type, patient_id, post_asu_destination, los_stream
+>     ):
 >         normal_mean, normal_std = self.patient_types["Stroke"].normal_moments(
 >             post_asu_destination
 >         )
@@ -328,9 +328,9 @@
 >                     f" Post-ASU destination (stroke to stroke rehab): {post_asu_destination, patient_id}"
 >                 )
   
-!     def tia_acute_treatment(
-!         self, patient_type, patient_id, post_asu_destination, los_stream
-!     ):
+>     def tia_acute_treatment(
+>         self, patient_type, patient_id, post_asu_destination, los_stream
+>     ):
 >         normal_mean, normal_std = patient_type.normal_moments()
 >         los = self.experiment.streams[3].lognormal(mean=normal_mean, sigma=normal_std)
 >         if self.trace:
@@ -354,9 +354,9 @@
 >                     f" Post-ASU destination (tia to tia rehab): {post_asu_destination, patient_id}"
 >                 )
   
-!     def complex_neurological_acute_treatment(
-!         self, patient_type, patient_id, post_asu_destination, los_stream
-!     ):
+>     def complex_neurological_acute_treatment(
+>         self, patient_type, patient_id, post_asu_destination, los_stream
+>     ):
 >         normal_mean, normal_std = patient_type.normal_moments()
 >         los = self.experiment.streams[4].lognormal(mean=normal_mean, sigma=normal_std)
 >         if self.trace:
@@ -380,9 +380,9 @@
 >                     f" Post-ASU destination (complex to complex rehab): {post_asu_destination, patient_id}"
 >                 )
   
-!     def other_acute_treatment(
-!         self, patient_type, patient_id, post_asu_destination, los_stream
-!     ):
+>     def other_acute_treatment(
+>         self, patient_type, patient_id, post_asu_destination, los_stream
+>     ):
 >         normal_mean, normal_std = patient_type.normal_moments()
 >         los = self.experiment.streams[5].lognormal(mean=normal_mean, sigma=normal_std)
 >         if self.trace:
@@ -410,8 +410,8 @@
   # Rehabilitation Unit class
   
   
-! class RehabilitationUnit:
-!     def __init__(self, env, experiment):
+> class RehabilitationUnit:
+>     def __init__(self, env, experiment):
 >         self.env = env
 >         self.experiment = experiment
 >         self.trace = experiment.params["trace"]
@@ -447,30 +447,30 @@
 >         )
 >         self.tia_mean, self.tia_std = lognormal_to_normal(18.7, 23.5)  # TIA parameters
   
-!     def run(self):
+>     def run(self):
 >         self.env.process(self.stroke_generator())
 >         self.env.process(self.complex_neuro_generator())
 >         self.env.process(self.other_generator())
   
-!     def stroke_generator(self):
+>     def stroke_generator(self):
 >         stream = self.experiment.streams[14]
 >         while True:
 >             yield self.env.timeout(stream.exponential(self.stroke_iat_external))
 >             self.patient_arrival("Stroke")
   
-!     def complex_neuro_generator(self):
+>     def complex_neuro_generator(self):
 >         stream = self.experiment.streams[15]
 >         while True:
 >             yield self.env.timeout(stream.exponential(self.complex_neuro_iat_external))
 >             self.patient_arrival("Complex Neurological")
   
-!     def other_generator(self):
+>     def other_generator(self):
 >         stream = self.experiment.streams[16]
 >         while True:
 >             yield self.env.timeout(stream.exponential(self.other_iat_external))
 >             self.patient_arrival("Other")
   
-!     def patient_arrival(self, patient_type):
+>     def patient_arrival(self, patient_type):
 >         patient_id = self.total_arrivals
 >         self.total_arrivals += 1
 >         self.patient_counts[patient_type] += 1
@@ -487,7 +487,7 @@
   
 >         self.env.process(self.rehab_treatment(patient_type, patient_id))
   
-!     def rehab_treatment(self, patient_type, patient_id):
+>     def rehab_treatment(self, patient_type, patient_id):
 >         if patient_type == "Stroke":
 >             yield from self.stroke_rehab_treatment(patient_id)
 >         elif patient_type == "Complex Neurological":
@@ -504,7 +504,7 @@
 >             )
 >             print(f" Current occupancy: {self.occupancy}")
   
-!     def stroke_rehab_treatment(self, patient_id):
+>     def stroke_rehab_treatment(self, patient_id):
 >         stream = self.experiment.streams[20]
 >         post_rehab_destination = self.experiment.streams[19].choice(
 >             ["ESD", "Other"],
@@ -527,7 +527,7 @@
 >             print(f" Post-rehab destination: {post_rehab_destination}")
 >             print(f" Length of stay: {length_of_stay:.2f} days")
   
-!     def complex_neurological_rehab_treatment(self, patient_id):
+>     def complex_neurological_rehab_treatment(self, patient_id):
 >         stream = self.experiment.streams[22]
 >         post_rehab_destination = self.experiment.streams[21].choice(
 >             ["ESD", "Other"],
@@ -547,7 +547,7 @@
 >             print(f" Post-rehab destination: {post_rehab_destination}")
 >             print(f" Length of stay: {length_of_stay:.2f} days")
   
-!     def other_rehab_treatment(self, patient_id):
+>     def other_rehab_treatment(self, patient_id):
 >         stream = self.experiment.streams[24]
 >         post_rehab_destination = self.experiment.streams[23].choice(
 >             ["ESD", "Other"],
@@ -565,7 +565,7 @@
 >             print(f" Post-rehab destination: {post_rehab_destination}")
 >             print(f" Length of stay: {length_of_stay:.2f} days")
   
-!     def tia_rehab_treatment(self, patient_id):
+>     def tia_rehab_treatment(self, patient_id):
 >         stream = self.experiment.streams[18]
 >         post_rehab_destination = self.experiment.streams[17].choice(
 >             ["ESD", "Other"], p=[0, 1]
@@ -586,16 +586,16 @@
   # Occupancy post-processing code
   
   
-! def calculate_occupancy_frequencies(occupancy_list):
+> def calculate_occupancy_frequencies(occupancy_list):
 >     unique_values, counts = np.unique(occupancy_list, return_counts=True)
 >     relative_freq = counts / len(occupancy_list)
 >     cumulative_freq = np.cumsum(relative_freq)
 >     return relative_freq, cumulative_freq, unique_values
   
   
-! def occupancy_plot(
-!     relative_freq, unique_values, x_label="No. people in ward", figsize=(12, 5)
-! ):
+> def occupancy_plot(
+>     relative_freq, unique_values, x_label="No. people in ward", figsize=(12, 5)
+> ):
 >     fig, ax = plt.subplots(figsize=figsize)
 >     ax.bar(unique_values, relative_freq)
 >     ax.set_xlabel(x_label)
@@ -613,15 +613,15 @@
   # Probability of deplay post-processing code
   
   
-! def calculate_prob_delay(relative_freq, cumulative_freq):
+> def calculate_prob_delay(relative_freq, cumulative_freq):
 >     rel_freq = np.array(relative_freq)
 >     cum_freq = np.array(cumulative_freq)
 >     return rel_freq / cum_freq
   
   
-! def prob_delay_plot(
-!     prob_delay, unique_values, x_label="No. acute beds available", figsize=(12, 5)
-! ):
+> def prob_delay_plot(
+>     prob_delay, unique_values, x_label="No. acute beds available", figsize=(12, 5)
+> ):
 >     fig, ax = plt.subplots(figsize=figsize)
 >     ax.step(unique_values, prob_delay, where="post")
 >     ax.set_xlabel(x_label)
@@ -640,7 +640,7 @@
   # Function to perform a single run of ASU+REHAB
   
   
-! def single_run(experiment):
+> def single_run(experiment):
 >     experiment.reset_kpi()
   
       # Create the simulation environment
@@ -701,7 +701,7 @@
   # Multiple Replication function
   
   
-! def multiple_replications(experiment_instance, num_replications=5):
+> def multiple_replications(experiment_instance, num_replications=5):
 >     rep_results = []
 >     for rep in range(num_replications):
           # Call setup_streams with the current replication number
@@ -719,7 +719,7 @@
   # Functions to combine replication results
   
   
-! def combine_pdelay_results(rep_results):
+> def combine_pdelay_results(rep_results):
 >     asu_results = []
 >     rehab_results = []
   
@@ -754,7 +754,7 @@
 >     return np.array(asu_results), np.array(rehab_results)
   
   
-! def combine_occup_results(rep_results):
+> def combine_occup_results(rep_results):
 >     asu_results = []
 >     rehab_results = []
   
@@ -785,14 +785,14 @@
 >     return np.array(asu_results), np.array(rehab_results)
   
   
-! def mean_results(rep_results):
+> def mean_results(rep_results):
 >     return np.mean(rep_results, axis=0)
   
   
   # Tabular results for p(delay)
   
   
-! def summary_table(prob_delay, min_beds, max_beds, bed_type="ASU"):
+> def summary_table(prob_delay, min_beds, max_beds, bed_type="ASU"):
 >     data = {
 >         f"No. {bed_type} beds": [],
 >         "Probability of delay": [],
