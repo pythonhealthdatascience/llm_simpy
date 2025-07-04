@@ -2,17 +2,17 @@
 [![Python 3.10+](https://img.shields.io/badge/-Python_≥_3.10-306998?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-360+/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15090961.svg)](https://doi.org/10.5281/zenodo.15090961)
 
-<!--TODO: Add DOI badge-->
-
 # Research Compendium: Replicating Simulations in Python using Generative AI
 
 This repository serves as a **research compendium** for the paper:
 
-> Monks, T., Harper, A., & Heather, A. (2025). **Unlocking the Potential of Past Research: Using Generative AI to Reconstruct Healthcare Simulation Models**. Work in progress. <!--TODO: Add URL-->
+> Monks, T., Harper, A., & Heather, A. (2025). **Unlocking the Potential of Past Research: Using Generative AI to Reconstruct Healthcare Simulation Models**. Preprint. https://doi.org/10.48550/arXiv.2503.21646.
 
 A research compendium is collection of all the digital materials relevant to the study. In this case, it includes a description of the aims and models, as well the STRESS reports for each model, the full model code and testing, logs of all the prompts used and experiences working with the LLMs, analysis of the results, and more!
 
 This has been structured into a book which is hosted on GitHub pages and can be viewed at: https://pythonhealthdatascience.github.io/llm_simpy
+
+The final models and their streamlit applications can be viewed at: https://github.com/pythonhealthdatascience/llm_simpy_models
 
 <br>
 
@@ -81,12 +81,7 @@ You can also cite this GitHub repository as:
 
 > Thomas Monks, Alison Harper, and Amy Heather. **Using Large Language Models to support researchers reproduce and reuse unpublished health care discrete-event simulation computer models: a feasibility and pilot study in Python**. <https://github.com/pythonhealthdatascience/llm_simpy>.
 
-
-
 A `CITATION.cff` file is also provided.
-
-
-
 
 <br>
 

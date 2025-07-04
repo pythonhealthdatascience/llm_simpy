@@ -1,0 +1,6 @@
+Metric,Mean_Difference,T_Statistic,P_Value,CI_95%,Statistically_Significant,Interpretation
+0. Patient Count,0.000,nan,nan,"(0.000, 0.000)",False,No significant difference
+1. Cancelled Elective Operations,0.000,nan,nan,"(0.000, 0.000)",False,No significant difference
+2. Bed Utilization,0.000,nan,nan,"(0.000, 0.000)",False,No significant difference
+3. Bed Occupancy,0.000,nan,nan,"(0.000, 0.000)",False,No significant difference
+4. Mean Unplanned Admission Waiting Time (hours),0.000,nan,nan,"(0.000, 0.000)",False,No significant difference
