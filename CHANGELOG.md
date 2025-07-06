@@ -7,9 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Consistent identifier (represents all versions, resolves to latest): 
 
-## :seedling: v0.1.0 
+## v1.0.0
 
-Full research compendium released.
+Released to submit as revision 1 based on requests from reviewers at the Journal of Simulation.
+
+### Changed
+
+* environment file now includes seaborn
+* Automated testing now has  more tests to increase code coverage to 100%
+* Jupyter book updated to reflect revisions including sensitivity analyses.
+
+### Added
+
+* A detailed one and two way sensitivity analysis of the stage 1 CCU model (new notebook)
+* `pytest` coverage statistics for LLM generated code.
+* Add statistical tests comparing Stage 1 and Stage 2 models (paired-t)
+
+### Fixed
+
+* Minor bug in the example script for the running the CCU stage 1 model
+* Duplicate/redundant arrival generating method removed from `PatientType` class in stage 2 stroke model (not used when running the simulation).
+
+
+## :seedling: [v0.1.0 ](https://github.com/pythonhealthdatascience/llm_simpy/releases/tag/v0.1.0) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15090962.svg)](https://doi.org/10.5281/zenodo.15090962)
+
+Full research compendium released.  This is the version that was originally submitted to the Journal of Simulation.
 
 ### Added
 
