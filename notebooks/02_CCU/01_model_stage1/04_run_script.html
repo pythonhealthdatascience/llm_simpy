@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -67,7 +64,6 @@
     <link rel="prev" title="Manual model testing" href="03_manual_testing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -83,8 +79,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -92,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -99,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -116,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,11 +154,15 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -193,6 +204,7 @@
 <li class="toctree-l2"><a class="reference internal" href="03_manual_testing.html">Manual model testing</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Run script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_interface.html">Streamlit interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_sensitivity_analysis.html">Sensitivity Analysis Script</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -282,7 +294,6 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../03_stroke/03_comparison.html">Model output comparison</a></li>
-
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
@@ -568,16 +579,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -637,9 +656,11 @@
 <h2>General imports<a class="headerlink" href="#general-imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 </pre></div>
 </div>
 </div>
@@ -649,7 +670,7 @@
 <h2>Model imports<a class="headerlink" href="#model-imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ccu_formatted_code</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ccu_formatted_code</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Experiment</span><span class="p">,</span> 
     <span class="n">multiple_replications</span><span class="p">,</span> 
     <span class="n">results_summary</span><span class="p">,</span> 
@@ -848,7 +869,9 @@ Results collection period: 8640 hrs
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the default iat means</span>
-<span class="n">new_iat_means</span> <span class="o">=</span> <span class="n">default_experiment</span><span class="o">.</span><span class="n">interarrival_means</span>
+<span class="c1"># we need to deep copy as LLM used list as parameter instead on None.</span>
+<span class="c1"># i.e. a mutuable default argument</span>
+<span class="n">new_iat_means</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">default_experiment</span><span class="o">.</span><span class="n">interarrival_means</span><span class="p">)</span>
 
 <span class="c1"># other hospitals are at index 3. Set to extreme value</span>
 <span class="n">new_iat_means</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100_000_000</span>
@@ -923,28 +946,28 @@ Results collection period: 8640 hrs
   <tbody>
     <tr>
       <th>Cancelled Elective Operations</th>
-      <td>99.0</td>
-      <td>27.7</td>
+      <td>337.8</td>
+      <td>38.7</td>
     </tr>
     <tr>
       <th>Bed Utilization</th>
-      <td>0.8</td>
+      <td>0.9</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>Mean Waiting Time Unplanned</th>
-      <td>5.3</td>
-      <td>4.3</td>
+      <td>62.5</td>
+      <td>55.2</td>
     </tr>
     <tr>
       <th>Bed Occupancy</th>
-      <td>19.3</td>
-      <td>0.4</td>
+      <td>21.8</td>
+      <td>0.5</td>
     </tr>
     <tr>
       <th>Patient Count</th>
-      <td>1463.0</td>
-      <td>20.3</td>
+      <td>1650.4</td>
+      <td>17.8</td>
     </tr>
   </tbody>
 </table>
@@ -988,47 +1011,47 @@ Results collection period: 8640 hrs
     <tr>
       <th>0</th>
       <td>1</td>
-      <td>84</td>
-      <td>0.798968</td>
-      <td>1.704418</td>
-      <td>19.175244</td>
-      <td>1453</td>
+      <td>353</td>
+      <td>0.916748</td>
+      <td>33.047825</td>
+      <td>22.001956</td>
+      <td>1665</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>124</td>
-      <td>0.802759</td>
-      <td>4.787775</td>
-      <td>19.266212</td>
-      <td>1458</td>
+      <td>357</td>
+      <td>0.900646</td>
+      <td>58.780702</td>
+      <td>21.615514</td>
+      <td>1631</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
-      <td>120</td>
-      <td>0.817978</td>
-      <td>11.936787</td>
-      <td>19.631465</td>
-      <td>1453</td>
+      <td>375</td>
+      <td>0.924766</td>
+      <td>158.213113</td>
+      <td>22.194387</td>
+      <td>1644</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>58</td>
-      <td>0.779888</td>
-      <td>1.399112</td>
-      <td>18.717312</td>
-      <td>1452</td>
+      <td>275</td>
+      <td>0.877403</td>
+      <td>21.348843</td>
+      <td>21.057679</td>
+      <td>1639</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>109</td>
-      <td>0.814584</td>
-      <td>6.622811</td>
-      <td>19.550025</td>
-      <td>1499</td>
+      <td>329</td>
+      <td>0.927482</td>
+      <td>40.876962</td>
+      <td>22.259566</td>
+      <td>1673</td>
     </tr>
   </tbody>
 </table>
@@ -1067,7 +1090,7 @@ Results collection period: 8640 hrs
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/47fbf380c43263024bfe24d2851a0d1cd0b8c0ec873e10d2847213cd83f47b84.png" src="../../../_images/47fbf380c43263024bfe24d2851a0d1cd0b8c0ec873e10d2847213cd83f47b84.png" />
+<img alt="../../../_images/736a711e5ca89b9399efe506552635000c1160e94000914b50439f1e46efc4b5.png" src="../../../_images/736a711e5ca89b9399efe506552635000c1160e94000914b50439f1e46efc4b5.png" />
 </div>
 </div>
 </section>
@@ -1083,7 +1106,7 @@ Results collection period: 8640 hrs
 <span class="n">experiments</span> <span class="o">=</span> <span class="n">get_experiments</span><span class="p">()</span>
 
 <span class="c1"># 2. run all experiments in a batch (5 replications each)</span>
-<span class="n">all_results</span> <span class="o">=</span> <span class="n">run_all_experiments</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">all_results</span> <span class="o">=</span> <span class="n">run_all_experiments</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># 3. display results summary (2dp)</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="n">summary_of_experiments</span><span class="p">(</span><span class="n">all_results</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1095,15 +1118,21 @@ Results collection period: 8640 hrs
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_23
-Running experiment: Experiment_24
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_24
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_25
-Running experiment: Experiment_26
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_26
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_27
-Running experiment: Experiment_28
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: Experiment_28
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1150,78 +1179,78 @@ Running experiment: Experiment_28
   <tbody>
     <tr>
       <th>Cancelled Elective Operations</th>
-      <td>132.20</td>
-      <td>32.83</td>
-      <td>99.00</td>
-      <td>27.71</td>
-      <td>71.20</td>
-      <td>25.75</td>
-      <td>54.60</td>
-      <td>20.77</td>
-      <td>39.80</td>
-      <td>17.75</td>
-      <td>23.80</td>
-      <td>14.11</td>
+      <td>347.53</td>
+      <td>71.56</td>
+      <td>294.91</td>
+      <td>73.63</td>
+      <td>242.11</td>
+      <td>69.43</td>
+      <td>194.27</td>
+      <td>63.36</td>
+      <td>152.48</td>
+      <td>56.73</td>
+      <td>117.92</td>
+      <td>49.52</td>
     </tr>
     <tr>
       <th>Bed Utilization</th>
+      <td>0.91</td>
+      <td>0.03</td>
+      <td>0.89</td>
+      <td>0.03</td>
+      <td>0.87</td>
+      <td>0.03</td>
+      <td>0.85</td>
+      <td>0.03</td>
       <td>0.83</td>
-      <td>0.02</td>
-      <td>0.80</td>
-      <td>0.02</td>
-      <td>0.78</td>
-      <td>0.02</td>
-      <td>0.75</td>
-      <td>0.02</td>
-      <td>0.73</td>
-      <td>0.02</td>
-      <td>0.71</td>
-      <td>0.02</td>
+      <td>0.03</td>
+      <td>0.81</td>
+      <td>0.04</td>
     </tr>
     <tr>
       <th>Mean Waiting Time Unplanned</th>
-      <td>8.97</td>
-      <td>7.06</td>
-      <td>5.29</td>
-      <td>4.31</td>
-      <td>2.96</td>
-      <td>2.59</td>
-      <td>1.64</td>
-      <td>1.21</td>
-      <td>0.97</td>
-      <td>0.66</td>
-      <td>0.62</td>
-      <td>0.59</td>
+      <td>83.37</td>
+      <td>84.37</td>
+      <td>46.93</td>
+      <td>51.13</td>
+      <td>27.01</td>
+      <td>31.80</td>
+      <td>16.69</td>
+      <td>21.16</td>
+      <td>10.38</td>
+      <td>13.20</td>
+      <td>6.45</td>
+      <td>7.90</td>
     </tr>
     <tr>
       <th>Bed Occupancy</th>
-      <td>19.02</td>
-      <td>0.35</td>
-      <td>19.27</td>
-      <td>0.36</td>
-      <td>19.46</td>
-      <td>0.38</td>
-      <td>19.59</td>
-      <td>0.44</td>
-      <td>19.69</td>
-      <td>0.46</td>
-      <td>19.80</td>
-      <td>0.52</td>
+      <td>20.93</td>
+      <td>0.71</td>
+      <td>21.42</td>
+      <td>0.77</td>
+      <td>21.83</td>
+      <td>0.84</td>
+      <td>22.19</td>
+      <td>0.88</td>
+      <td>22.48</td>
+      <td>0.94</td>
+      <td>22.72</td>
+      <td>0.99</td>
     </tr>
     <tr>
       <th>Patient Count</th>
-      <td>1463.00</td>
-      <td>20.26</td>
-      <td>1463.00</td>
-      <td>20.26</td>
-      <td>1463.00</td>
-      <td>20.26</td>
-      <td>1463.00</td>
-      <td>20.26</td>
-      <td>1463.00</td>
-      <td>20.26</td>
-      <td>1463.00</td>
-      <td>20.26</td>
+      <td>1627.12</td>
+      <td>35.16</td>
+      <td>1627.12</td>
+      <td>35.16</td>
+      <td>1627.12</td>
+      <td>35.16</td>
+      <td>1627.12</td>
+      <td>35.16</td>
+      <td>1627.12</td>
+      <td>35.16</td>
+      <td>1627.12</td>
+      <td>35.16</td>
     </tr>
   </tbody>
 </table>
@@ -1261,11 +1290,11 @@ Running experiment: Experiment_28
  &amp; \multicolumn{2}{r}{Experiment_23} &amp; \multicolumn{2}{r}{Experiment_24} &amp; \multicolumn{2}{r}{Experiment_25} &amp; \multicolumn{2}{r}{Experiment_26} &amp; \multicolumn{2}{r}{Experiment_27} &amp; \multicolumn{2}{r}{Experiment_28} \\
  &amp; Mean &amp; Standard Deviation &amp; Mean &amp; Standard Deviation &amp; Mean &amp; Standard Deviation &amp; Mean &amp; Standard Deviation &amp; Mean &amp; Standard Deviation &amp; Mean &amp; Standard Deviation \\
 \midrule
-Cancelled Elective Operations &amp; 132.200000 &amp; 32.830000 &amp; 99.000000 &amp; 27.710000 &amp; 71.200000 &amp; 25.750000 &amp; 54.600000 &amp; 20.770000 &amp; 39.800000 &amp; 17.750000 &amp; 23.800000 &amp; 14.110000 \\
-Bed Utilization &amp; 0.830000 &amp; 0.020000 &amp; 0.800000 &amp; 0.020000 &amp; 0.780000 &amp; 0.020000 &amp; 0.750000 &amp; 0.020000 &amp; 0.730000 &amp; 0.020000 &amp; 0.710000 &amp; 0.020000 \\
-Mean Waiting Time Unplanned &amp; 8.970000 &amp; 7.060000 &amp; 5.290000 &amp; 4.310000 &amp; 2.960000 &amp; 2.590000 &amp; 1.640000 &amp; 1.210000 &amp; 0.970000 &amp; 0.660000 &amp; 0.620000 &amp; 0.590000 \\
-Bed Occupancy &amp; 19.020000 &amp; 0.350000 &amp; 19.270000 &amp; 0.360000 &amp; 19.460000 &amp; 0.380000 &amp; 19.590000 &amp; 0.440000 &amp; 19.690000 &amp; 0.460000 &amp; 19.800000 &amp; 0.520000 \\
-Patient Count &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.260000 \\
+Cancelled Elective Operations &amp; 347.530000 &amp; 71.560000 &amp; 294.910000 &amp; 73.630000 &amp; 242.110000 &amp; 69.430000 &amp; 194.270000 &amp; 63.360000 &amp; 152.480000 &amp; 56.730000 &amp; 117.920000 &amp; 49.520000 \\
+Bed Utilization &amp; 0.910000 &amp; 0.030000 &amp; 0.890000 &amp; 0.030000 &amp; 0.870000 &amp; 0.030000 &amp; 0.850000 &amp; 0.030000 &amp; 0.830000 &amp; 0.030000 &amp; 0.810000 &amp; 0.040000 \\
+Mean Waiting Time Unplanned &amp; 83.370000 &amp; 84.370000 &amp; 46.930000 &amp; 51.130000 &amp; 27.010000 &amp; 31.800000 &amp; 16.690000 &amp; 21.160000 &amp; 10.380000 &amp; 13.200000 &amp; 6.450000 &amp; 7.900000 \\
+Bed Occupancy &amp; 20.930000 &amp; 0.710000 &amp; 21.420000 &amp; 0.770000 &amp; 21.830000 &amp; 0.840000 &amp; 22.190000 &amp; 0.880000 &amp; 22.480000 &amp; 0.940000 &amp; 22.720000 &amp; 0.990000 \\
+Patient Count &amp; 1627.120000 &amp; 35.160000 &amp; 1627.120000 &amp; 35.160000 &amp; 1627.120000 &amp; 35.160000 &amp; 1627.120000 &amp; 35.160000 &amp; 1627.120000 &amp; 35.160000 &amp; 1627.120000 &amp; 35.160000 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1332,8 +1361,7 @@ Patient Count &amp; 1463.000000 &amp; 20.260000 &amp; 1463.000000 &amp; 20.26000
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1407,8 +1435,8 @@ By Thomas Monks
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -1,0 +1,501 @@
+Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+test_results_collection_period(10)
+------------------
+
+----- stdout -----
+Patient 1 arrived from Emergency surgery at time 8.963817944287559
+Patient 1 admitted to critical care bed at time 8.963817944287559
+Patient 2 arrived from Accident and Emergency at time 11.29220861230394
+Patient 2 admitted to critical care bed at time 11.29220861230394
+Elective surgery patient 3 arrived at time 13.601711117562957
+Elective surgery patient 3 admitted to critical care bed at time 13.601711117562957
+Patient 4 arrived from Emergency surgery at time 19.55711672576073
+Patient 4 admitted to critical care bed at time 19.55711672576073
+Patient 5 arrived from other hospitals at time 21.116846639603953
+Patient 5 admitted to critical care bed at time 21.116846639603953
+Patient 5 discharged from critical care bed at time 21.95096066430374
+Patient 6 arrived from Emergency surgery at time 23.977643389996658
+Patient 6 admitted to critical care bed at time 23.977643389996658
+Critical care bed is available for next patient at time 26.95096066430374
+Elective surgery patient 7 arrived at time 31.283955093913534
+Elective surgery patient 7 admitted to critical care bed at time 31.283955093913534
+Patient 8 arrived from Emergency surgery at time 38.83581434254241
+Patient 8 admitted to critical care bed at time 38.83581434254241
+Patient 9 arrived from other hospitals at time 45.29553812688677
+Patient 9 admitted to critical care bed at time 45.29553812688677
+Patient 9 discharged from critical care bed at time 45.300453855159034
+Patient 10 arrived from other hospitals at time 50.09437115677253
+Patient 10 admitted to critical care bed at time 50.09437115677253
+Critical care bed is available for next patient at time 50.300453855159034
+Patient 10 discharged from critical care bed at time 51.57241605126312
+Elective surgery patient 10 discharged from critical care bed at time 51.58915855768226
+Elective surgery patient 11 arrived at time 51.922974470956675
+Elective surgery patient 11 admitted to critical care bed at time 51.922974470956675
+Critical care bed is available for next patient at time 56.57241605126312
+Critical care bed is available for next patient at time 56.58915855768226
+Patient 12 arrived from the Wards at time 58.496194122193735
+Patient 12 admitted to critical care bed at time 58.496194122193735
+Patient 13 arrived from Emergency surgery at time 59.38084076434153
+Patient 13 admitted to critical care bed at time 59.38084076434153
+Patient 14 arrived from the Wards at time 69.99263550672451
+Patient 14 admitted to critical care bed at time 69.99263550672451
+Elective surgery patient 15 arrived at time 71.41548826653913
+Elective surgery patient 15 admitted to critical care bed at time 71.41548826653913
+Patient 15 discharged from critical care bed at time 83.40235577305594
+Elective surgery patient 15 discharged from critical care bed at time 86.12715689453462
+Critical care bed is available for next patient at time 88.40235577305594
+Critical care bed is available for next patient at time 91.12715689453462
+Patient 16 arrived from Accident and Emergency at time 93.1782549516908
+Patient 16 admitted to critical care bed at time 93.1782549516908
+Elective surgery patient 17 arrived at time 93.84758353021591
+Elective surgery patient 17 admitted to critical care bed at time 93.84758353021591
+Patient 17 discharged from critical care bed at time 99.0860271659553
+Critical care bed is available for next patient at time 104.0860271659553
+Patient 17 discharged from critical care bed at time 106.92765082620004
+Critical care bed is available for next patient at time 111.92765082620004
+Patient 17 discharged from critical care bed at time 112.78120628219622
+Patient 18 arrived from Accident and Emergency at time 116.8170527798928
+Patient 18 admitted to critical care bed at time 116.8170527798928
+Critical care bed is available for next patient at time 117.78120628219622
+Elective surgery patient 19 arrived at time 117.88395855101928
+Elective surgery patient 19 admitted to critical care bed at time 117.88395855101928
+Patient 20 arrived from Emergency surgery at time 129.52461813690616
+Patient 20 admitted to critical care bed at time 129.52461813690616
+Patient 21 arrived from Emergency surgery at time 131.80678557164467
+Patient 21 admitted to critical care bed at time 131.80678557164467
+Patient 22 arrived from the Wards at time 133.81510255056187
+Patient 22 admitted to critical care bed at time 133.81510255056187
+Elective surgery patient 23 arrived at time 135.94602272017264
+Elective surgery patient 23 admitted to critical care bed at time 135.94602272017264
+Patient 23 discharged from critical care bed at time 138.65974062384598
+Patient 24 arrived from Emergency surgery at time 138.71262501257237
+Patient 24 admitted to critical care bed at time 138.71262501257237
+Patient 25 arrived from the Wards at time 139.88736015464053
+Patient 25 admitted to critical care bed at time 139.88736015464053
+Critical care bed is available for next patient at time 143.65974062384598
+Patient 25 discharged from critical care bed at time 145.3932274720983
+Patient 26 arrived from other hospitals at time 145.9660909620653
+Patient 26 admitted to critical care bed at time 145.9660909620653
+Patient 27 arrived from other hospitals at time 147.85740566554063
+Patient 27 admitted to critical care bed at time 147.85740566554063
+Critical care bed is available for next patient at time 150.3932274720983
+Elective surgery patient 28 arrived at time 150.42667671190307
+Elective surgery patient 28 admitted to critical care bed at time 150.42667671190307
+Patient 28 discharged from critical care bed at time 152.11681730190224
+Patient 29 arrived from Accident and Emergency at time 152.14162835725648
+Patient 29 admitted to critical care bed at time 152.14162835725648
+Patient 30 arrived from the Wards at time 153.13237602782706
+Patient 30 admitted to critical care bed at time 153.13237602782706
+Critical care bed is available for next patient at time 157.11681730190224
+Patient 30 discharged from critical care bed at time 159.07467092696717
+Elective surgery patient 30 discharged from critical care bed at time 161.70071125287032
+Patient 31 arrived from Accident and Emergency at time 163.57319389260346
+Patient 31 admitted to critical care bed at time 163.57319389260346
+Critical care bed is available for next patient at time 164.07467092696717
+Elective surgery patient 31 discharged from critical care bed at time 164.84002382953986
+Critical care bed is available for next patient at time 166.70071125287032
+Elective surgery patient 32 arrived at time 169.65618820419886
+Elective surgery patient 32 admitted to critical care bed at time 169.65618820419886
+Critical care bed is available for next patient at time 169.84002382953986
+Elective surgery patient 32 discharged from critical care bed at time 171.92589739940513
+Patient 32 discharged from critical care bed at time 173.88554190183171
+Patient 32 discharged from critical care bed at time 173.96166474198492
+Critical care bed is available for next patient at time 176.92589739940513
+Critical care bed is available for next patient at time 178.88554190183171
+Critical care bed is available for next patient at time 178.96166474198492
+Elective surgery patient 32 discharged from critical care bed at time 179.3744123135173
+Elective surgery patient 32 discharged from critical care bed at time 179.44829518773457
+Patient 33 arrived from other hospitals at time 180.84356874754855
+Patient 33 admitted to critical care bed at time 180.84356874754855
+Patient 34 arrived from Accident and Emergency at time 181.81714266884669
+Patient 34 admitted to critical care bed at time 181.81714266884669
+Patient 34 discharged from critical care bed at time 181.88140888532425
+Critical care bed is available for next patient at time 184.3744123135173
+Critical care bed is available for next patient at time 184.44829518773457
+Patient 34 discharged from critical care bed at time 184.62361410184968
+Critical care bed is available for next patient at time 186.88140888532425
+Elective surgery patient 35 arrived at time 188.22651548182156
+Elective surgery patient 35 admitted to critical care bed at time 188.22651548182156
+Patient 35 discharged from critical care bed at time 188.87246581489313
+Critical care bed is available for next patient at time 189.62361410184968
+Elective surgery patient 35 discharged from critical care bed at time 190.3498589487556
+Patient 36 arrived from Emergency surgery at time 193.67748104616518
+Patient 36 admitted to critical care bed at time 193.67748104616518
+Critical care bed is available for next patient at time 193.87246581489313
+Critical care bed is available for next patient at time 195.3498589487556
+Patient 36 discharged from critical care bed at time 199.46184917837928
+Patient 36 discharged from critical care bed at time 200.25036611865812
+Patient 37 arrived from Accident and Emergency at time 200.89872706738046
+Patient 37 admitted to critical care bed at time 200.89872706738046
+Elective surgery patient 38 arrived at time 202.40903448703918
+Elective surgery patient 38 admitted to critical care bed at time 202.40903448703918
+Critical care bed is available for next patient at time 204.46184917837928
+Critical care bed is available for next patient at time 205.25036611865812
+Patient 38 discharged from critical care bed at time 217.81799500317163
+Patient 39 arrived from Accident and Emergency at time 219.40278453251733
+Patient 39 admitted to critical care bed at time 219.40278453251733
+Patient 40 arrived from Accident and Emergency at time 222.3833821491232
+Patient 40 admitted to critical care bed at time 222.3833821491232
+Critical care bed is available for next patient at time 222.81799500317163
+Elective surgery patient 41 arrived at time 223.62728770114
+Elective surgery patient 41 admitted to critical care bed at time 223.62728770114
+Patient 42 arrived from the Wards at time 224.07969418422505
+Patient 42 admitted to critical care bed at time 224.07969418422505
+Patient 42 discharged from critical care bed at time 235.20783320600086
+Elective surgery patient 43 arrived at time 239.7066742025172
+Elective surgery patient 43 admitted to critical care bed at time 239.7066742025172
+Patient 43 discharged from critical care bed at time 239.86549738423105
+Critical care bed is available for next patient at time 240.20783320600086
+Critical care bed is available for next patient at time 244.86549738423105
+Patient 43 discharged from critical care bed at time 245.27300315576517
+Patient 44 arrived from Accident and Emergency at time 248.3351573735024
+Patient 44 admitted to critical care bed at time 248.3351573735024
+Patient 44 discharged from critical care bed at time 249.79152176818857
+Critical care bed is available for next patient at time 250.27300315576517
+Critical care bed is available for next patient at time 254.79152176818857
+Patient 44 discharged from critical care bed at time 256.0826826052643
+Elective surgery patient 45 arrived at time 256.97364635058324
+Elective surgery patient 45 admitted to critical care bed at time 256.97364635058324
+Elective surgery patient 45 discharged from critical care bed at time 259.3693283869459
+Critical care bed is available for next patient at time 261.0826826052643
+Patient 46 arrived from the Wards at time 263.55670121552583
+Patient 46 admitted to critical care bed at time 263.55670121552583
+Elective surgery patient 46 discharged from critical care bed at time 263.70123939615524
+Critical care bed is available for next patient at time 264.3693283869459
+Patient 47 arrived from the Wards at time 268.14933739627656
+Patient 47 admitted to critical care bed at time 268.14933739627656
+Critical care bed is available for next patient at time 268.70123939615524
+Patient 48 arrived from Accident and Emergency at time 268.83539967392807
+Patient 48 admitted to critical care bed at time 268.83539967392807
+Patient 48 discharged from critical care bed at time 272.9509222251718
+Elective surgery patient 48 discharged from critical care bed at time 273.4578460503999
+Elective surgery patient 49 arrived at time 275.4860187140732
+Elective surgery patient 49 admitted to critical care bed at time 275.4860187140732
+Elective surgery patient 49 discharged from critical care bed at time 276.386388385021
+Elective surgery patient 49 discharged from critical care bed at time 276.7312350488599
+Patient 49 discharged from critical care bed at time 277.3288063364303
+Critical care bed is available for next patient at time 277.9509222251718
+Critical care bed is available for next patient at time 278.4578460503999
+Critical care bed is available for next patient at time 281.386388385021
+Patient 49 discharged from critical care bed at time 281.43176784596363
+Critical care bed is available for next patient at time 281.7312350488599
+Critical care bed is available for next patient at time 282.3288063364303
+Critical care bed is available for next patient at time 286.43176784596363
+Patient 50 arrived from other hospitals at time 288.9133693043389
+Patient 50 admitted to critical care bed at time 288.9133693043389
+Elective surgery patient 50 discharged from critical care bed at time 290.0647064490574
+Critical care bed is available for next patient at time 295.0647064490574
+Elective surgery patient 51 arrived at time 295.9414627268729
+Elective surgery patient 51 admitted to critical care bed at time 295.9414627268729
+Patient 51 discharged from critical care bed at time 304.7908333525114
+Critical care bed is available for next patient at time 309.7908333525114
+Elective surgery patient 52 arrived at time 313.8439957840477
+Elective surgery patient 52 admitted to critical care bed at time 313.8439957840477
+Patient 53 arrived from Accident and Emergency at time 321.55855972345455
+Patient 53 admitted to critical care bed at time 321.55855972345455
+Elective surgery patient 54 arrived at time 329.78401045383197
+Elective surgery patient 54 admitted to critical care bed at time 329.78401045383197
+Patient 55 arrived from other hospitals at time 330.34236829647364
+Patient 55 admitted to critical care bed at time 330.34236829647364
+Elective surgery patient 55 discharged from critical care bed at time 331.5542410886193
+Patient 55 discharged from critical care bed at time 334.86199214478415
+Critical care bed is available for next patient at time 336.5542410886193
+Critical care bed is available for next patient at time 339.86199214478415
+Patient 55 discharged from critical care bed at time 344.3521214334984
+Patient 55 discharged from critical care bed at time 347.8618334020992
+Elective surgery patient 56 arrived at time 349.30041006849257
+Elective surgery patient 56 admitted to critical care bed at time 349.30041006849257
+Critical care bed is available for next patient at time 349.3521214334984
+Patient 57 arrived from the Wards at time 351.39359939747794
+Patient 57 admitted to critical care bed at time 351.39359939747794
+Critical care bed is available for next patient at time 352.8618334020992
+Elective surgery patient 57 discharged from critical care bed at time 357.87106546021465
+Patient 58 arrived from Emergency surgery at time 359.1283297825222
+Patient 58 admitted to critical care bed at time 359.1283297825222
+Elective surgery patient 58 discharged from critical care bed at time 359.3421083811913
+Elective surgery patient 58 discharged from critical care bed at time 360.39869617090346
+Patient 58 discharged from critical care bed at time 360.6849537735329
+Patient 59 arrived from Accident and Emergency at time 361.4724079891846
+Patient 59 admitted to critical care bed at time 361.4724079891846
+Critical care bed is available for next patient at time 362.87106546021465
+Critical care bed is available for next patient at time 364.3421083811913
+Critical care bed is available for next patient at time 365.39869617090346
+Critical care bed is available for next patient at time 365.6849537735329
+Elective surgery patient 60 arrived at time 368.3588945941992
+Elective surgery patient 60 admitted to critical care bed at time 368.3588945941992
+Elective surgery patient 60 discharged from critical care bed at time 368.9581956697633
+Patient 61 arrived from the Wards at time 370.4092925889264
+Patient 61 admitted to critical care bed at time 370.4092925889264
+Critical care bed is available for next patient at time 373.9581956697633
+Patient 62 arrived from the X-Ray department at time 375.05142050664944
+Patient 62 admitted to critical care bed at time 375.05142050664944
+Patient 62 discharged from critical care bed at time 382.58166767283126
+Elective surgery patient 63 arrived at time 385.95421679110086
+Elective surgery patient 63 admitted to critical care bed at time 385.95421679110086
+Critical care bed is available for next patient at time 387.58166767283126
+Patient 63 discharged from critical care bed at time 391.074785281371
+Critical care bed is available for next patient at time 396.074785281371
+Patient 64 arrived from Emergency surgery at time 397.8237317802765
+Patient 64 admitted to critical care bed at time 397.8237317802765
+Elective surgery patient 65 arrived at time 402.35028984801704
+Elective surgery patient 65 admitted to critical care bed at time 402.35028984801704
+Patient 66 arrived from the X-Ray department at time 403.5878933088979
+Patient 66 admitted to critical care bed at time 403.5878933088979
+Elective surgery patient 66 discharged from critical care bed at time 406.1558681043001
+Critical care bed is available for next patient at time 411.1558681043001
+Patient 66 discharged from critical care bed at time 414.75034998432295
+Elective surgery patient 67 arrived at time 417.6481797947197
+Elective surgery patient 67 admitted to critical care bed at time 417.6481797947197
+Critical care bed is available for next patient at time 419.75034998432295
+Patient 67 discharged from critical care bed at time 419.88163718099304
+Critical care bed is available for next patient at time 424.88163718099304
+Patient 68 arrived from Accident and Emergency at time 426.35383950350314
+Patient 68 admitted to critical care bed at time 426.35383950350314
+Patient 69 arrived from Emergency surgery at time 428.41412487297555
+Patient 69 admitted to critical care bed at time 428.41412487297555
+Patient 70 arrived from the Wards at time 428.84302674629674
+Patient 70 admitted to critical care bed at time 428.84302674629674
+Patient 71 arrived from Accident and Emergency at time 433.2081822408435
+Patient 71 admitted to critical care bed at time 433.2081822408435
+Elective surgery patient 72 arrived at time 433.3046271673504
+Elective surgery patient 72 admitted to critical care bed at time 433.3046271673504
+Patient 73 arrived from Accident and Emergency at time 438.17772034440884
+Patient 73 admitted to critical care bed at time 438.17772034440884
+Patient 74 arrived from other hospitals at time 443.74359399451765
+Patient 74 admitted to critical care bed at time 443.74359399451765
+Patient 74 discharged from critical care bed at time 447.33263919564183
+Patient 75 arrived from other hospitals at time 447.54266078792375
+Patient 75 admitted to critical care bed at time 447.54266078792375
+Elective surgery patient 75 discharged from critical care bed at time 447.5801214369766
+Elective surgery patient 75 discharged from critical care bed at time 449.4876489700599
+Elective surgery patient 76 arrived at time 449.5046389362316
+Elective surgery patient 76 admitted to critical care bed at time 449.5046389362316
+Patient 77 arrived from the Wards at time 451.1168492831957
+Patient 77 admitted to critical care bed at time 451.1168492831957
+Critical care bed is available for next patient at time 452.33263919564183
+Critical care bed is available for next patient at time 452.5801214369766
+Critical care bed is available for next patient at time 454.4876489700599
+Patient 77 discharged from critical care bed at time 456.41548188139467
+Critical care bed is available for next patient at time 461.41548188139467
+Patient 78 arrived from Accident and Emergency at time 461.82317518631186
+Patient 78 admitted to critical care bed at time 461.82317518631186
+Elective surgery patient 79 arrived at time 462.5632590526781
+Elective surgery patient 79 admitted to critical care bed at time 462.5632590526781
+Patient 79 discharged from critical care bed at time 462.580229855627
+Elective surgery patient 79 discharged from critical care bed at time 464.5107785347734
+Critical care bed is available for next patient at time 467.580229855627
+Elective surgery patient 79 discharged from critical care bed at time 468.00285493499825
+Patient 80 arrived from Accident and Emergency at time 468.01804719945096
+Patient 80 admitted to critical care bed at time 468.01804719945096
+Critical care bed is available for next patient at time 469.5107785347734
+Patient 80 discharged from critical care bed at time 470.53440702489866
+Patient 80 discharged from critical care bed at time 472.1312634921407
+Critical care bed is available for next patient at time 473.00285493499825
+Critical care bed is available for next patient at time 475.53440702489866
+Critical care bed is available for next patient at time 477.1312634921407
+Elective surgery patient 81 arrived at time 478.4670524909892
+Elective surgery patient 81 admitted to critical care bed at time 478.4670524909892
+Patient 82 arrived from other hospitals at time 481.2867364337469
+Patient 82 admitted to critical care bed at time 481.2867364337469
+Patient 82 discharged from critical care bed at time 481.2894385216203
+Patient 83 arrived from other hospitals at time 484.9899985356305
+Patient 83 admitted to critical care bed at time 484.9899985356305
+Patient 84 arrived from Emergency surgery at time 485.0311714857171
+Patient 84 admitted to critical care bed at time 485.0311714857171
+Critical care bed is available for next patient at time 486.2894385216203
+Patient 84 discharged from critical care bed at time 491.932794414319
+Elective surgery patient 85 arrived at time 494.3685032106282
+Elective surgery patient 85 admitted to critical care bed at time 494.3685032106282
+Critical care bed is available for next patient at time 496.932794414319
+Patient 85 discharged from critical care bed at time 497.42549880390857
+Critical care bed is available for next patient at time 502.42549880390857
+Elective surgery patient 85 discharged from critical care bed at time 504.6458367628018
+Elective surgery patient 85 discharged from critical care bed at time 508.0551584450674
+Elective surgery patient 86 arrived at time 509.5066500913728
+Elective surgery patient 86 admitted to critical care bed at time 509.5066500913728
+Critical care bed is available for next patient at time 509.6458367628018
+Elective surgery patient 86 discharged from critical care bed at time 511.8031362642773
+Patient 87 arrived from the Wards at time 512.3107519070695
+Patient 87 admitted to critical care bed at time 512.3107519070695
+Critical care bed is available for next patient at time 513.0551584450674
+Critical care bed is available for next patient at time 516.8031362642773
+Patient 88 arrived from Accident and Emergency at time 517.9365268809247
+Patient 88 admitted to critical care bed at time 517.9365268809247
+Patient 89 arrived from Accident and Emergency at time 525.1417087036384
+Patient 89 admitted to critical care bed at time 525.1417087036384
+Elective surgery patient 90 arrived at time 529.1220246601787
+Elective surgery patient 90 admitted to critical care bed at time 529.1220246601787
+Patient 90 discharged from critical care bed at time 531.1648741467201
+Patient 90 discharged from critical care bed at time 534.3892914646009
+Critical care bed is available for next patient at time 536.1648741467201
+Patient 90 discharged from critical care bed at time 536.7749062618427
+Patient 91 arrived from other hospitals at time 538.9591608343005
+Patient 91 admitted to critical care bed at time 538.9591608343005
+Critical care bed is available for next patient at time 539.3892914646009
+Critical care bed is available for next patient at time 541.7749062618427
+Elective surgery patient 91 discharged from critical care bed at time 545.109202434196
+Elective surgery patient 92 arrived at time 549.8348962236302
+Elective surgery patient 92 admitted to critical care bed at time 549.8348962236302
+Critical care bed is available for next patient at time 550.109202434196
+Elective surgery patient 92 discharged from critical care bed at time 551.3715865368525
+Patient 92 discharged from critical care bed at time 555.1268072130799
+Critical care bed is available for next patient at time 556.3715865368525
+Critical care bed is available for next patient at time 560.1268072130799
+Patient 93 arrived from the Wards at time 564.8015248876619
+Patient 93 admitted to critical care bed at time 564.8015248876619
+Elective surgery patient 93 discharged from critical care bed at time 566.8512700892377
+Elective surgery patient 94 arrived at time 570.4497564101943
+Elective surgery patient 94 admitted to critical care bed at time 570.4497564101943
+Elective surgery patient 94 discharged from critical care bed at time 571.1197199150794
+Critical care bed is available for next patient at time 571.8512700892377
+Critical care bed is available for next patient at time 576.1197199150794
+Patient 94 discharged from critical care bed at time 576.800948350588
+Critical care bed is available for next patient at time 581.800948350588
+Patient 95 arrived from Emergency surgery at time 584.511102288274
+Patient 95 admitted to critical care bed at time 584.511102288274
+Elective surgery patient 95 discharged from critical care bed at time 587.6439657148304
+Patient 96 arrived from Accident and Emergency at time 587.7507964204525
+Patient 96 admitted to critical care bed at time 587.7507964204525
+Patient 97 arrived from other hospitals at time 588.618676626224
+Patient 97 admitted to critical care bed at time 588.618676626224
+Elective surgery patient 98 arrived at time 590.1913337302275
+Elective surgery patient 98 admitted to critical care bed at time 590.1913337302275
+Patient 98 discharged from critical care bed at time 592.3637949930925
+Critical care bed is available for next patient at time 592.6439657148304
+Patient 99 arrived from Emergency surgery at time 594.0122194000285
+Patient 99 admitted to critical care bed at time 594.0122194000285
+Critical care bed is available for next patient at time 597.3637949930925
+Patient 99 discharged from critical care bed at time 605.4076329915604
+Elective surgery patient 100 arrived at time 607.2700775629967
+Elective surgery patient 100 admitted to critical care bed at time 607.2700775629967
+Critical care bed is available for next patient at time 610.4076329915604
+Patient 101 arrived from Accident and Emergency at time 613.530260610056
+Patient 101 admitted to critical care bed at time 613.530260610056
+Elective surgery patient 101 discharged from critical care bed at time 614.2457498419857
+Critical care bed is available for next patient at time 619.2457498419857
+Patient 101 discharged from critical care bed at time 620.4171838840311
+Elective surgery patient 102 arrived at time 621.1469584493651
+Elective surgery patient 102 admitted to critical care bed at time 621.1469584493651
+Patient 103 arrived from the Wards at time 623.6016602610787
+Patient 103 admitted to critical care bed at time 623.6016602610787
+Patient 104 arrived from Accident and Emergency at time 624.2604662427625
+Patient 104 admitted to critical care bed at time 624.2604662427625
+Critical care bed is available for next patient at time 625.4171838840311
+Patient 105 arrived from other hospitals at time 626.2675465652167
+Patient 105 admitted to critical care bed at time 626.2675465652167
+Patient 105 discharged from critical care bed at time 630.5035041953397
+Patient 105 discharged from critical care bed at time 633.1770715038107
+Elective surgery patient 105 discharged from critical care bed at time 633.9546165177115
+Patient 105 discharged from critical care bed at time 634.7194431441557
+Critical care bed is available for next patient at time 635.5035041953397
+Elective surgery patient 106 arrived at time 636.4923787785881
+Elective surgery patient 106 admitted to critical care bed at time 636.4923787785881
+Critical care bed is available for next patient at time 638.1770715038107
+Critical care bed is available for next patient at time 638.9546165177115
+Critical care bed is available for next patient at time 639.7194431441557
+Patient 107 arrived from Emergency surgery at time 641.7752426534406
+Patient 107 admitted to critical care bed at time 641.7752426534406
+Patient 108 arrived from Emergency surgery at time 642.4130847412308
+Patient 108 admitted to critical care bed at time 642.4130847412308
+Patient 108 discharged from critical care bed at time 642.9995874971696
+Patient 108 discharged from critical care bed at time 643.3765191621435
+Patient 108 discharged from critical care bed at time 644.3779936147865
+Patient 109 arrived from other hospitals at time 644.5693957511986
+Patient 109 admitted to critical care bed at time 644.5693957511986
+Elective surgery patient 109 discharged from critical care bed at time 647.4473690964257
+Critical care bed is available for next patient at time 647.9995874971696
+Critical care bed is available for next patient at time 648.3765191621435
+Critical care bed is available for next patient at time 649.3779936147865
+Critical care bed is available for next patient at time 652.4473690964257
+Patient 110 arrived from the Wards at time 652.8956135309539
+Patient 110 admitted to critical care bed at time 652.8956135309539
+Elective surgery patient 111 arrived at time 658.883198805523
+Elective surgery patient 111 admitted to critical care bed at time 658.883198805523
+Patient 112 arrived from Accident and Emergency at time 664.8185162418288
+Patient 112 admitted to critical care bed at time 664.8185162418288
+Patient 112 discharged from critical care bed at time 673.6212732575801
+Patient 112 discharged from critical care bed at time 673.7619004826819
+Patient 112 discharged from critical care bed at time 677.2238485157324
+Critical care bed is available for next patient at time 678.6212732575801
+Critical care bed is available for next patient at time 678.7619004826819
+Elective surgery patient 113 arrived at time 680.0304073963285
+Elective surgery patient 113 admitted to critical care bed at time 680.0304073963285
+Critical care bed is available for next patient at time 682.2238485157324
+Elective surgery patient 113 discharged from critical care bed at time 688.2544370802034
+Patient 113 discharged from critical care bed at time 691.8262833165821
+Patient 114 arrived from Accident and Emergency at time 692.8410444661707
+Patient 114 admitted to critical care bed at time 692.8410444661707
+Critical care bed is available for next patient at time 693.2544370802034
+Patient 114 discharged from critical care bed at time 694.9757037015548
+Critical care bed is available for next patient at time 696.8262833165821
+Elective surgery patient 115 arrived at time 699.73176411941
+Elective surgery patient 115 admitted to critical care bed at time 699.73176411941
+Critical care bed is available for next patient at time 699.9757037015548
+Patient 116 arrived from Emergency surgery at time 716.3441786012141
+Patient 116 admitted to critical care bed at time 716.3441786012141
+Elective surgery patient 117 arrived at time 718.5395036168926
+Elective surgery patient 117 admitted to critical care bed at time 718.5395036168926
+Patient 117 discharged from critical care bed at time 718.7277215603328
+Patient 118 arrived from Accident and Emergency at time 719.7466691877486
+Patient 118 admitted to critical care bed at time 719.7466691877486
+Patient 119 arrived from other hospitals at time 722.4558747839509
+Patient 119 admitted to critical care bed at time 722.4558747839509
+Critical care bed is available for next patient at time 723.7277215603328
+Patient 120 arrived from Accident and Emergency at time 728.3822878994514
+Patient 120 admitted to critical care bed at time 728.3822878994514
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mZeroDivisionError[0m                         Traceback (most recent call last)
+Cell [0;32mIn[9], line 1[0m
+[0;32m----> 1[0m [43mtest_results_collection_period[49m[43m([49m[38;5;241;43m10[39;49m[43m)[49m
+
+Cell [0;32mIn[8], line 9[0m, in [0;36mtest_results_collection_period[0;34m(new_collect_period)[0m
+[1;32m      2[0m [38;5;250m[39m[38;5;124;03m'''[39;00m
+[1;32m      3[0m [38;5;124;03mVary the results collection period while holding the [39;00m
+[1;32m      4[0m [38;5;124;03mwarm-up period constant.[39;00m
+[1;32m      5[0m 
+[1;32m      6[0m [38;5;124;03mExpected result Run length should be no longer than `new_run_length`[39;00m
+[1;32m      7[0m [38;5;124;03m'''[39;00m
+[1;32m      8[0m experiment [38;5;241m=[39m Experiment(results_collection_period[38;5;241m=[39mnew_collect_period)
+[0;32m----> 9[0m model [38;5;241m=[39m [43mrun_test[49m[43m([49m[43mexperiment[49m[43m)[49m
+[1;32m     10[0m [38;5;28;01mreturn[39;00m model[38;5;241m.[39menv[38;5;241m.[39mnow
+
+Cell [0;32mIn[3], line 5[0m, in [0;36mrun_test[0;34m(experiment)[0m
+[1;32m      3[0m env [38;5;241m=[39m simpy[38;5;241m.[39mEnvironment()
+[1;32m      4[0m ccu_model [38;5;241m=[39m CCUModel(env, experiment)
+[0;32m----> 5[0m [43mccu_model[49m[38;5;241;43m.[39;49m[43mrun[49m[43m([49m[43m)[49m
+[1;32m      6[0m [38;5;28;01mreturn[39;00m ccu_model
+
+Cell [0;32mIn[1], line 118[0m, in [0;36mCCUModel.run[0;34m(self)[0m
+[1;32m    116[0m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mrun(until[38;5;241m=[39m[38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mresults_collection_period [38;5;241m+[39m [38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mwarm_up_period)
+[1;32m    117[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39menv[38;5;241m.[39mnow [38;5;241m>[39m [38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mwarm_up_period:
+[0;32m--> 118[0m     mean_waiting_time_unplanned [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mexperiment[49m[38;5;241;43m.[39;49m[43mmean_waiting_time_unplanned[49m[43m [49m[38;5;241;43m/[39;49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mexperiment[49m[38;5;241;43m.[39;49m[43mtotal_unplanned_admissions[49m
+[1;32m    119[0m     bed_utilization [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mtotal_treatment_time [38;5;241m/[39m ([38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mnum_critical_care_beds [38;5;241m*[39m [38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mresults_collection_period)
+[1;32m    120[0m     performance_measures [38;5;241m=[39m pd[38;5;241m.[39mDataFrame({[38;5;124m'[39m[38;5;124mCancelled Elective Operations[39m[38;5;124m'[39m: [[38;5;28mself[39m[38;5;241m.[39mexperiment[38;5;241m.[39mcancelled_elective_count], [38;5;124m'[39m[38;5;124mBed Utilization[39m[38;5;124m'[39m: [bed_utilization], [38;5;124m'[39m[38;5;124mMean Waiting Time Unplanned[39m[38;5;124m'[39m: [mean_waiting_time_unplanned]})
+
+[0;31mZeroDivisionError[0m: division by zero
+

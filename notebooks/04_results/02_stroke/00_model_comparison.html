@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -66,7 +63,6 @@
     <link rel="prev" title="CCU models" href="../01_CCU/00_model_comparison.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -82,8 +78,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -91,6 +98,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -98,8 +106,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -115,8 +123,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -146,11 +153,15 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -192,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/03_manual_testing.html">Manual model testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/04_run_script.html">Run script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/05_interface.html">Streamlit interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../02_CCU/01_model_stage1/06_sensitivity_analysis.html">Sensitivity Analysis Script</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../02_CCU/02_model_stage2.html">Model Stage 2</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -281,7 +293,6 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../03_stroke/03_comparison.html">Model output comparison</a></li>
-
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../03_stroke/04_asu_rehab_prompts.html">Prompts stage 1</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/01_iteration.html">Iteration 1: Acute Stroke Unit Arrivals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../03_stroke/04_prompts_stage1/02_iteration.html">Iteration 2: Post stroke unit destination</a></li>
@@ -567,16 +578,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -625,8 +644,8 @@
 <h1>Stroke+Rehab models<a class="headerlink" href="#stroke-rehab-models" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -795,7 +814,8 @@ Working... <span class=" -Color -Color-C237">━━━━━━━━━━━�
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Working... <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Magenta">  0%</span> <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Magenta">100%</span> <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Working... <span class=" -Color -Color-C237">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Magenta">  0%</span> <span class=" -Color -Color-Cyan">-:--:--</span>
+Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Magenta">100%</span> <span class=" -Color -Color-Cyan">0:00:00</span>
 Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Magenta">100%</span> <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 ┏━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━┓
@@ -817,7 +837,7 @@ Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━
 <p>The table below provides a summary of the differences at each iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">highlight_last_row</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">highlight_last_row</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    highlight the last row (for Totals) in a DataFrame in BOLD.</span>
 <span class="sd">    </span>
@@ -853,18 +873,18 @@ Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_d308e_row31_col0, #T_d308e_row31_col1, #T_d308e_row31_col2, #T_d308e_row31_col3 {
+#T_b0fed_row31_col0, #T_b0fed_row31_col1, #T_b0fed_row31_col2, #T_b0fed_row31_col3 {
   font-weight: bold;
 }
 </style>
-<table id="T_d308e">
+<table id="T_b0fed">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d308e_level0_col0" class="col_heading level0 col0" >Added functionality</th>
-      <th id="T_d308e_level0_col1" class="col_heading level0 col1" >Stage 1</th>
-      <th id="T_d308e_level0_col2" class="col_heading level0 col2" >Stage 2</th>
-      <th id="T_d308e_level0_col3" class="col_heading level0 col3" >Difference</th>
+      <th id="T_b0fed_level0_col0" class="col_heading level0 col0" >Added functionality</th>
+      <th id="T_b0fed_level0_col1" class="col_heading level0 col1" >Stage 1</th>
+      <th id="T_b0fed_level0_col2" class="col_heading level0 col2" >Stage 2</th>
+      <th id="T_b0fed_level0_col3" class="col_heading level0 col3" >Difference</th>
     </tr>
     <tr>
       <th class="index_name level0" >Iteration</th>
@@ -876,228 +896,228 @@ Working... <span class=" -Color -Color-Red">━━━━━━━━━━━━
   </thead>
   <tbody>
     <tr>
-      <th id="T_d308e_level0_row0" class="row_heading level0 row0" >1</th>
-      <td id="T_d308e_row0_col0" class="data row0 col0" >Acute stroke unit (ASU) arrivals</td>
-      <td id="T_d308e_row0_col1" class="data row0 col1" >1</td>
-      <td id="T_d308e_row0_col2" class="data row0 col2" >3</td>
-      <td id="T_d308e_row0_col3" class="data row0 col3" >2</td>
+      <th id="T_b0fed_level0_row0" class="row_heading level0 row0" >1</th>
+      <td id="T_b0fed_row0_col0" class="data row0 col0" >Acute stroke unit (ASU) arrivals</td>
+      <td id="T_b0fed_row0_col1" class="data row0 col1" >1</td>
+      <td id="T_b0fed_row0_col2" class="data row0 col2" >3</td>
+      <td id="T_b0fed_row0_col3" class="data row0 col3" >2</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row1" class="row_heading level0 row1" >2</th>
-      <td id="T_d308e_row1_col0" class="data row1 col0" >Sample post stroke unit destination</td>
-      <td id="T_d308e_row1_col1" class="data row1 col1" >1</td>
-      <td id="T_d308e_row1_col2" class="data row1 col2" >1</td>
-      <td id="T_d308e_row1_col3" class="data row1 col3" >0</td>
+      <th id="T_b0fed_level0_row1" class="row_heading level0 row1" >2</th>
+      <td id="T_b0fed_row1_col0" class="data row1 col0" >Sample post stroke unit destination</td>
+      <td id="T_b0fed_row1_col1" class="data row1 col1" >1</td>
+      <td id="T_b0fed_row1_col2" class="data row1 col2" >1</td>
+      <td id="T_b0fed_row1_col3" class="data row1 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row2" class="row_heading level0 row2" >3</th>
-      <td id="T_d308e_row2_col0" class="data row2 col0" >Acute stroke unit length of stay (1)</td>
-      <td id="T_d308e_row2_col1" class="data row2 col1" >1</td>
-      <td id="T_d308e_row2_col2" class="data row2 col2" >2</td>
-      <td id="T_d308e_row2_col3" class="data row2 col3" >1</td>
+      <th id="T_b0fed_level0_row2" class="row_heading level0 row2" >3</th>
+      <td id="T_b0fed_row2_col0" class="data row2 col0" >Acute stroke unit length of stay (1)</td>
+      <td id="T_b0fed_row2_col1" class="data row2 col1" >1</td>
+      <td id="T_b0fed_row2_col2" class="data row2 col2" >2</td>
+      <td id="T_b0fed_row2_col3" class="data row2 col3" >1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row3" class="row_heading level0 row3" >4</th>
-      <td id="T_d308e_row3_col0" class="data row3 col0" >Acute stroke unit length of stay (2)</td>
-      <td id="T_d308e_row3_col1" class="data row3 col1" >1</td>
-      <td id="T_d308e_row3_col2" class="data row3 col2" >1</td>
-      <td id="T_d308e_row3_col3" class="data row3 col3" >0</td>
+      <th id="T_b0fed_level0_row3" class="row_heading level0 row3" >4</th>
+      <td id="T_b0fed_row3_col0" class="data row3 col0" >Acute stroke unit length of stay (2)</td>
+      <td id="T_b0fed_row3_col1" class="data row3 col1" >1</td>
+      <td id="T_b0fed_row3_col2" class="data row3 col2" >1</td>
+      <td id="T_b0fed_row3_col3" class="data row3 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row4" class="row_heading level0 row4" >5</th>
-      <td id="T_d308e_row4_col0" class="data row4 col0" >Organise parameters</td>
-      <td id="T_d308e_row4_col1" class="data row4 col1" >1</td>
-      <td id="T_d308e_row4_col2" class="data row4 col2" >1</td>
-      <td id="T_d308e_row4_col3" class="data row4 col3" >0</td>
+      <th id="T_b0fed_level0_row4" class="row_heading level0 row4" >5</th>
+      <td id="T_b0fed_row4_col0" class="data row4 col0" >Organise parameters</td>
+      <td id="T_b0fed_row4_col1" class="data row4 col1" >1</td>
+      <td id="T_b0fed_row4_col2" class="data row4 col2" >1</td>
+      <td id="T_b0fed_row4_col3" class="data row4 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row5" class="row_heading level0 row5" >6</th>
-      <td id="T_d308e_row5_col0" class="data row5 col0" >Track ASU bed occupancy</td>
-      <td id="T_d308e_row5_col1" class="data row5 col1" >1</td>
-      <td id="T_d308e_row5_col2" class="data row5 col2" >1</td>
-      <td id="T_d308e_row5_col3" class="data row5 col3" >0</td>
+      <th id="T_b0fed_level0_row5" class="row_heading level0 row5" >6</th>
+      <td id="T_b0fed_row5_col0" class="data row5 col0" >Track ASU bed occupancy</td>
+      <td id="T_b0fed_row5_col1" class="data row5 col1" >1</td>
+      <td id="T_b0fed_row5_col2" class="data row5 col2" >1</td>
+      <td id="T_b0fed_row5_col3" class="data row5 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row6" class="row_heading level0 row6" >7</th>
-      <td id="T_d308e_row6_col0" class="data row6 col0" >Functionality to suppress simulation event log</td>
-      <td id="T_d308e_row6_col1" class="data row6 col1" >2</td>
-      <td id="T_d308e_row6_col2" class="data row6 col2" >2</td>
-      <td id="T_d308e_row6_col3" class="data row6 col3" >0</td>
+      <th id="T_b0fed_level0_row6" class="row_heading level0 row6" >7</th>
+      <td id="T_b0fed_row6_col0" class="data row6 col0" >Functionality to suppress simulation event log</td>
+      <td id="T_b0fed_row6_col1" class="data row6 col1" >2</td>
+      <td id="T_b0fed_row6_col2" class="data row6 col2" >2</td>
+      <td id="T_b0fed_row6_col3" class="data row6 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row7" class="row_heading level0 row7" >8</th>
-      <td id="T_d308e_row7_col0" class="data row7 col0" >ASU results collection functionality</td>
-      <td id="T_d308e_row7_col1" class="data row7 col1" >1</td>
-      <td id="T_d308e_row7_col2" class="data row7 col2" >2</td>
-      <td id="T_d308e_row7_col3" class="data row7 col3" >1</td>
+      <th id="T_b0fed_level0_row7" class="row_heading level0 row7" >8</th>
+      <td id="T_b0fed_row7_col0" class="data row7 col0" >ASU results collection functionality</td>
+      <td id="T_b0fed_row7_col1" class="data row7 col1" >1</td>
+      <td id="T_b0fed_row7_col2" class="data row7 col2" >2</td>
+      <td id="T_b0fed_row7_col3" class="data row7 col3" >1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row8" class="row_heading level0 row8" >9</th>
-      <td id="T_d308e_row8_col0" class="data row8 col0" >ASU occupancy plot</td>
-      <td id="T_d308e_row8_col1" class="data row8 col1" >1</td>
-      <td id="T_d308e_row8_col2" class="data row8 col2" >1</td>
-      <td id="T_d308e_row8_col3" class="data row8 col3" >0</td>
+      <th id="T_b0fed_level0_row8" class="row_heading level0 row8" >9</th>
+      <td id="T_b0fed_row8_col0" class="data row8 col0" >ASU occupancy plot</td>
+      <td id="T_b0fed_row8_col1" class="data row8 col1" >1</td>
+      <td id="T_b0fed_row8_col2" class="data row8 col2" >1</td>
+      <td id="T_b0fed_row8_col3" class="data row8 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row9" class="row_heading level0 row9" >10</th>
-      <td id="T_d308e_row9_col0" class="data row9 col0" >ASU probability of delay</td>
-      <td id="T_d308e_row9_col1" class="data row9 col1" >1</td>
-      <td id="T_d308e_row9_col2" class="data row9 col2" >1</td>
-      <td id="T_d308e_row9_col3" class="data row9 col3" >0</td>
+      <th id="T_b0fed_level0_row9" class="row_heading level0 row9" >10</th>
+      <td id="T_b0fed_row9_col0" class="data row9 col0" >ASU probability of delay</td>
+      <td id="T_b0fed_row9_col1" class="data row9 col1" >1</td>
+      <td id="T_b0fed_row9_col2" class="data row9 col2" >1</td>
+      <td id="T_b0fed_row9_col3" class="data row9 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row10" class="row_heading level0 row10" >11</th>
-      <td id="T_d308e_row10_col0" class="data row10 col0" >Bug fix: add back in code that was removed by LLM</td>
-      <td id="T_d308e_row10_col1" class="data row10 col1" >1</td>
-      <td id="T_d308e_row10_col2" class="data row10 col2" >0</td>
-      <td id="T_d308e_row10_col3" class="data row10 col3" >-1</td>
+      <th id="T_b0fed_level0_row10" class="row_heading level0 row10" >11</th>
+      <td id="T_b0fed_row10_col0" class="data row10 col0" >Bug fix: add back in code that was removed by LLM</td>
+      <td id="T_b0fed_row10_col1" class="data row10 col1" >1</td>
+      <td id="T_b0fed_row10_col2" class="data row10 col2" >0</td>
+      <td id="T_b0fed_row10_col3" class="data row10 col3" >-1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row11" class="row_heading level0 row11" >12</th>
-      <td id="T_d308e_row11_col0" class="data row11 col0" >Rehab external arrivals</td>
-      <td id="T_d308e_row11_col1" class="data row11 col1" >1</td>
-      <td id="T_d308e_row11_col2" class="data row11 col2" >1</td>
-      <td id="T_d308e_row11_col3" class="data row11 col3" >0</td>
+      <th id="T_b0fed_level0_row11" class="row_heading level0 row11" >12</th>
+      <td id="T_b0fed_row11_col0" class="data row11 col0" >Rehab external arrivals</td>
+      <td id="T_b0fed_row11_col1" class="data row11 col1" >1</td>
+      <td id="T_b0fed_row11_col2" class="data row11 col2" >1</td>
+      <td id="T_b0fed_row11_col3" class="data row11 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row12" class="row_heading level0 row12" >13</th>
-      <td id="T_d308e_row12_col0" class="data row12 col0" >Organise parameters</td>
-      <td id="T_d308e_row12_col1" class="data row12 col1" >2</td>
-      <td id="T_d308e_row12_col2" class="data row12 col2" >2</td>
-      <td id="T_d308e_row12_col3" class="data row12 col3" >0</td>
+      <th id="T_b0fed_level0_row12" class="row_heading level0 row12" >13</th>
+      <td id="T_b0fed_row12_col0" class="data row12 col0" >Organise parameters</td>
+      <td id="T_b0fed_row12_col1" class="data row12 col1" >2</td>
+      <td id="T_b0fed_row12_col2" class="data row12 col2" >2</td>
+      <td id="T_b0fed_row12_col3" class="data row12 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row13" class="row_heading level0 row13" >14</th>
-      <td id="T_d308e_row13_col0" class="data row13 col0" >Rehab unit length of stay (1)</td>
-      <td id="T_d308e_row13_col1" class="data row13 col1" >1</td>
-      <td id="T_d308e_row13_col2" class="data row13 col2" >1</td>
-      <td id="T_d308e_row13_col3" class="data row13 col3" >0</td>
+      <th id="T_b0fed_level0_row13" class="row_heading level0 row13" >14</th>
+      <td id="T_b0fed_row13_col0" class="data row13 col0" >Rehab unit length of stay (1)</td>
+      <td id="T_b0fed_row13_col1" class="data row13 col1" >1</td>
+      <td id="T_b0fed_row13_col2" class="data row13 col2" >1</td>
+      <td id="T_b0fed_row13_col3" class="data row13 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row14" class="row_heading level0 row14" >15</th>
-      <td id="T_d308e_row14_col0" class="data row14 col0" >Organise parameters</td>
-      <td id="T_d308e_row14_col1" class="data row14 col1" >2</td>
-      <td id="T_d308e_row14_col2" class="data row14 col2" >3</td>
-      <td id="T_d308e_row14_col3" class="data row14 col3" >1</td>
+      <th id="T_b0fed_level0_row14" class="row_heading level0 row14" >15</th>
+      <td id="T_b0fed_row14_col0" class="data row14 col0" >Organise parameters</td>
+      <td id="T_b0fed_row14_col1" class="data row14 col1" >2</td>
+      <td id="T_b0fed_row14_col2" class="data row14 col2" >3</td>
+      <td id="T_b0fed_row14_col3" class="data row14 col3" >1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row15" class="row_heading level0 row15" >16</th>
-      <td id="T_d308e_row15_col0" class="data row15 col0" >Rehab unit length of stay (2)</td>
-      <td id="T_d308e_row15_col1" class="data row15 col1" >1</td>
-      <td id="T_d308e_row15_col2" class="data row15 col2" >1</td>
-      <td id="T_d308e_row15_col3" class="data row15 col3" >0</td>
+      <th id="T_b0fed_level0_row15" class="row_heading level0 row15" >16</th>
+      <td id="T_b0fed_row15_col0" class="data row15 col0" >Rehab unit length of stay (2)</td>
+      <td id="T_b0fed_row15_col1" class="data row15 col1" >1</td>
+      <td id="T_b0fed_row15_col2" class="data row15 col2" >1</td>
+      <td id="T_b0fed_row15_col3" class="data row15 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row16" class="row_heading level0 row16" >17</th>
-      <td id="T_d308e_row16_col0" class="data row16 col0" >Track Rehab unit bed occupancy</td>
-      <td id="T_d308e_row16_col1" class="data row16 col1" >1</td>
-      <td id="T_d308e_row16_col2" class="data row16 col2" >1</td>
-      <td id="T_d308e_row16_col3" class="data row16 col3" >0</td>
+      <th id="T_b0fed_level0_row16" class="row_heading level0 row16" >17</th>
+      <td id="T_b0fed_row16_col0" class="data row16 col0" >Track Rehab unit bed occupancy</td>
+      <td id="T_b0fed_row16_col1" class="data row16 col1" >1</td>
+      <td id="T_b0fed_row16_col2" class="data row16 col2" >1</td>
+      <td id="T_b0fed_row16_col3" class="data row16 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row17" class="row_heading level0 row17" >18</th>
-      <td id="T_d308e_row17_col0" class="data row17 col0" >Rehab unit results collection functionality</td>
-      <td id="T_d308e_row17_col1" class="data row17 col1" >2</td>
-      <td id="T_d308e_row17_col2" class="data row17 col2" >2</td>
-      <td id="T_d308e_row17_col3" class="data row17 col3" >0</td>
+      <th id="T_b0fed_level0_row17" class="row_heading level0 row17" >18</th>
+      <td id="T_b0fed_row17_col0" class="data row17 col0" >Rehab unit results collection functionality</td>
+      <td id="T_b0fed_row17_col1" class="data row17 col1" >2</td>
+      <td id="T_b0fed_row17_col2" class="data row17 col2" >2</td>
+      <td id="T_b0fed_row17_col3" class="data row17 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row18" class="row_heading level0 row18" >19</th>
-      <td id="T_d308e_row18_col0" class="data row18 col0" >Link ASU and Rehab models (1)</td>
-      <td id="T_d308e_row18_col1" class="data row18 col1" >1</td>
-      <td id="T_d308e_row18_col2" class="data row18 col2" >1</td>
-      <td id="T_d308e_row18_col3" class="data row18 col3" >0</td>
+      <th id="T_b0fed_level0_row18" class="row_heading level0 row18" >19</th>
+      <td id="T_b0fed_row18_col0" class="data row18 col0" >Link ASU and Rehab models (1)</td>
+      <td id="T_b0fed_row18_col1" class="data row18 col1" >1</td>
+      <td id="T_b0fed_row18_col2" class="data row18 col2" >1</td>
+      <td id="T_b0fed_row18_col3" class="data row18 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row19" class="row_heading level0 row19" >20</th>
-      <td id="T_d308e_row19_col0" class="data row19 col0" >Link ASU and Rehab models (2)</td>
-      <td id="T_d308e_row19_col1" class="data row19 col1" >2</td>
-      <td id="T_d308e_row19_col2" class="data row19 col2" >6</td>
-      <td id="T_d308e_row19_col3" class="data row19 col3" >4</td>
+      <th id="T_b0fed_level0_row19" class="row_heading level0 row19" >20</th>
+      <td id="T_b0fed_row19_col0" class="data row19 col0" >Link ASU and Rehab models (2)</td>
+      <td id="T_b0fed_row19_col1" class="data row19 col1" >2</td>
+      <td id="T_b0fed_row19_col2" class="data row19 col2" >6</td>
+      <td id="T_b0fed_row19_col3" class="data row19 col3" >4</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row20" class="row_heading level0 row20" >21</th>
-      <td id="T_d308e_row20_col0" class="data row20 col0" >Warm-up period</td>
-      <td id="T_d308e_row20_col1" class="data row20 col1" >2</td>
-      <td id="T_d308e_row20_col2" class="data row20 col2" >5</td>
-      <td id="T_d308e_row20_col3" class="data row20 col3" >3</td>
+      <th id="T_b0fed_level0_row20" class="row_heading level0 row20" >21</th>
+      <td id="T_b0fed_row20_col0" class="data row20 col0" >Warm-up period</td>
+      <td id="T_b0fed_row20_col1" class="data row20 col1" >2</td>
+      <td id="T_b0fed_row20_col2" class="data row20 col2" >5</td>
+      <td id="T_b0fed_row20_col3" class="data row20 col3" >3</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row21" class="row_heading level0 row21" >22</th>
-      <td id="T_d308e_row21_col0" class="data row21 col0" >Multiple replications (1)</td>
-      <td id="T_d308e_row21_col1" class="data row21 col1" >1</td>
-      <td id="T_d308e_row21_col2" class="data row21 col2" >1</td>
-      <td id="T_d308e_row21_col3" class="data row21 col3" >0</td>
+      <th id="T_b0fed_level0_row21" class="row_heading level0 row21" >22</th>
+      <td id="T_b0fed_row21_col0" class="data row21 col0" >Multiple replications (1)</td>
+      <td id="T_b0fed_row21_col1" class="data row21 col1" >1</td>
+      <td id="T_b0fed_row21_col2" class="data row21 col2" >1</td>
+      <td id="T_b0fed_row21_col3" class="data row21 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row22" class="row_heading level0 row22" >23</th>
-      <td id="T_d308e_row22_col0" class="data row22 col0" >Multiple replications (2)</td>
-      <td id="T_d308e_row22_col1" class="data row22 col1" >1</td>
-      <td id="T_d308e_row22_col2" class="data row22 col2" >2</td>
-      <td id="T_d308e_row22_col3" class="data row22 col3" >1</td>
+      <th id="T_b0fed_level0_row22" class="row_heading level0 row22" >23</th>
+      <td id="T_b0fed_row22_col0" class="data row22 col0" >Multiple replications (2)</td>
+      <td id="T_b0fed_row22_col1" class="data row22 col1" >1</td>
+      <td id="T_b0fed_row22_col2" class="data row22 col2" >2</td>
+      <td id="T_b0fed_row22_col3" class="data row22 col3" >1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row23" class="row_heading level0 row23" >24</th>
-      <td id="T_d308e_row23_col0" class="data row23 col0" >Common random numbers (1)</td>
-      <td id="T_d308e_row23_col1" class="data row23 col1" >1</td>
-      <td id="T_d308e_row23_col2" class="data row23 col2" >1</td>
-      <td id="T_d308e_row23_col3" class="data row23 col3" >0</td>
+      <th id="T_b0fed_level0_row23" class="row_heading level0 row23" >24</th>
+      <td id="T_b0fed_row23_col0" class="data row23 col0" >Common random numbers (1)</td>
+      <td id="T_b0fed_row23_col1" class="data row23 col1" >1</td>
+      <td id="T_b0fed_row23_col2" class="data row23 col2" >1</td>
+      <td id="T_b0fed_row23_col3" class="data row23 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row24" class="row_heading level0 row24" >25</th>
-      <td id="T_d308e_row24_col0" class="data row24 col0" >Common random numbers (2)</td>
-      <td id="T_d308e_row24_col1" class="data row24 col1" >1</td>
-      <td id="T_d308e_row24_col2" class="data row24 col2" >1</td>
-      <td id="T_d308e_row24_col3" class="data row24 col3" >0</td>
+      <th id="T_b0fed_level0_row24" class="row_heading level0 row24" >25</th>
+      <td id="T_b0fed_row24_col0" class="data row24 col0" >Common random numbers (2)</td>
+      <td id="T_b0fed_row24_col1" class="data row24 col1" >1</td>
+      <td id="T_b0fed_row24_col2" class="data row24 col2" >1</td>
+      <td id="T_b0fed_row24_col3" class="data row24 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row25" class="row_heading level0 row25" >26</th>
-      <td id="T_d308e_row25_col0" class="data row25 col0" >Common random numbers (3)</td>
-      <td id="T_d308e_row25_col1" class="data row25 col1" >2</td>
-      <td id="T_d308e_row25_col2" class="data row25 col2" >5</td>
-      <td id="T_d308e_row25_col3" class="data row25 col3" >3</td>
+      <th id="T_b0fed_level0_row25" class="row_heading level0 row25" >26</th>
+      <td id="T_b0fed_row25_col0" class="data row25 col0" >Common random numbers (3)</td>
+      <td id="T_b0fed_row25_col1" class="data row25 col1" >2</td>
+      <td id="T_b0fed_row25_col2" class="data row25 col2" >5</td>
+      <td id="T_b0fed_row25_col3" class="data row25 col3" >3</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row26" class="row_heading level0 row26" >27</th>
-      <td id="T_d308e_row26_col0" class="data row26 col0" >Common random numbers (4)</td>
-      <td id="T_d308e_row26_col1" class="data row26 col1" >2</td>
-      <td id="T_d308e_row26_col2" class="data row26 col2" >2</td>
-      <td id="T_d308e_row26_col3" class="data row26 col3" >0</td>
+      <th id="T_b0fed_level0_row26" class="row_heading level0 row26" >27</th>
+      <td id="T_b0fed_row26_col0" class="data row26 col0" >Common random numbers (4)</td>
+      <td id="T_b0fed_row26_col1" class="data row26 col1" >2</td>
+      <td id="T_b0fed_row26_col2" class="data row26 col2" >2</td>
+      <td id="T_b0fed_row26_col3" class="data row26 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row27" class="row_heading level0 row27" >28</th>
-      <td id="T_d308e_row27_col0" class="data row27 col0" >Model interface (1)</td>
-      <td id="T_d308e_row27_col1" class="data row27 col1" >1</td>
-      <td id="T_d308e_row27_col2" class="data row27 col2" >1</td>
-      <td id="T_d308e_row27_col3" class="data row27 col3" >0</td>
+      <th id="T_b0fed_level0_row27" class="row_heading level0 row27" >28</th>
+      <td id="T_b0fed_row27_col0" class="data row27 col0" >Model interface (1)</td>
+      <td id="T_b0fed_row27_col1" class="data row27 col1" >1</td>
+      <td id="T_b0fed_row27_col2" class="data row27 col2" >1</td>
+      <td id="T_b0fed_row27_col3" class="data row27 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row28" class="row_heading level0 row28" >29</th>
-      <td id="T_d308e_row28_col0" class="data row28 col0" >Model interface (2)</td>
-      <td id="T_d308e_row28_col1" class="data row28 col1" >1</td>
-      <td id="T_d308e_row28_col2" class="data row28 col2" >2</td>
-      <td id="T_d308e_row28_col3" class="data row28 col3" >1</td>
+      <th id="T_b0fed_level0_row28" class="row_heading level0 row28" >29</th>
+      <td id="T_b0fed_row28_col0" class="data row28 col0" >Model interface (2)</td>
+      <td id="T_b0fed_row28_col1" class="data row28 col1" >1</td>
+      <td id="T_b0fed_row28_col2" class="data row28 col2" >2</td>
+      <td id="T_b0fed_row28_col3" class="data row28 col3" >1</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row29" class="row_heading level0 row29" >30</th>
-      <td id="T_d308e_row29_col0" class="data row29 col0" >Model interface (3)</td>
-      <td id="T_d308e_row29_col1" class="data row29 col1" >1</td>
-      <td id="T_d308e_row29_col2" class="data row29 col2" >1</td>
-      <td id="T_d308e_row29_col3" class="data row29 col3" >0</td>
+      <th id="T_b0fed_level0_row29" class="row_heading level0 row29" >30</th>
+      <td id="T_b0fed_row29_col0" class="data row29 col0" >Model interface (3)</td>
+      <td id="T_b0fed_row29_col1" class="data row29 col1" >1</td>
+      <td id="T_b0fed_row29_col2" class="data row29 col2" >1</td>
+      <td id="T_b0fed_row29_col3" class="data row29 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row30" class="row_heading level0 row30" >31</th>
-      <td id="T_d308e_row30_col0" class="data row30 col0" >Bug fix</td>
-      <td id="T_d308e_row30_col1" class="data row30 col1" >3</td>
-      <td id="T_d308e_row30_col2" class="data row30 col2" >3</td>
-      <td id="T_d308e_row30_col3" class="data row30 col3" >0</td>
+      <th id="T_b0fed_level0_row30" class="row_heading level0 row30" >31</th>
+      <td id="T_b0fed_row30_col0" class="data row30 col0" >Bug fix</td>
+      <td id="T_b0fed_row30_col1" class="data row30 col1" >3</td>
+      <td id="T_b0fed_row30_col2" class="data row30 col2" >3</td>
+      <td id="T_b0fed_row30_col3" class="data row30 col3" >0</td>
     </tr>
     <tr>
-      <th id="T_d308e_level0_row31" class="row_heading level0 row31" >32</th>
-      <td id="T_d308e_row31_col0" class="data row31 col0" >Totals</td>
-      <td id="T_d308e_row31_col1" class="data row31 col1" >41</td>
-      <td id="T_d308e_row31_col2" class="data row31 col2" >57</td>
-      <td id="T_d308e_row31_col3" class="data row31 col3" >16</td>
+      <th id="T_b0fed_level0_row31" class="row_heading level0 row31" >32</th>
+      <td id="T_b0fed_row31_col0" class="data row31 col0" >Totals</td>
+      <td id="T_b0fed_row31_col1" class="data row31 col1" >41</td>
+      <td id="T_b0fed_row31_col2" class="data row31 col2" >57</td>
+      <td id="T_b0fed_row31_col3" class="data row31 col3" >16</td>
     </tr>
   </tbody>
 </table>
@@ -1219,8 +1239,7 @@ Iteration &amp;  &amp;  &amp;  &amp;  \\
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1287,8 +1306,8 @@ By Thomas Monks
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

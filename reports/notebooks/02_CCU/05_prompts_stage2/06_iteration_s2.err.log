@@ -1,9 +1,16 @@
 Traceback (most recent call last):
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
   File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/nbclient/client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
     return loop.run_until_complete(inner)
   File "/home/tom/miniforge3/envs/gen_simpy/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
@@ -907,6 +914,8 @@ Elective Patient 424 operation cancelled at 2217.14 hours due to lack of availab
 Patient 424 arrived from the Wards at 2220.18 hours
 Patient 425 from Wards requests a critical care bed at 2220.18 hours
 Patient 425 arrived from Emergency Surgery at 2225.50 hours
+----- stdout -----
+
 Patient 426 from Emergency Surgery requests a critical care bed at 2225.50 hours
 Elective Patient 426 arrived at 2235.77 hours
 Elective Patient 427 operation cancelled at 2235.77 hours due to lack of available beds
@@ -1733,7 +1742,6 @@ Patient 36 from Wards admitted to a critical care bed at 4356.16 hours
 Patient 819 arrived from Emergency Surgery at 4356.22 hours
 Patient 820 from Emergency Surgery requests a critical care bed at 4356.22 hours
 Elective Patient 820 arrived at 4364.87 hours
------ stdout -----
 Elective Patient 821 operation cancelled at 4364.87 hours due to lack of available beds
 Patient 821 arrived from Emergency Surgery at 4369.89 hours
 Patient 822 from Emergency Surgery requests a critical care bed at 4369.89 hours
