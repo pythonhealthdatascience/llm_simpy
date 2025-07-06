@@ -171,9 +171,6 @@
 >         self.post_asu_probabilities = post_asu_probabilities
 >         self.los_params = los_params
   
->     def generate_interarrival_time(self):
->         return self.exponential(self.interarrival_time)
-  
 >     def sample_post_asu_destination(self):
 >         if self.rng is None:
 >             raise ValueError("RNG not set for PatientType")
