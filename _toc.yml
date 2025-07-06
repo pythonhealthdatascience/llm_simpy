@@ -30,6 +30,7 @@ parts:
         - file: notebooks/02_CCU/01_model_stage1/03_manual_testing
         - file: notebooks/02_CCU/01_model_stage1/04_run_script
         - file: notebooks/02_CCU/01_model_stage1/05_interface
+        - file: notebooks/02_CCU/01_model_stage1/06_sensitivity_analysis
       - file: notebooks/02_CCU/02_model_stage2
         sections:
         - file: notebooks/02_CCU/02_model_stage2/01_ccu_model_stage2
