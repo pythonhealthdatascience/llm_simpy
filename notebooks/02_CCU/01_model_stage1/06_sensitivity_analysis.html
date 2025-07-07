@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -621,9 +621,9 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-analysis-conducted">Summary of analysis conducted</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-way-analysis-of-elective-operations-inter-arrival-mean">One-way analysis of elective operations inter-arrival mean</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-way-analysis-of-elective-parameters">Two way analysis of elective parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-1-one-way-analysis-of-elective-operations-inter-arrival-mean">Analysis 1. One-way analysis of elective operations inter-arrival mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">Analysis 2. One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-3-two-way-analysis-of-elective-parameters">Analysis 3. Two way analysis of elective parameters</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-imports">General imports</a></li>
@@ -645,22 +645,23 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="sensitivity-analysis-script">
 <h1>Sensitivity Analysis Script<a class="headerlink" href="#sensitivity-analysis-script" title="Link to this heading">#</a></h1>
 <blockquote>
-<div><p><strong>Transparency Note:</strong> This notebook reports an analysis conducted as part of the <strong>peer review</strong> an article reporting the work.  <strong>In summary, the findings of this sensitivity analysis do not alter the conclusions of our study. We were not able to replicate the results report, and there were no errors in the model generated using the LLM.</strong></p>
+<div><p><strong>Transparency Note:</strong> This notebook reports an analysis conducted as part of the <strong>peer review</strong> of an article reporting the work. <strong>In summary, the findings of this sensitivity analysis do not alter the conclusions of our study. We were not able to replicate the results report, and there were no errors in the model generated using the LLM.</strong></p>
 </div></blockquote>
 <p>During the peer review of this work for the Journal of Simulation, a reviewer asked us to conduct a sensitivity analysis. This was because the results of our CCU model were different from the original journal article. There was a possibility that small changes in the parameters may calibrate the results between our recreation and the original model.</p>
-<p>During our study there were three key sources of uncertainty in the reporting of the model:</p>
-<ol class="arabic simple">
+<p>Three key sources of uncertainty were identified in the reporting of the model:</p>
+<ul class="simple">
 <li><p>The empirical distribution of elective inter-arrival times is not provided.</p></li>
 <li><p>The empirical distribution (resampling of raw data) for elective length of stay in the CCU is not provided.</p></li>
-<li><p>A&amp;E, Ward, and Emergency Surgery patients length of stay are reported to fit both a Lognormal (parameters available) and n-stage HyperExponential (parameters unavailable) distributions.</p></li>
-</ol>
+<li><p>A&amp;E, Ward, and Emergency Surgery patients length of stay are reported to fit both Lognormal (parameters available) and n-stage HyperExponential (parameters unavailable) distributions.</p></li>
+</ul>
 <section id="summary-of-analysis-conducted">
 <h2>Summary of analysis conducted<a class="headerlink" href="#summary-of-analysis-conducted" title="Link to this heading">#</a></h2>
 <p>In response, we performed three types of analysis:</p>
-<section id="one-way-analysis-of-elective-operations-inter-arrival-mean">
-<h3>One-way analysis of elective operations inter-arrival mean<a class="headerlink" href="#one-way-analysis-of-elective-operations-inter-arrival-mean" title="Link to this heading">#</a></h3>
-<p>In the original study the elective arrival process was modelled as an empirical distribution.  We could not determine if original model resampled the raw data directly or if an empirical distribution was constructed. An image of a relative frequency histogram of the elective arrivals is provided in the text, but the raw data behind it are not available. The authors state that a Normal Distribution with mean 17.91 and stdev 3.16 could be used as an alternative and we were unclear if this was the actual approach used in the original model or if the empirical distribution was indeed used.  The authors also state an expected number of elective patients at approximately 30 per month - or 360 per year (i.e. approximately 1 patient per day).</p>
-<p>When implemented in our model this resulted in an average of 1650 arrivals in total (n = 5 replications). This is in line with expectations for the parameters available in the original journal article. See table below. Note that the number of elective patients is higher than the 360 expected.</p>
+<section id="analysis-1-one-way-analysis-of-elective-operations-inter-arrival-mean">
+<h3>Analysis 1. One-way analysis of elective operations inter-arrival mean<a class="headerlink" href="#analysis-1-one-way-analysis-of-elective-operations-inter-arrival-mean" title="Link to this heading">#</a></h3>
+<p>In the original study, the elective arrival process was modelled as an empirical distribution. We could not determine if the original model resampled the raw data directly or if an empirical distribution was constructed. An image of a relative frequency histogram of the elective arrivals is provided in the text, but the raw data behind it are not available. The authors state that a Normal Distribution with mean 17.91 and stdev 3.16 could be used as an alternative, although it was unclear if this was the actual approach used in the original model or if the empirical distribution was indeed used.</p>
+<p>The original study states that the expected number of elective patients is approximately 30 per month, or 360 per year (roughly 1 patient per day). However, when we implemented the Normal distribution (mean 17.19 and stdev 3.16) in our model, we observed an average of 490 elective arrivals per year.</p>
+<p>Overall, our model produced an average of 1,650 patient arrivals per year across all patient types (based on the mean from five replications). This aligns with the expected values calculated from the inter-arrival times provided in the original journal article, <strong>as presented in the table below</strong>. This table is generated based on the reported mean inter-arrival times for each patient type (see the IAT column in the table, as in Table 1 of the article). When these are then converted to annual rates, the total expected number of arrivals is approximately 1,649 per year:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Source</strong></p></th>
@@ -713,16 +714,21 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>The original article quotes an annual number of <strong>admissions</strong> as 1341 and in a 24 bed scenario a total of 57 elective cancellations. If we are distinguishing between arrivals and admissions this gives a total number of arrivals of approximately 1400 i.e. 250 less than the parameters we have included.</p>
-<p>To explore this issue, we examined the one-way sensitivity of the model to mean of the Normal distribution used. The result is that to get to the required number of arrivals the mean inter-arrival time is required to be approximately doubled.e. to over 35 hours.</p>
+<p>It is important to highlight that, according to these calculations, the expected number of elective patient arrivals is 489 per year. This figure is notably higher than the 360 elective patients per year stated in the original article, indicating a discrepancy between the model’s input parameters and the reported expectations for elective admissions.</p>
+<p>The original article reports an annual number of admissions as 1,341, along with 57 elective cancellations, in a 24-bed scenario. If we distinguish between arrivals (all patients presenting to the unit) and admissions (patients actually admitted), this suggests a total of approximately 1,400 arrivals per year in the original study. This is about 250 fewer arrivals than our model produces using the current parameters.</p>
+<p>To investigate this discrepancy, we conducted a one-way sensitivity analysis on the mean of the Normal distribution used for elective inter-arrival times. <strong>We found that, in order to reduce the number of arrivals to match the original article, the mean inter-arrival time would need to be approximately doubled—to over 35 hours between arrivals.</strong></p>
 </section>
-<section id="one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">
-<h3>One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients<a class="headerlink" href="#one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients" title="Link to this heading">#</a></h3>
-<p>The authors state that they chose Lognormal distributions for Length of Stay for A&amp;E, Ward, and Emergency, but also that 3 and 4 stage HyperExponential distributions fit.  They authors only provide mean and stdev and not the parameters of the HyperExponential. We therefore chose to use Lognormals in our recreation.  In the article Elective LoS is modelled by resampling from the raw data, but these data are not provided as supplementary material. However, the mean and standard deviation is provided. We therefore opted to use a Lognormal again.  We varied the mean of these distribution by +- 50%.  Our conclusions remained the same. The results were not reproduced.</p>
+<section id="analysis-2-one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">
+<h3>Analysis 2. One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients<a class="headerlink" href="#analysis-2-one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients" title="Link to this heading">#</a></h3>
+<p>The authors state that they chose Lognormal distributions for Length of Stay for A&amp;E, Ward, and Emergency, but also mention that 3 and 4 stage HyperExponential distributions fit the data. The authors only provide mean and stdev, and not the parameters for the HyperExponential distributions. We therefore chose to use Lognormals in our recreation.</p>
+<p>In the article Elective LoS is modelled by resampling from the raw data, but these data are not provided as supplementary material. However, the mean and standard deviation is provided. We therefore opted to use a Lognormal again.</p>
+<p>We varied the mean of these distribution by +- 50%.  <strong>Our conclusions remained the same. The results were not reproduced.</strong></p>
 </section>
-<section id="two-way-analysis-of-elective-parameters">
-<h3>Two way analysis of elective parameters<a class="headerlink" href="#two-way-analysis-of-elective-parameters" title="Link to this heading">#</a></h3>
-<p>We simultaneously varied elective inter-arrival times (20 up to 55 hrs) and elective LoS mean (+- 30).  The model is sensitive to an simultaneous increase in elective IAT and reduction in LoS.  But it does not get close to replicating results within reasonable values.  For example, elective operations are still above 100 with a doubled IAT. We suspect the main issue here is the shape of the distributions chosen.  Our conclusion is that the lognormal distribution is a poor fit for elective length stay.</p>
+<section id="analysis-3-two-way-analysis-of-elective-parameters">
+<h3>Analysis 3. Two way analysis of elective parameters<a class="headerlink" href="#analysis-3-two-way-analysis-of-elective-parameters" title="Link to this heading">#</a></h3>
+<p>We simultaneously varied elective inter-arrival times (20 up to 55 hrs) and elective LoS mean (+- 30).</p>
+<p><strong>The model is sensitive to an simultaneous increase in elective IAT and reduction in LoS. However, it does not get close to replicating results within reasonable values.</strong> For example, the number of cancelled elective operations are still above 100 with a doubled IAT. For context, our model estimated over 340 cancelled operations using our original parameters. Meanwhile, the original article itself reported only 57 cancelled elective operations (Table 2).</p>
+<p><strong>We suspect the main issue here is the shape of the distributions chosen. Our conclusion is that the lognormal distribution is a poor fit for elective length stay.</strong></p>
 </section>
 </section>
 <section id="general-imports">
@@ -747,10 +753,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ccu_formatted_code</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Experiment</span><span class="p">,</span>
     <span class="n">multiple_replications</span><span class="p">,</span>
-    <span class="n">results_summary</span><span class="p">,</span>
-    <span class="n">get_experiments</span><span class="p">,</span>
-    <span class="n">run_all_experiments</span><span class="p">,</span>
-    <span class="n">summary_of_experiments</span><span class="p">,</span>
+    <span class="n">results_summary</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -926,7 +929,6 @@ document.write(`
     <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">fig</span>
 </pre></div>
@@ -1117,28 +1119,32 @@ SENSITIVITY ANALYSIS RESULTS
 <span class="n">fig</span> <span class="o">=</span> <span class="n">create_sensitivity_charts</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">)</span>
 
 <span class="c1"># Save results to CSV</span>
-<span class="n">sensitivity_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;sensitivity_analysis_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Results saved to &#39;sensitivity_analysis_results.csv&#39;&quot;</span><span class="p">)</span>
+<span class="n">sensitivity_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+    <span class="s2">&quot;sensitivity/sensitivity_analysis_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Results saved to &#39;sensitivity/sensitivity_analysis_results.csv&#39;&quot;</span><span class="p">)</span>
 
 <span class="c1"># Save charts</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;sensitivity_analysis_charts.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charts saved to &#39;sensitivity_analysis_charts.png&#39;&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+    <span class="s2">&quot;sensitivity/sensitivity_analysis_charts.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charts saved to &#39;sensitivity/sensitivity_analysis_charts.png&#39;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating sensitivity charts...
+
+Results saved to &#39;sensitivity/sensitivity_analysis_results.csv&#39;
 </pre></div>
 </div>
-<img alt="../../../_images/d6b212b61083232be3a6178ea5f9b80036ae944df7082656ef78c9ecb44069b3.png" src="../../../_images/d6b212b61083232be3a6178ea5f9b80036ae944df7082656ef78c9ecb44069b3.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Results saved to &#39;sensitivity_analysis_results.csv&#39;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Charts saved to &#39;sensitivity_analysis_charts.png&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Charts saved to &#39;sensitivity/sensitivity_analysis_charts.png&#39;
 </pre></div>
 </div>
 </div>
 </div>
+<p><a class="reference download internal" download="" href="../../../_downloads/56d04dafb4f652f9f130a8d3bb93cbb8/sensitivity_analysis_charts.png"><span class="xref download myst"><img alt="Sensitivity charts" src="../../../_images/sensitivity_analysis_charts.png" /></span></a></p>
 </section>
 <section id="analysis-2-one-way-analysis-of-length-of-stay-tornado-plots">
 <h2>Analysis 2: One-way analysis of length of stay (tornado plots)<a class="headerlink" href="#analysis-2-one-way-analysis-of-length-of-stay-tornado-plots" title="Link to this heading">#</a></h2>
@@ -1507,17 +1513,23 @@ SENSITIVITY ANALYSIS RESULTS
     <span class="c1"># Create tornado plots</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Creating tornado plots...&quot;</span><span class="p">)</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">create_los_tornado_plots</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="c1"># Save results</span>
     <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-        <span class="s2">&quot;los_sensitivity_analysis_with_elective_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="s2">&quot;sensitivity/los_sensitivity_analysis_with_elective_results.csv&quot;</span><span class="p">,</span>
+        <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;los_tornado_plots_with_elective.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+        <span class="s2">&quot;sensitivity/los_tornado_plots_with_elective.png&quot;</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Analysis complete!&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Results saved to &#39;los_sensitivity_analysis_with_elective_results.csv&#39;&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tornado plots saved to &#39;los_tornado_plots_with_elective.png&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Results saved to &#39;sensitivity/los_sensitivity_analysis_with_&quot;</span> <span class="o">+</span>
+          <span class="s2">&quot;elective_results.csv&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tornado plots saved to &#39;sensitivity/los_tornado_plots_with_&quot;</span> <span class="o">+</span>
+          <span class="s2">&quot;elective.png&#39;&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">sensitivity_results</span>
 
@@ -1635,10 +1647,9 @@ LENGTH OF STAY SENSITIVITY ANALYSIS RESULTS (INCLUDING ELECTIVE)
 Creating tornado plots...
 </pre></div>
 </div>
-<img alt="../../../_images/ca57967e4db12e55a561b2587e37e9b2a4653497baac9b829b2bdb16ce79bc1b.png" src="../../../_images/ca57967e4db12e55a561b2587e37e9b2a4653497baac9b829b2bdb16ce79bc1b.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Analysis complete!
-Results saved to &#39;los_sensitivity_analysis_with_elective_results.csv&#39;
-Tornado plots saved to &#39;los_tornado_plots_with_elective.png&#39;
+Results saved to &#39;sensitivity/los_sensitivity_analysis_with_elective_results.csv&#39;
+Tornado plots saved to &#39;sensitivity/los_tornado_plots_with_elective.png&#39;
 
 ====================================================================================================
 PARAMETER COMPARISON TABLE
@@ -1722,6 +1733,7 @@ PARAMETER COMPARISON TABLE
 </table>
 </div></div></div>
 </div>
+<p><a class="reference download internal" download="" href="../../../_downloads/dedba3e562f06f986a3a1686dd9c96c9/los_tornado_plots_with_elective.png"><span class="xref download myst"><img alt="LoS tornado plots with elective" src="../../../_images/los_tornado_plots_with_elective.png" /></span></a></p>
 </section>
 <section id="analysis-3-two-way-sensitivity-analysis">
 <h2>Analysis 3: Two-way sensitivity analysis<a class="headerlink" href="#analysis-3-two-way-sensitivity-analysis" title="Link to this heading">#</a></h2>
@@ -2040,21 +2052,30 @@ PARAMETER COMPARISON TABLE
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">summary_table</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-    <span class="c1"># Show plots</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
     <span class="c1"># Save results</span>
-    <span class="n">results_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;2way_sensitivity_analysis_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">summary_table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;2way_sensitivity_summary.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">heatmap_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;2way_sensitivity_heatmaps.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
-    <span class="n">contour_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;2way_sensitivity_contours.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">results_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="s2">&quot;sensitivity/2way_sensitivity_analysis_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">summary_table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="s2">&quot;sensitivity/2way_sensitivity_summary.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">heatmap_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+        <span class="s2">&quot;sensitivity/2way_sensitivity_heatmaps.png&quot;</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">heatmap_fig</span><span class="p">)</span>
+    <span class="n">contour_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+        <span class="s2">&quot;sensitivity/2way_sensitivity_contours.png&quot;</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">contour_fig</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Analysis complete!&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Files saved:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- 2way_sensitivity_analysis_results.csv&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- 2way_sensitivity_summary.csv&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- 2way_sensitivity_heatmaps.png&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- 2way_sensitivity_contours.png&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- sensitivity/2way_sensitivity_analysis_results.csv&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- sensitivity/2way_sensitivity_summary.csv&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- sensitivity/2way_sensitivity_heatmaps.png&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- sensitivity/2way_sensitivity_contours.png&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">results_df</span><span class="p">,</span> <span class="n">summary_table</span>
 </pre></div>
@@ -2355,18 +2376,18 @@ Mean Waiting Time (Unplanned)      36.2 IAT=55.0, LOS=17.2      43.3 IAT=20.0, L
                 Patient Count    1301.8 IAT=55.0, LOS=17.2    1576.3 IAT=20.0, LOS=17.2 1400.9 88.7
 </pre></div>
 </div>
-<img alt="../../../_images/5d8b8f3049ad62ae0723a02b604f374b053e13c6c6c94d55b75c575c4e74dd91.png" src="../../../_images/5d8b8f3049ad62ae0723a02b604f374b053e13c6c6c94d55b75c575c4e74dd91.png" />
-<img alt="../../../_images/73b74da9f8d1b1f20ec205b568106dccbe989d0cbff1f19f98f916f606941dc9.png" src="../../../_images/73b74da9f8d1b1f20ec205b568106dccbe989d0cbff1f19f98f916f606941dc9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Analysis complete!
 Files saved:
-- 2way_sensitivity_analysis_results.csv
-- 2way_sensitivity_summary.csv
-- 2way_sensitivity_heatmaps.png
-- 2way_sensitivity_contours.png
+- sensitivity/2way_sensitivity_analysis_results.csv
+- sensitivity/2way_sensitivity_summary.csv
+- sensitivity/2way_sensitivity_heatmaps.png
+- sensitivity/2way_sensitivity_contours.png
 </pre></div>
 </div>
 </div>
 </div>
+<p><a class="reference download internal" download="" href="../../../_downloads/d3139ea9a24ed1cac4b222d2e80c6039/2way_sensitivity_heatmaps.png"><span class="xref download myst"><img alt="Two-way sensitivity heatmaps" src="../../../_images/2way_sensitivity_heatmaps.png" /></span></a></p>
+<p><a class="reference download internal" download="" href="../../../_downloads/570a8f7a1db469339bd21a234eb7bc69/2way_sensitivity_contours.png"><span class="xref download myst"><img alt="Two-way sensitivity contours" src="../../../_images/2way_sensitivity_contours.png" /></span></a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary</span>
@@ -2524,9 +2545,9 @@ Files saved:
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-analysis-conducted">Summary of analysis conducted</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-way-analysis-of-elective-operations-inter-arrival-mean">One-way analysis of elective operations inter-arrival mean</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-way-analysis-of-elective-parameters">Two way analysis of elective parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-1-one-way-analysis-of-elective-operations-inter-arrival-mean">Analysis 1. One-way analysis of elective operations inter-arrival mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-one-way-analysis-of-length-of-stay-means-for-a-e-ward-emergency-and-elective-patients">Analysis 2. One-way analysis of Length of Stay means for A&amp;E, Ward, Emergency, and Elective Patients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-3-two-way-analysis-of-elective-parameters">Analysis 3. Two way analysis of elective parameters</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-imports">General imports</a></li>
