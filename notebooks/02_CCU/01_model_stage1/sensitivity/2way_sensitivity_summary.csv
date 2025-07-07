@@ -1,0 +1,6 @@
+Metric,Min_Value,Min_Condition,Max_Value,Max_Condition,Mean,Std
+Cancelled Elective Operations,76.3,"IAT=55.0, LOS=17.2",271.9,"IAT=20.0, LOS=77.2",137.8,54.3
+Bed Occupancy,20.3,"IAT=55.0, LOS=17.2",21.6,"IAT=20.0, LOS=77.2",20.8,0.3
+Bed Utilization,0.8,"IAT=55.0, LOS=17.2",0.9,"IAT=20.0, LOS=77.2",0.9,0.0
+Mean Waiting Time (Unplanned),36.2,"IAT=55.0, LOS=17.2",43.3,"IAT=20.0, LOS=77.2",38.4,1.6
+Patient Count,1301.8,"IAT=55.0, LOS=17.2",1576.3,"IAT=20.0, LOS=17.2",1400.9,88.7

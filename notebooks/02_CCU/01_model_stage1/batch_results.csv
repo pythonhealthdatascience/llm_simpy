@@ -1,7 +1,7 @@
 ,Experiment_23,Experiment_23,Experiment_24,Experiment_24,Experiment_25,Experiment_25,Experiment_26,Experiment_26,Experiment_27,Experiment_27,Experiment_28,Experiment_28
 ,Mean,Standard Deviation,Mean,Standard Deviation,Mean,Standard Deviation,Mean,Standard Deviation,Mean,Standard Deviation,Mean,Standard Deviation
-Cancelled Elective Operations,132.2,32.83,99.0,27.71,71.2,25.75,54.6,20.77,39.8,17.75,23.8,14.11
-Bed Utilization,0.83,0.02,0.8,0.02,0.78,0.02,0.75,0.02,0.73,0.02,0.71,0.02
-Mean Waiting Time Unplanned,8.97,7.06,5.29,4.31,2.96,2.59,1.64,1.21,0.97,0.66,0.62,0.59
-Bed Occupancy,19.02,0.35,19.27,0.36,19.46,0.38,19.59,0.44,19.69,0.46,19.8,0.52
-Patient Count,1463.0,20.26,1463.0,20.26,1463.0,20.26,1463.0,20.26,1463.0,20.26,1463.0,20.26
+Cancelled Elective Operations,347.53,71.56,294.91,73.63,242.11,69.43,194.27,63.36,152.48,56.73,117.92,49.52
+Bed Utilization,0.91,0.03,0.89,0.03,0.87,0.03,0.85,0.03,0.83,0.03,0.81,0.04
+Mean Waiting Time Unplanned,83.37,84.37,46.93,51.13,27.01,31.8,16.69,21.16,10.38,13.2,6.45,7.9
+Bed Occupancy,20.93,0.71,21.42,0.77,21.83,0.84,22.19,0.88,22.48,0.94,22.72,0.99
+Patient Count,1627.12,35.16,1627.12,35.16,1627.12,35.16,1627.12,35.16,1627.12,35.16,1627.12,35.16
