@@ -6,7 +6,7 @@
 
 This repository serves as a **research compendium** for the paper:
 
-> Monks, T., Harper, A., & Heather, A. (2025). **Unlocking the Potential of Past Research: Using Generative AI to Reconstruct Healthcare Simulation Models**. Preprint. https://doi.org/10.48550/arXiv.2503.21646.
+> Monks, T., Harper, A., & Heather, A. (2025). **Unlocking the Potential of Past Research: Using Generative AI to Reconstruct Healthcare Simulation Models**. Journal of the Operational Research Society. https://doi.org/10.1080/01605682.2025.2554751.
 
 A research compendium is collection of all the digital materials relevant to the study. In this case, it includes a description of the aims and models, as well the STRESS reports for each model, the full model code and testing, logs of all the prompts used and experiences working with the LLMs, analysis of the results, and more!
 
